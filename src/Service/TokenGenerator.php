@@ -9,7 +9,18 @@
 namespace App\Service;
 
 
+/**
+ * Class TokenGenerator
+ *
+ * @package App\Service
+ */
 class TokenGenerator
 {
-
+    /**
+     * @return string
+     */
+    static public function generate(): string
+    {
+        return md5(uniqid());
+    }
 }
