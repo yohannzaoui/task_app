@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
                 'Un email vous a été envoyé pour confirmer la création de votre compte'
             );
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_register');
         }
 
         return $this->render('registration/register.html.twig', [
