@@ -3,6 +3,8 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+    {% if app.user is null %}
+
     <h1>Register</h1>
 
     {% for message in app.flashes('success') %}
@@ -16,7 +18,11 @@
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.plainPassword) }}
 
-        <button type="submit" class="btn">Register</button>
-        <button type="reset" class="btn">Erase</button>
+        <button type="submit" class="btn btn-primary">Sign up</button>
+        <button type="reset" class="btn btn-danger">Erase</button>
     {{ form_end(registrationForm) }}
+
+    {% else %}
+        <p>you are already connected</p>
+    {% endif %}
 {% endblock %}

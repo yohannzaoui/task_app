@@ -2,6 +2,10 @@
 
 {% block body %}
 
+    {% if app.user is null %}
+
+    <h1>Reset password</h1>
+
     {% for message in app.flashes('success') %}
         <div class="flash-notice">
             {{ message }}
@@ -10,8 +14,12 @@
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button type="submit" class="btn">Envoyer</button>
+        <button type="submit" class="btn btn-primary">Send</button>
+        <button type="reset" class="btn btn-danger">Erase</button>
     {{ form_end(form) }}
 
+        {% else %}
+            <p>you are already connected</p>
+    {% endif %}
 
 {% endblock %}
