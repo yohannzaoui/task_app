@@ -28,13 +28,15 @@ class PasswordFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('password', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => true,
                 'first_options' => [
                     'label' => 'Nouveau mot de passe'
                 ],
-                'second_options' => 'Tapez le mot de passe à nouveau'
+                'second_options' => [
+                    'label' => 'Tapez le mot de passe à nouveau'
+                ]
             ]);
     }
 }
