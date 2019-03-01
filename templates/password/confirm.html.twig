@@ -2,6 +2,8 @@
 
 {% block body %}
 
+    <h1>Reset password</h1>
+
     {% for message in app.flashes('success') %}
         <div class="flash-notice">
             {{ message }}
@@ -10,7 +12,8 @@
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn" type="submit">Envoyer</button>
+    <button class="btn btn-primary" type="submit">Send</button>
+    <button class="btn btn-danger" type="reset">Erase</button>
     {{ form_end(form) }}
 
 {% endblock %}
