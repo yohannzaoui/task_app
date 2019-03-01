@@ -42,3 +42,4 @@ security:
         - { path: /checkUser, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/confirm, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: /, roles: ROLE_USER }
+        - { path: ^/user, roles: ROLE_ADMIN }

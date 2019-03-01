@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+    <h1>User index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Valid</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.valid ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="confirm('Delete this user?')">delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>your rights do not allow you to access this page</p>
+    {% endif %}
+{% endblock %}
