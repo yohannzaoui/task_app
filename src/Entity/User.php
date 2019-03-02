@@ -49,11 +49,36 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      * @Assert\Length(
      *     min="6",
-     *     max="20",
+     *     max="255",
      *     minMessage="Le mot de passe doit contenir 6 caracteres minimum"
      * )
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $zipCode;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $country;
 
     /**
      * @ORM\Column(type="datetime")
@@ -108,6 +133,14 @@ class User implements UserInterface
     }
 
     /**
+     * @throws \Exception
+     */
+    public function updateDate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -159,7 +192,6 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -195,6 +227,86 @@ class User implements UserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address): void
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZipCode()
+    {
+        return $this->zipCode;
+    }
+
+    /**
+     * @param mixed $zipCode
+     */
+    public function setZipCode($zipCode): void
+    {
+        $this->zipCode = $zipCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city): void
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country): void
+    {
+        $this->country = $country;
     }
 
     /**

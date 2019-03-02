@@ -26,8 +26,8 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.createdAt ? user.createdAt|date('d-m-Y H:i:s') : '' }}</td>
+                <td>{{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                 <td>{{ user.valid ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="confirm('Delete this user?')">delete</a>
