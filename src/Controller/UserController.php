@@ -44,9 +44,9 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($id) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->remove($user);
+            $manager->flush();
         }
 
         return $this->redirectToRoute('user_index');

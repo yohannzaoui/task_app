@@ -36,6 +36,7 @@ class PasswordController extends AbstractController
      * @param \App\Helper\Email                          $email
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function checkUser(Request $request, TokenGenerator $tokenGenerator, ObjectManager $manager, Email $email)
     {
@@ -48,9 +49,7 @@ class PasswordController extends AbstractController
                 ->findOneBy(['email' => $form->getData()['email']]);
 
             if (!$user){
-                return $this->render('error/error.html.twig', [
-                    'error' => 'Erreur : Ce compte n\'éxiste pas'
-                ]);
+                throw new \Exception('utilisateur inconnu');
             }
 
             $token = $tokenGenerator::generate();
@@ -81,15 +80,14 @@ class PasswordController extends AbstractController
      * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function confirm($id, Request $request, ObjectManager $manager, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
 
         if (!$user){
-            return $this->render('error/error.html.twig', [
-                'error' => 'Utilisateur inconnu'
-            ]);
+            throw new \Exception('utilisateur inconnu');
         }
 
         if ($request->get('token') == $user->getToken()){
@@ -119,9 +117,7 @@ class PasswordController extends AbstractController
         }
 
         if ($request->get('token') != $user->getToken()){
-            return $this->render('error/error.html.twig', [
-                'error' => 'Token invalide'
-            ]);
+            throw new \Exception('Token invalide');
         }
     }
 }

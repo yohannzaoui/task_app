@@ -73,13 +73,18 @@ class RegistrationController extends AbstractController
      * @param \Symfony\Component\HttpFoundation\Request  $request
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
      */
     public function confirm($id, Request $request, ObjectManager $manager)
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(['id' => $id]);
+
+        if (!$user){
+            throw new \Exception('utilisateur inconnu');
+        }
 
         if ($request->get('token') == $user->getToken()){
             $user->validate();
@@ -92,9 +97,7 @@ class RegistrationController extends AbstractController
             );
 
         } else {
-            return $this->render('error/error.html.twig', [
-                'error' => 'Erreur : le token de validation est incorrect ou le compte à déja été validé'
-            ]);
+            throw new \Exception('Erreur : le token de validation est incorrect ou le compte à déja été validé');
         }
         return $this->redirectToRoute('app_login');
     }
