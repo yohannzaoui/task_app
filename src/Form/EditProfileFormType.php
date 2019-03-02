@@ -29,6 +29,18 @@ class EditProfileFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'required' => false
             ])
+            ->add('phone', TextType::class, [
+                'required' => false
+            ])
+            ->add('zipCode', TextType::class, [
+                'required' => false
+            ])
+            ->add('city', TextType::class, [
+                'required' => false
+            ])
+            ->add('country', TextType::class, [
+                'required' => false
+            ])
         ;
     }
 
