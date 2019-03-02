@@ -49,7 +49,7 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      * @Assert\Length(
      *     min="6",
-     *     max="20",
+     *     max="255",
      *     minMessage="Le mot de passe doit contenir 6 caracteres minimum"
      * )
      */
@@ -108,6 +108,14 @@ class User implements UserInterface
     }
 
     /**
+     * @throws \Exception
+     */
+    public function updateDate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -159,7 +167,6 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
