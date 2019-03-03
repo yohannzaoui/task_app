@@ -59,7 +59,7 @@ class TaskController extends AbstractController
             $manager->persist($task);
             $manager->flush();
 
-            return $this->redirectToRoute('task');
+            return $this->redirectToRoute('tasks');
         }
         return $this->render('task/create.html.twig', [
             'form' =>$form->createView()
