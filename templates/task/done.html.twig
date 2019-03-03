@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Tasks{% endblock %}
+
+{% block body %}
+
+    <h1 class="center">My done tasks</h1>
+    {% if tasks | length >= 1 %}<h3 class="center">tasks done {{ tasks | length }}</h3>{% endif %}
+    {% if tasks | length == 0 %}<h3 class="center">No done tasks</h3>{% endif %}
+
+    <a class="btn btn-success" href="{{ path('tasks') }}">My tasks</a>
+
+    <div class="row justify-content-center">
+        {% for task in tasks %}
+            <div class="post-it mt-3 col col-lg-3">
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.content }}</p>
+                <p>Added : {{ task.createdAt | date('d/m/Y')}}</p>
+                {% if task.updatedAt %}
+                    <p>Updated : {{ task.updatedAt | date('d/m/Y')}}</p>
+                {% endif %}
+                <p>Done : {{ task.doneAt | date('d/m/Y')}}</p>
+                <p>
+                    <a class="btn btn-primary" href="{{ path('done_task', {'id': task.id}) }}">not done</a>
+                    <a class="btn btn-danger" href="{{ path('delete_task', {'id': task.id}) }}">delete</a>
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -82,13 +84,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
+     * @Assert\Type("datetime")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
+     * @Assert\Type("datetime")
      */
     private $updatedAt;
 
@@ -103,6 +105,11 @@ class User implements UserInterface
     private $token;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="author")
+     */
+    private $tasks;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -113,6 +120,7 @@ class User implements UserInterface
         $this->roles = ['ROLE_USER'];
         $this->createdAt = new \DateTime();
         $this->valid = false;
+        $this->tasks = new ArrayCollection();
     }
 
     /**
@@ -396,5 +404,36 @@ class User implements UserInterface
     public function setToken($token): void
     {
         $this->token = $token;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            // set the owning side to null (unless already changed)
+            if ($task->getAuthor() === $this) {
+                $task->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 }
