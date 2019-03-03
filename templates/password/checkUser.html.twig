@@ -8,11 +8,7 @@
 
     <h1>Reset password</h1>
 
-    {% for message in app.flashes('success') %}
-        <div class="flash-notice">
-            {{ message }}
-        </div>
-    {% endfor %}
+        {% include 'success_flash_message.html.twig' %}
 
     {{ form_start(form) }}
     {{ form_widget(form) }}

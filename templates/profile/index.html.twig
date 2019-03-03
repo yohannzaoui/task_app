@@ -5,9 +5,17 @@
 {% block body %}
     <h1>My profile</h1>
 
+    {% include 'success_flash_message.html.twig' %}
+
     <p>User name : {{ user.username }}</p>
     <p>Email : {{ user.email }}</p>
+    <p>Phone : {{ user.phone }}</p>
+    <p>Address : {{ user.address }}</p>
+    <p>Zip code : {{ user.zipCode }}</p>
+    <p>City : {{ user.city }}</p>
+    <p>Country : {{ user.country }}</p>
     <p>Member since : {{ user.createdAt | date("d/m/Y") }}</p>
+    <p>Tasks : {{ user.tasks | length }}</p>
 
     <a href="{{ path('edit_profile', {'id': user.id}) }}" class="btn btn-success">edit my profile</a>
 

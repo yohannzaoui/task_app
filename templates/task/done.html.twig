@@ -5,8 +5,11 @@
 {% block body %}
 
     <h1 class="center">My done tasks</h1>
+
     {% if tasks | length >= 1 %}<h3 class="center">tasks done {{ tasks | length }}</h3>{% endif %}
     {% if tasks | length == 0 %}<h3 class="center">No done tasks</h3>{% endif %}
+
+    {% include 'success_flash_message.html.twig' %}
 
     <a class="btn btn-success" href="{{ path('tasks') }}">My tasks</a>
 

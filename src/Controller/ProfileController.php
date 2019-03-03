@@ -54,6 +54,8 @@ class ProfileController extends AbstractController
 
             $manager->flush();
 
+            $this->addFlash('success', 'Profile edited');
+
             return $this->redirectToRoute('profile');
         }
 
@@ -91,6 +93,8 @@ class ProfileController extends AbstractController
             $user->updateDate();
 
             $manager->flush();
+
+            $this->addFlash('success', 'Password edited');
 
             return $this->redirectToRoute('profile');
         }

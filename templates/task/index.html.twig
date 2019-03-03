@@ -5,15 +5,18 @@
 {% block body %}
 
     <h1 class="center">My tasks</h1>
+
     {% if tasks | length >= 1 %}<h3 class="center">tasks to be done {{ tasks | length }}</h3>{% endif %}
     {% if tasks | length == 0 %}<h3 class="center">No tasks</h3>{% endif %}
+
+    {% include 'success_flash_message.html.twig' %}
 
     <a class="btn btn-success" href="{{ path('create_task') }}">create task</a>
     <a class="btn btn-warning" href="{{ path('view_done_task') }}">done task</a>
 
     <div class="row justify-content-center">
     {% for task in tasks %}
-                <div class="post-it mt-3 col col-lg-3">
+                <div class="post-it mt-3 col col-lg-3 col col-md-3 col col-sm-auto">
                     <h3>{{ task.title }}</h3>
                     <p>{{ task.content }}</p>
                     <p>Added : {{ task.createdAt | date('d/m/Y')}}</p>

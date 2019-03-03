@@ -59,6 +59,8 @@ class TaskController extends AbstractController
             $manager->persist($task);
             $manager->flush();
 
+            $this->addFlash('success', 'Task created');
+
             return $this->redirectToRoute('tasks');
         }
         return $this->render('task/create.html.twig', [
@@ -96,6 +98,8 @@ class TaskController extends AbstractController
 
             $manager->flush();
 
+            $this->addFlash('success', 'Task edited');
+
             return $this->redirectToRoute('tasks');
         }
 
@@ -127,6 +131,8 @@ class TaskController extends AbstractController
 
         $manager->remove($task);
         $manager->flush();
+
+        $this->addFlash('success', 'Task deleted');
 
         return $this->redirectToRoute('tasks');
     }

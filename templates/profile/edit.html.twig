@@ -5,7 +5,7 @@
 {% block body %}
 
     <h1>Edit my profile</h1>
-    <a class="btn btn-primary" href="{{ path('edit_password', {'id': app.user.id}) }}">edit my password</a>
+    <p><a class="btn btn-primary" href="{{ path('edit_password', {'id': app.user.id}) }}">edit my password</a></p>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}

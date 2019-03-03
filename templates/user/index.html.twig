@@ -4,7 +4,7 @@
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-    <h1>User index</h1>
+        <h1>Users ({{ users | length }})</h1>
 
     <table class="table">
         <thead>
