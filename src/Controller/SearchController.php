@@ -33,5 +33,6 @@ class SearchController extends AbstractController
                 'results' => $results,
             ]);
         }
+        throw new \Exception('Error: CSRF token invalid');
     }
 }
