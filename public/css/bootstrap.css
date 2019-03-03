@@ -55,9 +55,10 @@
 
 .post-it{
   padding: 5px;
-  margin: 2px;
+  margin: 4px;
   background-color: #757575;
   color: white;
+  box-shadow: 6px 6px 6px lightgray;
 }
 
 .center{
