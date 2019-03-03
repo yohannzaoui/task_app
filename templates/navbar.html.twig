@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container">
-    <a class="navbar-brand" href="{{ path('home') }}">Task App {% if app.user %}Hello {{ app.user.username }}{% endif %}</a>
+    <a class="navbar-brand" href="{{ path('tasks') }}">Task App {% if app.user %}Hello {{ app.user.username }}{% endif %}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,7 +9,7 @@
         <ul class="navbar-nav mr-auto">
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('home') }}">My tasks</a>
+                    <a class="nav-link" href="{{ path('tasks') }}">My tasks</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ path('profile') }}">My profile</a>

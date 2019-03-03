@@ -53,6 +53,17 @@
   color: red;
 }
 
+.post-it{
+  padding: 5px;
+  margin: 2px;
+  background-color: #757575;
+  color: white;
+}
+
+.center{
+  text-align: center;
+}
+
 *,
 *::before,
 *::after {
