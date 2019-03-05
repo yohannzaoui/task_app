@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ramsey\Uuid\Uuid;
@@ -34,7 +35,7 @@ class User implements UserInterface
      */
     private $username;
 
-    /**
+    /**Serialization of 'Symfony\Component\HttpFoundation\File\UploadedFile' is not allowed
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -110,6 +111,16 @@ class User implements UserInterface
     private $tasks;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @Assert\Image()
+     */
+    private $file;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -126,7 +137,7 @@ class User implements UserInterface
     /**
      *
      */
-    public function validate()
+    public function validate(): void
     {
         $this->valid = true;
         $this->token = null;
@@ -135,7 +146,7 @@ class User implements UserInterface
     /**
      *
      */
-    public function resetToken()
+    public function resetToken(): void
     {
         $this->token = null;
     }
@@ -143,7 +154,7 @@ class User implements UserInterface
     /**
      * @throws \Exception
      */
-    public function updateDate()
+    public function updateDate(): void
     {
         $this->updatedAt = new \DateTime();
     }
@@ -163,7 +174,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
     /**
@@ -181,7 +192,7 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getEmail()
+    public function getEmail(): ? string
     {
         return $this->email;
     }
@@ -189,7 +200,7 @@ class User implements UserInterface
     /**
      * @param mixed $email
      */
-    public function setEmail($email): void
+    public function setEmail(string $email)
     {
         $this->email = $email;
     }
@@ -222,7 +233,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     /**
@@ -240,7 +251,7 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getPhone()
+    public function getPhone(): string
     {
         return $this->phone;
     }
@@ -248,7 +259,7 @@ class User implements UserInterface
     /**
      * @param mixed $phone
      */
-    public function setPhone($phone): void
+    public function setPhone(string $phone): void
     {
         $this->phone = $phone;
     }
@@ -256,7 +267,7 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
@@ -272,7 +283,7 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getZipCode()
+    public function getZipCode(): string
     {
         return $this->zipCode;
     }
@@ -288,7 +299,7 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -304,7 +315,7 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getCountry()
+    public function getCountry(): string
     {
         return $this->country;
     }
@@ -375,9 +386,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getValid()
+    public function getValid(): bool
     {
         return $this->valid;
     }
@@ -391,7 +402,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getToken(): ? string
     {
@@ -414,6 +425,11 @@ class User implements UserInterface
         return $this->tasks;
     }
 
+    /**
+     * @param \App\Entity\Task $task
+     *
+     * @return \App\Entity\User
+     */
     public function addTask(Task $task): self
     {
         if (!$this->tasks->contains($task)) {
@@ -424,6 +440,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param \App\Entity\Task $task
+     *
+     * @return \App\Entity\User
+     */
     public function removeTask(Task $task): self
     {
         if ($this->tasks->contains($task)) {
@@ -436,4 +457,39 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string|null $image
+     */
+    public function setImage(? string $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|null
+     */
+    public function getFile(): ? UploadedFile
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile|null $file
+     */
+    public function setFile(? UploadedFile $file): void
+    {
+        $this->file = $file;
+    }
+
+
+
 }

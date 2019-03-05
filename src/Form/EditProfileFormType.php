@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,6 +44,11 @@ class EditProfileFormType extends AbstractType
             ])
             ->add('country', TextType::class, [
                 'required' => false
+            ])
+            ->add('file', FileType::class, [
+                'required' => false,
+                'label' => 'Image profile',
+                'mapped' => true
             ])
         ;
     }

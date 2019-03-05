@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -35,8 +36,9 @@ class TaskController extends AbstractController
      * @param \Doctrine\Common\Persistence\ObjectManager        $manager
      */
     public function __construct(
-        AdapterInterface $cache, ObjectManager $manager)
-    {
+        AdapterInterface $cache,
+        ObjectManager $manager
+    ){
         $this->cache = $cache;
         $this->manager = $manager;
     }
@@ -47,7 +49,7 @@ class TaskController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function index()
+    public function index(): Response
     {
         $tasks = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -78,7 +80,7 @@ class TaskController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
         $task = new Task();
 
@@ -113,7 +115,7 @@ class TaskController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -156,7 +158,7 @@ class TaskController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function delete($id)
+    public function delete($id): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -189,7 +191,7 @@ class TaskController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function done($id)
+    public function done($id): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -224,7 +226,7 @@ class TaskController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function doneTask()
+    public function doneTask(): Response
     {
         $tasks = $this->getDoctrine()
             ->getRepository(Task::class)
