@@ -9,7 +9,7 @@
 
     <div class="row justify-content-center">
         {% for result in results %}
-            <div class="post-it mt-3 col col-lg-3">
+            <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3>{{ result.title }}</h3>
                 <p>{{ result.content }}</p>
                 <p>Added : {{ result.createdAt | date('d/m/Y')}}</p>
