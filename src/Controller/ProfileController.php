@@ -19,6 +19,21 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ProfileController extends AbstractController
 {
     /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    private $manager;
+
+    /**
+     * ProfileController constructor.
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     */
+    public function __construct(ObjectManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
      * @Route("/profile", name="profile", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -34,13 +49,12 @@ class ProfileController extends AbstractController
      * @Route("/profile/{id}", name="edit_profile", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request  $request
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
      * @param                                            $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function edit(Request $request, ObjectManager $manager, $id)
+    public function edit(Request $request, $id)
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
@@ -52,7 +66,7 @@ class ProfileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $user->updateDate();
 
-            $manager->flush();
+            $this->manager->flush();
 
             $this->addFlash('success', 'Profile edited');
 
@@ -68,14 +82,13 @@ class ProfileController extends AbstractController
      * @Route("/profile/password/{id}", name="edit_password", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request                             $request
-     * @param \Doctrine\Common\Persistence\ObjectManager                            $manager
      * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder
      * @param                                                                       $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function editPassword(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $passwordEncoder, $id)
+    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, $id)
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
@@ -94,7 +107,7 @@ class ProfileController extends AbstractController
 
             $user->updateDate();
 
-            $manager->flush();
+            $this->manager->flush();
 
             $this->addFlash('success', 'Password edited');
 

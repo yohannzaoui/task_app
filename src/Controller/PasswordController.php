@@ -28,17 +28,31 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class PasswordController extends AbstractController
 {
     /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    private $manager;
+
+    /**
+     * PasswordController constructor.
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     */
+    public function __construct(ObjectManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
      * @Route(path="/checkUser", name="check_user", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request  $request
      * @param \App\Service\TokenGenerator                $tokenGenerator
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
      * @param \App\Helper\Email                          $email
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function checkUser(Request $request, TokenGenerator $tokenGenerator, ObjectManager $manager, Email $email)
+    public function checkUser(Request $request, TokenGenerator $tokenGenerator, Email $email)
     {
         $form = $this->createForm(EmailFormType::class)
             ->handleRequest($request);
@@ -56,7 +70,7 @@ class PasswordController extends AbstractController
 
             $user->setToken($token);
 
-            $manager->flush();
+            $this->manager->flush();
 
             $email->emailPassword($user->getEmail(), $token, $user->getId());
 
@@ -79,13 +93,12 @@ class PasswordController extends AbstractController
      *
      * @param                                                                       $id
      * @param \Symfony\Component\HttpFoundation\Request                             $request
-     * @param \Doctrine\Common\Persistence\ObjectManager                            $manager
      * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function confirm($id, Request $request, ObjectManager $manager, UserPasswordEncoderInterface $passwordEncoder)
+    public function confirm($id, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
@@ -109,7 +122,7 @@ class PasswordController extends AbstractController
 
                 $user->resetToken();
 
-                $manager->flush();
+                $this->manager->flush();
 
                 $this->addFlash(
                     'success',
