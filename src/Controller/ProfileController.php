@@ -25,10 +25,8 @@ class ProfileController extends AbstractController
      */
     public function show()
     {
-        $user = $this->getUser();
-
         return $this->render('profile/index.html.twig', [
-            'user' => $user,
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -44,7 +42,9 @@ class ProfileController extends AbstractController
      */
     public function edit(Request $request, ObjectManager $manager, $id)
     {
-        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($id);
 
         $form = $this->createForm(EditProfileFormType::class, $user)
             ->handleRequest($request);
@@ -77,7 +77,9 @@ class ProfileController extends AbstractController
      */
     public function editPassword(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $passwordEncoder, $id)
     {
-        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($id);
 
         $form = $this->createForm(PasswordFormType::class)
             ->handleRequest($request);

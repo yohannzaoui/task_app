@@ -7,6 +7,7 @@ use App\Form\EditTaskType;
 use App\Form\TaskType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,9 +19,33 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskController extends AbstractController
 {
     /**
+     * @var \Symfony\Component\Cache\Adapter\AdapterInterface
+     */
+    private $cache;
+
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    private $manager;
+
+    /**
+     * TaskController constructor.
+     *
+     * @param \Symfony\Component\Cache\Adapter\AdapterInterface $cache
+     * @param \Doctrine\Common\Persistence\ObjectManager        $manager
+     */
+    public function __construct(
+        AdapterInterface $cache, ObjectManager $manager)
+    {
+        $this->cache = $cache;
+        $this->manager = $manager;
+    }
+
+    /**
      * @Route(path="/", name="tasks", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function index()
     {
@@ -31,6 +56,14 @@ class TaskController extends AbstractController
                 'author' => $this->getUser()
             ]);
 
+        $items = $this->cache->getItem('tasks');
+
+        if (!$items->isHit()){
+            $items->set($tasks);
+            $this->cache->save($items);
+        }
+        $tasks = $items->get();
+
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
         ]);
@@ -40,26 +73,29 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/create", name="create_task", methods={"GET", "POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request  $request
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Symfony\Component\HttpFoundation\Request         $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function create(Request $request, ObjectManager $manager)
+    public function create(Request $request)
     {
         $task = new Task();
 
         $form = $this->createForm(TaskType::class, $task)
             ->handleRequest($request);
 
+        $this->cache->deleteItem('tasks');
+
         if ($form->isSubmitted() && $form->isValid()){
             $task->setAuthor($this->getUser());
 
-            $manager->persist($task);
-            $manager->flush();
+            $this->manager->persist($task);
+            $this->manager->flush();
 
             $this->addFlash('success', 'Task created');
+
+
 
             return $this->redirectToRoute('tasks');
         }
@@ -71,14 +107,13 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/edit/{id}", name="edit_task", methods={"GET", "POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request  $request
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param                                            $id
+     * @param \Symfony\Component\HttpFoundation\Request         $request
+     * @param                                                   $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function edit(Request $request, ObjectManager $manager, $id)
+    public function edit(Request $request, $id)
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -93,12 +128,17 @@ class TaskController extends AbstractController
 
         $this->denyAccessUnlessGranted('edit', $task);
 
+        $this->cache->deleteItem('tasks');
+
         if ($form->isSubmitted() && $form->isValid()){
             $task->updateDate();
 
-            $manager->flush();
+            $this->manager->flush();
 
-            $this->addFlash('success', 'Task edited');
+            $this->addFlash(
+                'success',
+                'Task edited'
+            );
 
             return $this->redirectToRoute('tasks');
         }
@@ -111,13 +151,12 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/delete/{id}", name="delete_task", methods={"GET"})
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param                                            $id
+     * @param                                                   $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function delete(ObjectManager $manager, $id)
+    public function delete($id)
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -127,12 +166,17 @@ class TaskController extends AbstractController
             throw new \Exception('no task with this ID');
         }
 
+        $this->cache->deleteItem('tasks');
+
         $this->denyAccessUnlessGranted('delete', $task);
 
-        $manager->remove($task);
-        $manager->flush();
+        $this->manager->remove($task);
+        $this->manager->flush();
 
-        $this->addFlash('success', 'Task deleted');
+        $this->addFlash(
+            'success',
+            'Task deleted'
+        );
 
         return $this->redirectToRoute('tasks');
     }
@@ -140,13 +184,12 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/done/{id}", name="done_task", methods={"GET"})
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param                                            $id
+     * @param                                                   $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function done(ObjectManager $manager, $id)
+    public function done($id)
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -158,10 +201,12 @@ class TaskController extends AbstractController
 
         $this->denyAccessUnlessGranted('done', $task);
 
+        $this->cache->deleteItem('tasks');
+
         if ($task->isDone() == true){
             $task->notDone();
 
-            $manager->flush();
+            $this->manager->flush();
 
             return $this->redirectToRoute('tasks');
         }
@@ -169,7 +214,7 @@ class TaskController extends AbstractController
         $task->done();
         $task->doneDate();
 
-        $manager->flush();
+        $this->manager->flush();
 
         return $this->redirectToRoute('view_done_task');
     }

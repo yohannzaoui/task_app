@@ -60,7 +60,10 @@ class PasswordController extends AbstractController
 
             $email->emailPassword($user->getEmail(), $token, $user->getId());
 
-            $this->addFlash('success', 'Un email pour la récupération de votre mot de passe vous a été envoyé');
+            $this->addFlash(
+                'success',
+                'Un email pour la récupération de votre mot de passe vous a été envoyé'
+            );
 
             return $this->redirectToRoute('check_user');
         }
@@ -84,7 +87,9 @@ class PasswordController extends AbstractController
      */
     public function confirm($id, Request $request, ObjectManager $manager, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($id);
 
         if (!$user){
             throw new \Exception('utilisateur inconnu');
@@ -106,7 +111,10 @@ class PasswordController extends AbstractController
 
                 $manager->flush();
 
-                $this->addFlash('success', 'Votre mot de passe a bien été ');
+                $this->addFlash(
+                    'success',
+                    'Votre mot de passe a bien été '
+                );
 
                 return $this->redirectToRoute('app_login');
             }
