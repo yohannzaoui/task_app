@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -43,7 +43,7 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="array")
      */
     private $roles = [];
 
@@ -116,7 +116,7 @@ class User implements UserInterface
     private $image;
 
     /**
-     * @Assert\Image()
+     * @var
      */
     private $file;
 
@@ -247,9 +247,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getPhone(): string
+    public function getPhone(): ? string
     {
         return $this->phone;
     }
@@ -263,9 +263,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getAddress(): string
+    public function getAddress(): ? string
     {
         return $this->address;
     }
@@ -279,9 +279,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getZipCode(): string
+    public function getZipCode(): ? string
     {
         return $this->zipCode;
     }
@@ -295,9 +295,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -311,9 +311,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCountry(): string
+    public function getCountry(): ? string
     {
         return $this->country;
     }
@@ -488,6 +488,44 @@ class User implements UserInterface
         $this->file = $file;
     }
 
+    /**
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->image,
+            $this->address,
+            $this->city,
+            $this->zipCode,
+            $this->phone,
+            $this->roles,
+            $this->valid,
+            $this->token
+        ]);
+    }
 
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->image,
+            $this->address,
+            $this->city,
+            $this->zipCode,
+            $this->phone,
+            $this->roles,
+            $this->valid,
+            $this->token
+            ) = unserialize($serialized);
+    }
 
 }

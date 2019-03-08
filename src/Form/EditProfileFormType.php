@@ -47,8 +47,7 @@ class EditProfileFormType extends AbstractType
             ])
             ->add('file', FileType::class, [
                 'required' => false,
-                'label' => 'Image profile',
-                'mapped' => true
+                'label' => 'Image profile'
             ])
         ;
     }

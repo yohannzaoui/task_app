@@ -190,7 +190,7 @@ class Task
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function isDone(): bool
     {
@@ -198,7 +198,7 @@ class Task
     }
 
     /**
-     * @param mixed $done
+     * @param $done
      */
     public function setDone($done): void
     {
