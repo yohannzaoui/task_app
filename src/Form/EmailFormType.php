@@ -13,11 +13,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Class EmailFormType
+ *
+ * @package App\Form
+ */
 class EmailFormType extends AbstractType
 {
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array                                        $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class);
+            ->add('email', EmailType::class, [
+                'required' => true
+            ]);
     }
 }
