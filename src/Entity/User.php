@@ -13,7 +13,7 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -25,7 +25,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      * @Assert\NotBlank()
      * @Assert\Length(
      *     min="6",
@@ -35,7 +35,7 @@ class User implements UserInterface
      */
     private $username;
 
-    /**Serialization of 'Symfony\Component\HttpFoundation\File\UploadedFile' is not allowed
+    /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -168,11 +168,9 @@ class User implements UserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
+     * @return string|null
      */
-    public function getUsername(): string
+    public function getUsername(): ? string
     {
         return $this->username;
     }
@@ -190,7 +188,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getEmail(): ? string
     {
@@ -198,7 +196,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail(string $email)
     {
@@ -206,7 +204,7 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @return array
      */
     public function getRoles(): array
     {
@@ -229,7 +227,7 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @return string
      */
     public function getPassword(): string
     {
