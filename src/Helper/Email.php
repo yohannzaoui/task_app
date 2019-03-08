@@ -38,7 +38,7 @@ class Email
      * @param $title
      * @param $content
      */
-    public function taskMyEmail($email, $title, $content)
+    public function taskToMyEmail($email, $title, $content)
     {
         $this->emailSender->mail(
           'My Task : '.$title,

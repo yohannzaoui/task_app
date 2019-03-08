@@ -23,7 +23,7 @@
                     {% if task.updatedAt %}
                         <p>Updated : {{ task.updatedAt | date('d/m/Y')}}</p>
                     {% endif %}
-                    <p><a class="btn btn-secondary btn-sm" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">Send in my email</a></p>
+                    <p><a class="btn btn-secondary btn-sm" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">Send to my email</a></p>
                     <p>
                         <a class="btn btn-success" href="{{ path('edit_task', {'id': task.id}) }}">edit</a>
                         <a class="btn btn-primary" href="{{ path('done_task', {'id': task.id}) }}">done</a>

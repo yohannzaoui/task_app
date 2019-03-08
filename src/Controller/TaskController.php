@@ -249,7 +249,7 @@ class TaskController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function sendTaskMyEmail($id, Email $sendEmail)
+    public function sendTaskToMyEmail($id, Email $sendEmail)
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -257,7 +257,7 @@ class TaskController extends AbstractController
 
         $this->denyAccessUnlessGranted('send', $task);
 
-        $sendEmail->taskMyEmail(
+        $sendEmail->taskToMyEmail(
             $this->getUser()->getEmail(),
             $task->getTitle(),
             $task->getContent()

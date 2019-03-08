@@ -35,6 +35,7 @@ class TaskRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('t')
             ->andWhere('t.title LIKE :val')
             ->orWhere('t.content LIKE :val')
+            ->orWhere('t.createdAt LIKE :val')
             ->setParameter('val', '%'.$value.'%')
             ->orderBy('t.createdAt', 'DESC')
             ->setMaxResults(10)
