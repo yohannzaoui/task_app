@@ -50,11 +50,6 @@ class User implements UserInterface, \Serializable
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(
-     *     min="6",
-     *     max="255",
-     *     minMessage="Le mot de passe doit contenir 6 caracteres minimum"
-     * )
      */
     private $password;
 
