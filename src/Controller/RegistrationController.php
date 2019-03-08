@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
             $token = $tokenGenerator::generate();
@@ -76,7 +76,7 @@ class RegistrationController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */
-    public function confirm($id, Request $request, ObjectManager $manager)
+    public function confirm($id, Request $request, ObjectManager $manager): Response
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)

@@ -17,6 +17,7 @@ use App\Helper\Email;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -52,7 +53,7 @@ class PasswordController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function checkUser(Request $request, TokenGenerator $tokenGenerator, Email $email)
+    public function checkUser(Request $request, TokenGenerator $tokenGenerator, Email $email): Response
     {
         $form = $this->createForm(EmailFormType::class)
             ->handleRequest($request);
@@ -98,7 +99,7 @@ class PasswordController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function confirm($id, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function confirm($id, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)

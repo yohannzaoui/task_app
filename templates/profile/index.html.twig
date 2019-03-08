@@ -16,6 +16,11 @@
     <p>Country : {{ user.country }}</p>
     <p>Member since : {{ user.createdAt | date("d/m/Y") }}</p>
     <p>Tasks : {{ user.tasks | length }}</p>
+    {% if app.user.image %}
+        <p><img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar"> <a class="btn btn-warning" href="{{ path('delete_avatar') }}">delete my profile image</a></p>
+    {% else %}
+        <p>My avatar : <i class="fas fa-user-circle fa-2x"></i></p>
+    {% endif %}
 
     <a href="{{ path('edit_profile', {'id': user.id}) }}" class="btn btn-success">edit my profile</a>
 

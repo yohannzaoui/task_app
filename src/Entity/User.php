@@ -6,15 +6,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -24,7 +25,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      * @Assert\NotBlank()
      * @Assert\Length(
      *     min="6",
@@ -42,18 +43,13 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="array")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(
-     *     min="6",
-     *     max="255",
-     *     minMessage="Le mot de passe doit contenir 6 caracteres minimum"
-     * )
      */
     private $password;
 
@@ -110,6 +106,28 @@ class User implements UserInterface
     private $tasks;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var
+     * @Assert\Image(
+     *     mimeTypes="image/png",
+     *     mimeTypesMessage="only png",
+     *     minHeight="30",
+     *     minHeightMessage="min {{ min_height }} pixels",
+     *     maxHeight="40",
+     *     maxHeightMessage="max {{ max_height }} pixels",
+     *     minWidth="30",
+     *     minWidthMessage="min {{ min_width }} pixels",
+     *     maxWidth="40",
+     *     maxWidthMessage="max {{ max_width }} pixels"
+     * )
+     */
+    private $file;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -126,7 +144,7 @@ class User implements UserInterface
     /**
      *
      */
-    public function validate()
+    public function validate(): void
     {
         $this->valid = true;
         $this->token = null;
@@ -135,7 +153,7 @@ class User implements UserInterface
     /**
      *
      */
-    public function resetToken()
+    public function resetToken(): void
     {
         $this->token = null;
     }
@@ -143,7 +161,7 @@ class User implements UserInterface
     /**
      * @throws \Exception
      */
-    public function updateDate()
+    public function updateDate(): void
     {
         $this->updatedAt = new \DateTime();
     }
@@ -157,13 +175,11 @@ class User implements UserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
+     * @return string|null
      */
-    public function getUsername(): string
+    public function getUsername(): ? string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
     /**
@@ -179,23 +195,23 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getEmail()
+    public function getEmail(): ? string
     {
         return $this->email;
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
-    public function setEmail($email): void
+    public function setEmail(string $email)
     {
         $this->email = $email;
     }
 
     /**
-     * @see UserInterface
+     * @return array
      */
     public function getRoles(): array
     {
@@ -218,11 +234,11 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @return string
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     /**
@@ -238,9 +254,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getPhone()
+    public function getPhone(): ? string
     {
         return $this->phone;
     }
@@ -248,15 +264,15 @@ class User implements UserInterface
     /**
      * @param mixed $phone
      */
-    public function setPhone($phone): void
+    public function setPhone(string $phone): void
     {
         $this->phone = $phone;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getAddress()
+    public function getAddress(): ? string
     {
         return $this->address;
     }
@@ -270,9 +286,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getZipCode()
+    public function getZipCode(): ? string
     {
         return $this->zipCode;
     }
@@ -286,9 +302,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -302,9 +318,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCountry()
+    public function getCountry(): ? string
     {
         return $this->country;
     }
@@ -375,9 +391,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getValid()
+    public function getValid(): bool
     {
         return $this->valid;
     }
@@ -391,7 +407,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getToken(): ? string
     {
@@ -414,6 +430,11 @@ class User implements UserInterface
         return $this->tasks;
     }
 
+    /**
+     * @param \App\Entity\Task $task
+     *
+     * @return \App\Entity\User
+     */
     public function addTask(Task $task): self
     {
         if (!$this->tasks->contains($task)) {
@@ -424,6 +445,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param \App\Entity\Task $task
+     *
+     * @return \App\Entity\User
+     */
     public function removeTask(Task $task): self
     {
         if ($this->tasks->contains($task)) {
@@ -436,4 +462,77 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string|null $image
+     */
+    public function setImage(? string $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|null
+     */
+    public function getFile(): ? UploadedFile
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile|null $file
+     */
+    public function setFile(? UploadedFile $file): void
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->image,
+            $this->address,
+            $this->city,
+            $this->zipCode,
+            $this->phone,
+            $this->roles,
+            $this->valid,
+            $this->token
+        ]);
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->image,
+            $this->address,
+            $this->city,
+            $this->zipCode,
+            $this->phone,
+            $this->roles,
+            $this->valid,
+            $this->token
+            ) = unserialize($serialized);
+    }
+
 }
