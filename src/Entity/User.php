@@ -117,6 +117,18 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var
+     * @Assert\Image(
+     *     mimeTypes="image/png",
+     *     mimeTypesMessage="only png",
+     *     minHeight="30",
+     *     minHeightMessage="min {{ min_height }} pixels",
+     *     maxHeight="40",
+     *     maxHeightMessage="max {{ max_height }} pixels",
+     *     minWidth="30",
+     *     minWidthMessage="min {{ min_width }} pixels",
+     *     maxWidth="40",
+     *     maxWidthMessage="max {{ max_width }} pixels"
+     * )
      */
     private $file;
 
