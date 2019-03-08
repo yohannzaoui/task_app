@@ -36,13 +36,19 @@ class TaskVoter extends Voter
     const DONE = 'done';
 
     /**
-     * @param  string $attribute
-     * @param  mixed  $subject
+     *
+     */
+    const SEND = 'send';
+
+    /**
+     * @param string $attribute
+     * @param mixed  $subject
+     *
      * @return bool
      */
     protected function supports($attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::EDIT, self::DELETE, self::DONE])) {
+        if (!in_array($attribute, [self::EDIT, self::DELETE, self::DONE, self::SEND])) {
             return false;
         }
         if (!$subject instanceof Task) {
@@ -52,9 +58,10 @@ class TaskVoter extends Voter
     }
 
     /**
-     * @param  string         $attribute
-     * @param  mixed          $subject
-     * @param  TokenInterface $token
+     * @param string                                                               $attribute
+     * @param mixed                                                                $subject
+     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
+     *
      * @return bool
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -71,13 +78,16 @@ class TaskVoter extends Voter
                 return $this->canDelete($task, $user);
             case self::DONE:
                 return $this->canDone($task, $user);
+            case self::SEND:
+                return $this->canSend($task, $user);
         }
         throw new \LogicException('This code should not be reached!');
     }
 
     /**
-     * @param  Task $task
-     * @param  User $user
+     * @param \App\Entity\Task $task
+     * @param \App\Entity\User $user
+     *
      * @return bool
      */
     private function canEdit(Task $task, User $user): bool
@@ -86,8 +96,9 @@ class TaskVoter extends Voter
     }
 
     /**
-     * @param  Task $task
-     * @param  User $user
+     * @param \App\Entity\Task $task
+     * @param \App\Entity\User $user
+     *
      * @return bool
      */
     private function canDelete(Task $task, User $user)
@@ -98,11 +109,23 @@ class TaskVoter extends Voter
     }
 
     /**
-     * @param  Task $task
-     * @param  User $user
+     * @param \App\Entity\Task $task
+     * @param \App\Entity\User $user
+     *
      * @return bool
      */
     private function canDone(Task $task, User $user): bool
+    {
+        return $user === $task->getAuthor();
+    }
+
+    /**
+     * @param \App\Entity\Task $task
+     * @param \App\Entity\User $user
+     *
+     * @return bool
+     */
+    private function canSend(Task $task, User $user): bool
     {
         return $user === $task->getAuthor();
     }

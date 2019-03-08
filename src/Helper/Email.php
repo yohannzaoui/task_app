@@ -34,6 +34,21 @@ class Email
     }
 
     /**
+     * @param $email
+     * @param $title
+     * @param $content
+     */
+    public function taskMyEmail($email, $title, $content)
+    {
+        $this->emailSender->mail(
+          'My Task : '.$title,
+          $email,
+          'Title : '.$title.' Content : '.$content,
+            'task@task_app.com'
+        );
+    }
+
+    /**
      * @param $userMail
      * @param $token
      * @param $id
@@ -48,6 +63,11 @@ class Email
         );
     }
 
+    /**
+     * @param $userMail
+     * @param $token
+     * @param $id
+     */
     public function emailPassword($userMail, $token, $id)
     {
         $this->emailSender->mail(

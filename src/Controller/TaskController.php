@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\EditTaskType;
 use App\Form\TaskType;
+use App\Helper\Email;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
@@ -238,5 +239,35 @@ class TaskController extends AbstractController
         return $this->render('task/done.html.twig', [
             'tasks' => $tasks,
         ]);
+    }
+
+    /**
+     * @Route(path="/send/task/myEmail/{id}", name="send_task_myEmail", methods={"GET"})
+     *
+     * @param                   $id
+     * @param \App\Helper\Email $sendEmail
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function sendTaskMyEmail($id, Email $sendEmail)
+    {
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
+
+        $this->denyAccessUnlessGranted('send', $task);
+
+        $sendEmail->taskMyEmail(
+            $this->getUser()->getEmail(),
+            $task->getTitle(),
+            $task->getContent()
+        );
+
+        $this->addFlash(
+            'success',
+            'Task send in your email : '.$this->getUser()->getEmail()
+        );
+
+        return $this->redirectToRoute('tasks');
     }
 }
