@@ -61,6 +61,14 @@
   box-shadow: 6px 6px 6px lightgray;
 }
 
+.pin-post-it{
+  padding: 5px;
+  margin: 4px;
+  background-color: #7986CB;
+  color: white;
+  box-shadow: 6px 6px 6px lightgray;
+}
+
 .center{
   text-align: center;
 }

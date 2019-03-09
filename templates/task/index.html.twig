@@ -15,6 +15,35 @@
     <a class="btn btn-success" href="{{ path('create_task') }}">Crée une tâche</a>
     <a class="btn btn-warning" href="{{ path('view_done_task') }}">Tâches terminées</a>
 
+    <hr>
+
+    {% if tasksPin | length == 0 %}<h5 class="center">Pas de tâches épinglées</h5>{% endif %}
+
+    <div class="row justify-content-center">
+        {% for taskPin in tasksPin %}
+            <h3 class="center">Tâches épinglées</h3>
+            <div class="pin-post-it mt-3 col-lg-12 col-md-12 col-sm-12">
+                <h3>{{ taskPin.title }}</h3>
+                <p>{{ taskPin.content }}</p>
+                <p>Ajouté le : {{ taskPin.createdAt | date('d/m/Y')}}</p>
+                {% if taskPin.updatedAt %}
+                    <p>Mise à jour le : {{ taskPin.updatedAt | date('d/m/Y')}}</p>
+                {% endif %}
+                <p>
+                    <a class="btn btn-secondary btn-sm" href="{{ path('send_task_myEmail', {'id' : taskPin.id}) }}">Envoyé sur mon email</a>
+                </p>
+                <p>
+                    <a class="btn btn-success" href="{{ path('edit_task', {'id': taskPin.id}) }}">Editer</a>
+                    <a class="btn btn-primary" href="{{ path('done_task', {'id': taskPin.id}) }}">Terminer</a>
+                    <a class="btn btn-warning" href="{{ path('task_pin', {'id': taskPin.id}) }}">ne pas epingler</a>
+                    <a class="btn btn-danger" href="{{ path('delete_task', {'id': taskPin.id}) }}">Effacer</a>
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
     <div class="row justify-content-center">
     {% for task in tasks %}
                 <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
@@ -30,6 +59,7 @@
                     <p>
                         <a class="btn btn-success" href="{{ path('edit_task', {'id': task.id}) }}">Editer</a>
                         <a class="btn btn-primary" href="{{ path('done_task', {'id': task.id}) }}">Terminer</a>
+                        <a class="btn btn-warning" href="{{ path('task_pin', {'id': task.id}) }}">Epingler</a>
                         <a class="btn btn-danger" href="{{ path('delete_task', {'id': task.id}) }}">Effacer</a>
                     </p>
                 </div>
