@@ -16,6 +16,7 @@
     <p>Pays : {{ user.country }}</p>
     <p>Inscrit le : {{ user.createdAt | date("d/m/Y") }}</p>
     <p>Nombre de tâches : {{ user.tasks | length }}</p>
+    <p>Nombre de catégories : {{ user.categories | length }}</p>
     {% if app.user.image %}
         <p><img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar"> <a class="btn btn-warning" href="{{ path('delete_avatar') }}">supprimer mon image de profil</a></p>
     {% else %}

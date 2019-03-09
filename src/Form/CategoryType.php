@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Entity\Task;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -12,11 +10,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TaskType
+ * Class CategoryType
  *
  * @package App\Form
  */
-class TaskType extends AbstractType
+class CategoryType extends AbstractType
 {
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -25,20 +23,13 @@ class TaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, [
-                'required' => true,
-                'label' => 'Titre'
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
+                'required' => true
             ])
-            ->add('content', TextareaType::class, [
-                'required' => false,
-                'label' => 'Déscription'
-            ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'expanded' => false,
-                'required' => false,
-                'label' => 'Catégorie'
+            ->add('description', TextareaType::class, [
+                'label' => 'Déscription',
+                'required' => false
             ])
         ;
     }
@@ -49,7 +40,7 @@ class TaskType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Task::class,
+            'data_class' => Category::class,
         ]);
     }
 }

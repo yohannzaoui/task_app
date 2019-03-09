@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ title }}</h1>
+
+    <h5><a href="{{ path('profile') }}">Mon profil</a></h5>
+    <h5><a href="{{ path('category_index') }}">Gérer les catégories des tâches </a></h5>
+
+{% endblock %}

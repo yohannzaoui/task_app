@@ -19,11 +19,15 @@
             <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.content }}</p>
-                <p>Ajouter le : {{ task.createdAt | date('d/m/Y')}}</p>
+                <p>Ajouter le : {{ task.createdAt | date('d/m/Y')}}
                 {% if task.updatedAt %}
-                    <p>Mise à jour le : {{ task.updatedAt | date('d/m/Y')}}</p>
+                    - Mise à jour le : {{ task.updatedAt | date('d/m/Y')}}
                 {% endif %}
-                <p>Terminée le : {{ task.doneAt | date('d/m/Y')}}</p>
+                 - Terminée le : {{ task.doneAt | date('d/m/Y')}}
+                {% if task.category %}
+                    - Dans la catégories : {{ task.category.name }}
+                    {% endif %}
+                </p>
                 <p>
                     <a class="btn btn-primary" href="{{ path('done_task', {'id': task.id}) }}">A faire</a>
                     <a class="btn btn-danger" href="{{ path('delete_task', {'id': task.id}) }}">Effacer</a>
