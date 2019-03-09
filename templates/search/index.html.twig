@@ -13,10 +13,14 @@
             <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3>{{ result.title }}</h3>
                 <p>{{ result.content }}</p>
-                <p>Ajouté le : {{ result.createdAt | date('d/m/Y')}}</p>
+                <p>Ajouté le : {{ result.createdAt | date('d/m/Y')}}
                 {% if result.updatedAt %}
-                    <p>Mise à jour le : {{ result.updatedAt | date('d/m/Y')}}</p>
+                    - Mise à jour le : {{ result.updatedAt | date('d/m/Y')}}
                 {% endif %}
+                    {% if result.category %}
+                        - Dans la catégorie : {{ result.category.name }}
+                    {% endif %}
+                </p>
                 <p>
                     <a class="btn btn-success" href="{{ path('edit_task', {'id': result.id}) }}">editer</a>
                     <a class="btn btn-primary" href="{{ path('done_task', {'id': result.id}) }}">terminer</a>
