@@ -1,27 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My profile{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <h1>My profile</h1>
+    <h1>{{ title }}</h1>
 
     {% include 'success_flash_message.html.twig' %}
 
-    <p>User name : {{ user.username }}</p>
+    <p>Nom d'utilisateur : {{ user.username }}</p>
     <p>Email : {{ user.email }}</p>
-    <p>Phone : {{ user.phone }}</p>
-    <p>Address : {{ user.address }}</p>
-    <p>Zip code : {{ user.zipCode }}</p>
-    <p>City : {{ user.city }}</p>
-    <p>Country : {{ user.country }}</p>
-    <p>Member since : {{ user.createdAt | date("d/m/Y") }}</p>
-    <p>Tasks : {{ user.tasks | length }}</p>
+    <p>Téléphone : {{ user.phone }}</p>
+    <p>Adresse : {{ user.address }}</p>
+    <p>Code postale : {{ user.zipCode }}</p>
+    <p>Ville : {{ user.city }}</p>
+    <p>Pays : {{ user.country }}</p>
+    <p>Inscrit le : {{ user.createdAt | date("d/m/Y") }}</p>
+    <p>Nombre de tâches : {{ user.tasks | length }}</p>
     {% if app.user.image %}
-        <p><img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar"> <a class="btn btn-warning" href="{{ path('delete_avatar') }}">delete my profile image</a></p>
+        <p><img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar"> <a class="btn btn-warning" href="{{ path('delete_avatar') }}">supprimer mon image de profil</a></p>
     {% else %}
-        <p>My avatar : <i class="fas fa-user-circle fa-2x"></i></p>
+        <p>Ma photo de profil : <i class="fas fa-user-circle fa-2x"></i></p>
     {% endif %}
 
-    <a href="{{ path('edit_profile', {'id': user.id}) }}" class="btn btn-success">edit my profile</a>
+    <a href="{{ path('edit_profile', {'id': user.id}) }}" class="btn btn-success">modifier mon profil</a>
 
 {% endblock %}

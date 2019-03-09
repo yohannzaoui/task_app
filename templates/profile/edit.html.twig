@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit my profile{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
 
-    <h1>Edit my profile</h1>
-    <p><a class="btn btn-primary" href="{{ path('edit_password', {'id': app.user.id}) }}">edit my password</a></p>
+    <h1>{{ title }}</h1>
+    <p><a class="btn btn-primary" href="{{ path('edit_password', {'id': app.user.id}) }}">modifier mon mot de passe</a></p>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button type="submit" class="btn btn-success">edit</button>
+    <button type="submit" class="btn btn-success">modifier</button>
     {{ form_end(form) }}
 
 {% endblock %}

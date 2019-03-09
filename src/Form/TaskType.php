@@ -24,10 +24,12 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'required' => true
+                'required' => true,
+                'label' => 'Titre'
             ])
             ->add('content', TextareaType::class, [
-                'required' => false
+                'required' => false,
+                'label' => 'Déscription'
             ])
         ;
     }

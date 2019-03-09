@@ -13,22 +13,38 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 
+/**
+ * Class RegistrationFormType
+ *
+ * @package App\Form
+ */
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array                                        $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('username', TextType::class, [
+                'label' => 'Votre nom d\'utilisateur',
+                'required' => true
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Votre adresse email',
+                'required' => true
+            ])
             ->add('password',PasswordType::class, [
+                'label' => 'Votre mot de passe',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'SVP entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 8,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe ne peut dépasser {{ limit }} caractères',
                         'max' => 4096,
                     ]),
                     new Regex(
@@ -39,6 +55,9 @@ class RegistrationFormType extends AbstractType
         ;
     }
 
+    /**
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

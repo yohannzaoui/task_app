@@ -28,7 +28,8 @@ class EmailFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'required' => true
+                'required' => true,
+                'label' => 'Votre email'
             ]);
     }
 }

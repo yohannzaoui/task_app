@@ -52,8 +52,11 @@ class ProfileController extends AbstractController
      */
     public function show(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         return $this->render('profile/index.html.twig', [
             'user' => $this->getUser(),
+            'title' => 'Mon profil'
         ]);
     }
 
@@ -69,6 +72,8 @@ class ProfileController extends AbstractController
      */
     public function edit(Request $request, FileUploader $fileUploader, $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
@@ -94,7 +99,8 @@ class ProfileController extends AbstractController
         }
 
         return $this->render('profile/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'title' => 'Modifier mon profil'
         ]);
     }
 
@@ -110,6 +116,8 @@ class ProfileController extends AbstractController
      */
     public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
@@ -134,7 +142,8 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile');
         }
         return $this->render('profile/edit_password.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'title' => 'Modifier mon mot de passe'
         ]);
     }
 
@@ -145,6 +154,8 @@ class ProfileController extends AbstractController
      */
     public function deleteAvatar(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $this->fileRemover->deleteFile($this->getUser()->getImage());
 
         $this->getUser()->setImage(null);

@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset my password{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
 
     {% if app.user is null %}
 
-    <h1>Reset password</h1>
+    <h1>{{ title }}</h1>
 
         {% include 'success_flash_message.html.twig' %}
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary">Send</button>
-        <button type="reset" class="btn btn-danger">Erase</button>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+        <button type="reset" class="btn btn-danger">Effacer</button>
     {{ form_end(form) }}
 
         {% else %}
-            <h3>you are already connected</h3>
+            <h3>Vous êtes déja connecter</h3>
     {% endif %}
 
 {% endblock %}

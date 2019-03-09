@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
     {% if app.user is null %}
 
-    <h1>Register</h1>
+    <h1>{{ title }}</h1>
 
         {% include 'success_flash_message.html.twig' %}
 

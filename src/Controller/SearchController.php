@@ -25,6 +25,8 @@ class SearchController extends AbstractController
      */
     public function search(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         if ($this->isCsrfTokenValid('search', $request->request->get('token'))){
             $results = $this->getDoctrine()
                 ->getRepository(Task::class)
@@ -32,6 +34,7 @@ class SearchController extends AbstractController
 
             return $this->render('search/index.html.twig', [
                 'results' => $results,
+                'title' => 'Résultat de recherche'
             ]);
         }
         throw new \Exception('Error: invalid CSRF token');
