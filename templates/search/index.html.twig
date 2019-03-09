@@ -15,7 +15,7 @@
                 <p>{{ result.content }}</p>
                 <p>Ajouté le : {{ result.createdAt | date('d/m/Y')}}</p>
                 {% if result.updatedAt %}
-                    <p>Mis à jour le : {{ result.updatedAt | date('d/m/Y')}}</p>
+                    <p>Mise à jour le : {{ result.updatedAt | date('d/m/Y')}}</p>
                 {% endif %}
                 <p>
                     <a class="btn btn-success" href="{{ path('edit_task', {'id': result.id}) }}">editer</a>
