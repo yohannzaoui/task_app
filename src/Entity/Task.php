@@ -63,6 +63,11 @@ class Task
     private $author;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="tasks")
+     */
+    private $category;
+
+    /**
      * Task constructor.
      *
      * @throws \Exception
@@ -278,5 +283,25 @@ class Task
     public function setPin(bool $pin): void
     {
         $this->pin = $pin;
+    }
+
+    /**
+     * @return \App\Entity\Category|null
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param \App\Entity\Category|null $category
+     *
+     * @return \App\Entity\Task
+     */
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Form\EditTaskType;
 use App\Form\TaskType;
 use App\Helper\Email;
+use App\Repository\TaskRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
@@ -21,6 +22,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskController extends AbstractController
 {
     /**
+     * @var \App\Repository\TaskRepository
+     */
+    private $repository;
+
+    /**
      * @var \Symfony\Component\Cache\Adapter\AdapterInterface
      */
     private $cache;
@@ -33,13 +39,16 @@ class TaskController extends AbstractController
     /**
      * TaskController constructor.
      *
+     * @param \App\Repository\TaskRepository                    $repository
      * @param \Symfony\Component\Cache\Adapter\AdapterInterface $cache
      * @param \Doctrine\Common\Persistence\ObjectManager        $manager
      */
     public function __construct(
+        TaskRepository $repository,
         AdapterInterface $cache,
         ObjectManager $manager
     ){
+        $this->repository = $repository;
         $this->cache = $cache;
         $this->manager = $manager;
     }
@@ -52,37 +61,25 @@ class TaskController extends AbstractController
      */
     public function show(): Response
     {
-        $tasks = $this->getDoctrine()
-            ->getRepository(Task::class)
-            ->findBy([
+        $tasks = $this->repository->findBy([
                 'done'=> false,
                 'pin' => false,
                 'author' => $this->getUser()
             ]);
 
-        $tasksPin = $this->getDoctrine()
-            ->getRepository(Task::class)
-            ->findBy([
+        $tasksPin = $this->repository->findBy([
                 'done'=> false,
                 'pin' => true,
                 'author' => $this->getUser()
             ]);
 
-        $itemsTasks = $this->cache->getItem('tasks');
+        $items = $this->cache->getItem('tasks');
 
-        if (!$itemsTasks->isHit()){
-            $itemsTasks->set($tasks);
-            $this->cache->save($itemsTasks);
+        if (!$items->isHit()){
+            $items->set($tasks);
+            $this->cache->save($items);
         }
-        $tasks = $itemsTasks->get();
-
-        $itemsTasksPin = $this->cache->getItem('tasksPin');
-
-        if (!$itemsTasksPin->isHit()){
-            $itemsTasksPin->set($tasksPin);
-            $this->cache->save($itemsTasksPin);
-        }
-        $tasksPin = $itemsTasksPin->get();
+        $tasks = $items->get();
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
@@ -91,7 +88,6 @@ class TaskController extends AbstractController
 
         ]);
     }
-
 
     /**
      * @Route(path="/task/create", name="create_task", methods={"GET", "POST"})
@@ -139,9 +135,7 @@ class TaskController extends AbstractController
      */
     public function edit(Request $request, $id): Response
     {
-        $task = $this->getDoctrine()
-            ->getRepository(Task::class)
-            ->find($id);
+        $task = $this->repository->find($id);
 
         if (!$task){
             throw new \Exception('no task with this ID');
@@ -152,9 +146,11 @@ class TaskController extends AbstractController
 
         $this->denyAccessUnlessGranted('edit', $task);
 
-        $this->cache->deleteItem('tasks');
 
         if ($form->isSubmitted() && $form->isValid()){
+
+            $this->cache->deleteItem('tasks');
+
             $task->updateDate();
 
             $this->manager->flush();
@@ -176,16 +172,14 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/delete/{id}", name="delete_task", methods={"GET"})
      *
-     * @param                                                   $id
+     * @param $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function delete($id): Response
     {
-        $task = $this->getDoctrine()
-            ->getRepository(Task::class)
-            ->find($id);
+        $task = $this->repository->find($id);
 
         if (!$task){
             throw new \Exception('no task with this ID');
@@ -209,16 +203,14 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/done/{id}", name="done_task", methods={"GET"})
      *
-     * @param                                                   $id
+     * @param $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function done($id): Response
     {
-        $task = $this->getDoctrine()
-            ->getRepository(Task::class)
-            ->find($id);
+        $task = $this->repository->find($id);
 
         if (!$task){
             throw new \Exception('no task with this ID');
@@ -237,6 +229,7 @@ class TaskController extends AbstractController
         }
 
         $task->done();
+        $task->setPin(false);
         $task->doneDate();
 
         $this->manager->flush();
@@ -251,9 +244,7 @@ class TaskController extends AbstractController
      */
     public function doneTask(): Response
     {
-        $tasks = $this->getDoctrine()
-            ->getRepository(Task::class)
-            ->findBy([
+        $tasks = $this->repository->findBy([
                 'done'=> true,
                 'author' => $this->getUser()
             ]);
@@ -274,9 +265,7 @@ class TaskController extends AbstractController
      */
     public function sendTaskToMyEmail($id, Email $sendEmail)
     {
-        $task = $this->getDoctrine()
-            ->getRepository(Task::class)
-            ->find($id);
+        $task = $this->repository->find($id);
 
         $this->denyAccessUnlessGranted('send', $task);
 
@@ -297,37 +286,44 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/pin/{id}", name="task_pin", methods={"GET"})
      *
-     * @param                                            $id
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function pin($id, ObjectManager $manager): Response
+    public function pin($id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $this->cache->deleteItem('tasksPin');
-
-        $taskPin = $this->getDoctrine()
-            ->getRepository(Task::class)
-            ->find($id);
+        $taskPin = $this->repository->find($id);
 
         if (!$taskPin){
             throw new \Exception('no task with this ID');
         }
+
+        $this->cache->deleteItem('tasks');
 
         if ($taskPin->getPin() == true){
             $taskPin->notPin();
 
             $this->manager->flush();
 
+            $this->addFlash(
+                'success',
+                'La tâche n\'est plus épinglée'
+            );
+
             return $this->redirectToRoute('tasks');
         }
 
         $taskPin->pin();
 
-        $manager->flush();
+        $this->manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Tâche épinglée'
+        );
 
         return $this->redirectToRoute('tasks');
     }

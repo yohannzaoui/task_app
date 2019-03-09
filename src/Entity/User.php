@@ -128,6 +128,11 @@ class User implements UserInterface, \Serializable
     private $file;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="author")
+     */
+    private $categories;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -139,6 +144,7 @@ class User implements UserInterface, \Serializable
         $this->createdAt = new \DateTime();
         $this->valid = false;
         $this->tasks = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -533,6 +539,47 @@ class User implements UserInterface, \Serializable
             $this->valid,
             $this->token
             ) = unserialize($serialized);
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param \App\Entity\Category $category
+     *
+     * @return \App\Entity\User
+     */
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param \App\Entity\Category $category
+     *
+     * @return \App\Entity\User
+     */
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+            // set the owning side to null (unless already changed)
+            if ($category->getAuthor() === $this) {
+                $category->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 
 }
