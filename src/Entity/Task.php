@@ -53,6 +53,11 @@ class Task
     private $done;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $pin;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
      */
     private $author;
@@ -67,6 +72,7 @@ class Task
         $this->id = Uuid::uuid4();
         $this->createdAt = new \DateTime();
         $this->done = false;
+        $this->pin = false;
     }
 
     /**
@@ -99,6 +105,22 @@ class Task
     public function notDone()
     {
         $this->done = false;
+    }
+
+    /**
+     *
+     */
+    public function pin()
+    {
+        $this->pin = true;
+    }
+
+    /**
+     *
+     */
+    public function notPin()
+    {
+        $this->pin = false;
     }
 
     /**
@@ -240,5 +262,21 @@ class Task
         $this->author = $author;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPin(): bool
+    {
+        return $this->pin;
+    }
+
+    /**
+     * @param bool $pin
+     */
+    public function setPin(bool $pin): void
+    {
+        $this->pin = $pin;
     }
 }

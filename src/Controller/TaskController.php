@@ -50,25 +50,43 @@ class TaskController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function index(): Response
+    public function show(): Response
     {
         $tasks = $this->getDoctrine()
             ->getRepository(Task::class)
             ->findBy([
                 'done'=> false,
+                'pin' => false,
                 'author' => $this->getUser()
             ]);
 
-        $items = $this->cache->getItem('tasks');
+        $tasksPin = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->findBy([
+                'done'=> false,
+                'pin' => true,
+                'author' => $this->getUser()
+            ]);
 
-        if (!$items->isHit()){
-            $items->set($tasks);
-            $this->cache->save($items);
+        $itemsTasks = $this->cache->getItem('tasks');
+
+        if (!$itemsTasks->isHit()){
+            $itemsTasks->set($tasks);
+            $this->cache->save($itemsTasks);
         }
-        $tasks = $items->get();
+        $tasks = $itemsTasks->get();
+
+        $itemsTasksPin = $this->cache->getItem('tasksPin');
+
+        if (!$itemsTasksPin->isHit()){
+            $itemsTasksPin->set($tasksPin);
+            $this->cache->save($itemsTasksPin);
+        }
+        $tasksPin = $itemsTasksPin->get();
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
+            'tasksPin' => $tasksPin,
             'title' => 'Mes tâches'
 
         ]);
@@ -272,6 +290,44 @@ class TaskController extends AbstractController
             'success',
             'Task send in your email : '.$this->getUser()->getEmail()
         );
+
+        return $this->redirectToRoute('tasks');
+    }
+
+    /**
+     * @Route(path="/task/pin/{id}", name="task_pin", methods={"GET"})
+     *
+     * @param                                            $id
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function pin($id, ObjectManager $manager): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $this->cache->deleteItem('tasksPin');
+
+        $taskPin = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
+
+        if (!$taskPin){
+            throw new \Exception('no task with this ID');
+        }
+
+        if ($taskPin->getPin() == true){
+            $taskPin->notPin();
+
+            $this->manager->flush();
+
+            return $this->redirectToRoute('tasks');
+        }
+
+        $taskPin->pin();
+
+        $manager->flush();
 
         return $this->redirectToRoute('tasks');
     }
