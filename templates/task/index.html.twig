@@ -11,8 +11,6 @@
     {% if tasks | length == 1 %}<h3 class="center">Tâche non épinglée à terminer {{ tasks | length }}</h3>{% endif %}
     {% if tasks | length > 1 %}<h3 class="center">Tâches non épinglées à terminer {{ tasks | length }}</h3>{% endif %}
 
-    {% include 'success_flash_message.html.twig' %}
-
     <a class="btn btn-success" href="{{ path('create_task') }}">Crée une tâche</a>
     <a class="btn btn-warning" href="{{ path('view_done_task') }}">Tâches terminées</a>
 

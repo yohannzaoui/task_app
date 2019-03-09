@@ -59,6 +59,7 @@
   background-color: #757575;
   color: white;
   box-shadow: 6px 6px 6px lightgray;
+  border-radius: 10px;
 }
 
 .pin-post-it{
@@ -67,6 +68,7 @@
   background-color: #7986CB;
   color: white;
   box-shadow: 6px 6px 6px lightgray;
+  border-radius: 10px;
 }
 
 .center{
