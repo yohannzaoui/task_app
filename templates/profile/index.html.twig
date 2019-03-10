@@ -16,11 +16,10 @@
     <p>Nombre de tâches : {{ user.tasks | length }}</p>
     <p>Nombre de catégories : {{ user.categories | length }}</p>
     {% if app.user.image %}
-        <p><img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar"> <a class="btn btn-warning" href="{{ path('delete_avatar') }}">supprimer mon image de profil</a></p>
+        <p><img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar"> <a class="btn btn-warning btn-sm" href="{{ path('delete_avatar') }}">supprimer mon image de profil</a></p>
     {% else %}
         <p>Ma photo de profil : <i class="fas fa-user-circle fa-2x"></i></p>
     {% endif %}
 
-    <a href="{{ path('edit_profile', {'id': user.id}) }}" class="btn btn-success">modifier mon profil</a>
-
+    <a href="{{ path('edit_profile', {'id': user.id}) }}" class="btn btn-success btn-sm"><i class="fas fa-pencil-alt fa-2x"></i></a>
 {% endblock %}

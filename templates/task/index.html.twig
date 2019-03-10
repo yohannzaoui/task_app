@@ -34,13 +34,14 @@
                 </p>
 
                 <p>
-                    <a class="btn btn-secondary btn-sm" href="{{ path('send_task_myEmail', {'id' : taskPin.id}) }}">Envoyé sur mon email</a>
+                    <a class="btn btn-warning btn-sm" href="{{ path('send_task_myEmail', {'id' : taskPin.id}) }}">Envoyer sur mon email</a>
+                    <a class="btn btn-warning btn-sm" href="{{ path('send_task_myEmail', {'id' : taskPin.id}) }}">Partager par email</a>
                 </p>
                 <p>
-                    <a class="btn btn-success" href="{{ path('edit_task', {'id': taskPin.id}) }}">Editer</a>
-                    <a class="btn btn-primary" href="{{ path('done_task', {'id': taskPin.id}) }}">Terminer</a>
-                    <a class="btn btn-warning" href="{{ path('task_pin', {'id': taskPin.id}) }}">ne pas epingler</a>
-                    <a class="btn btn-danger" href="{{ path('delete_task', {'id': taskPin.id}) }}">Effacer</a>
+                    <a class="link-white ml-2" href="{{ path('edit_task', {'id': taskPin.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
+                    <a class="link-white ml-2" href="{{ path('done_task', {'id': taskPin.id}) }}"><i class="fas fa-check fa-2x"></i></a>
+                    <a class="link-white ml-2" href="{{ path('task_pin', {'id': taskPin.id}) }}"><i class="fas fa-arrow-down fa-2x"></i></a>
+                    <a class="link-white ml-2" href="{{ path('delete_task', {'id': taskPin.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
                 </p>
             </div>
         {% endfor %}
@@ -62,13 +63,14 @@
                     {% endif %}
                     </p>
                     <p>
-                        <a class="btn btn-secondary btn-sm" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">Envoyé sur mon email</a>
+                        <a class="btn btn-warning btn-sm" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">Envoyer sur mon email</a>
+                        <a class="btn btn-warning btn-sm" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">Partager par email</a>
                     </p>
                     <p>
-                        <a class="btn btn-success" href="{{ path('edit_task', {'id': task.id}) }}">Editer</a>
-                        <a class="btn btn-primary" href="{{ path('done_task', {'id': task.id}) }}">Terminer</a>
-                        <a class="btn btn-warning" href="{{ path('task_pin', {'id': task.id}) }}">{% if task.pin == false %}Epingler{% else %}Ne plus épingler{% endif %}</a>
-                        <a class="btn btn-danger" href="{{ path('delete_task', {'id': task.id}) }}">Effacer</a>
+                        <a class="link-white ml-2" href="{{ path('edit_task', {'id': task.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
+                        <a class="link-white ml-2" href="{{ path('done_task', {'id': task.id}) }}"><i class="fas fa-check fa-2x"></i></a>
+                        <a class="link-white ml-2" href="{{ path('task_pin', {'id': task.id}) }}"><i class="fas fa-thumbtack fa-2x"></i></a>
+                        <a class="link-white ml-2" href="{{ path('delete_task', {'id': task.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
                     </p>
                 </div>
     {% endfor %}
