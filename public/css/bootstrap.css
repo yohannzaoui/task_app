@@ -75,6 +75,10 @@
   text-align: center;
 }
 
+.link-white{
+  color: white;
+}
+
 *,
 *::before,
 *::after {

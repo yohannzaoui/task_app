@@ -3,20 +3,25 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
     {% if app.user is null %}
 
-    <h1>{{ title }}</h1>
+                <h1>{{ title }}</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.password) }}
+                {{ form_start(registrationForm) }}
+                    {{ form_row(registrationForm.username) }}
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.password) }}
 
-        <button type="submit" class="btn btn-primary">Sign up</button>
-        <button type="reset" class="btn btn-danger">Erase</button>
-    {{ form_end(registrationForm) }}
+                    <button type="submit" class="btn btn-primary btn-sm">S'inscrire</button>
+                    <button type="reset" class="btn btn-danger btn-sm">Effacer</button>
+                {{ form_end(registrationForm) }}
 
-    {% else %}
-        <h3>you are already connected</h3>
+                {% else %}
+                    <h3>Vous êtes déja connecter</h3>
+
     {% endif %}
+        </div>
+    </div>
 {% endblock %}

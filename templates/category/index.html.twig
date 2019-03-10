@@ -20,7 +20,7 @@
                 <td>{{ category.description }}</td>
                 <td>
                     <p>{% include 'category/_delete_form.html.twig' %}</p>
-                    <p><a class="btn btn-primary btn-sm" href="{{ path('category_edit', {'id': category.id}) }}">Modifier</a></p>
+                    <p><a class="btn btn-primary btn-sm" href="{{ path('category_edit', {'id': category.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a></p>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +31,5 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('category_new') }}">Ajouter</a>
+    <a class="btn btn-success btn-sm" href="{{ path('category_new') }}"><i class="fas fa-plus fa-2x"></i></a>
 {% endblock %}

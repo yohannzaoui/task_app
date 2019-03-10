@@ -3,19 +3,21 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            {% if app.user is null %}
 
-    {% if app.user is null %}
+                <h1>{{ title }}</h1>
 
-    <h1>{{ title }}</h1>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit" class="btn btn-primary btn-sm">Envoyer</button>
+                <button type="reset" class="btn btn-danger btn-sm">Effacer</button>
+                {{ form_end(form) }}
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-        <button type="reset" class="btn btn-danger">Effacer</button>
-    {{ form_end(form) }}
-
-        {% else %}
-            <h3>Vous êtes déja connecter</h3>
-    {% endif %}
-
+            {% else %}
+                <h3>Vous êtes déja connecter</h3>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

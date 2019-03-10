@@ -165,7 +165,7 @@ class TaskController extends AbstractController
 
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
-            'title' => 'Modifier ma tâche'
+            'title' => 'Modifier la tâche'
         ]);
     }
 
