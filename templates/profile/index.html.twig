@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ title }}</h1>
+    {{ title | h1 }}
 
     <p>Nom d'utilisateur : {{ user.username }}</p>
     <p>Email : {{ user.email }}</p>
@@ -16,7 +16,7 @@
     <p>Nombre de tâches : {{ user.tasks | length }}</p>
     <p>Nombre de catégories : {{ user.categories | length }}</p>
     {% if app.user.image %}
-        <p><img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar"> <a class="btn btn-warning btn-sm" href="{{ path('delete_avatar') }}">supprimer mon image de profil</a></p>
+        <p><img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar"> <a class="btn btn-warning btn-sm" onclick="return confirm('Supprimer votre image de profil ?');" href="{{ path('delete_avatar') }}"><i class="fas fa-trash-alt fa-2x"></i></a></p>
     {% else %}
         <p>Ma photo de profil : <i class="fas fa-user-circle fa-2x"></i></p>
     {% endif %}

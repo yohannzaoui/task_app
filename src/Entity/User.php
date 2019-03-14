@@ -133,6 +133,11 @@ class User implements UserInterface, \Serializable
     private $categories;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Contact", mappedBy="user")
+     */
+    private $contact;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -145,6 +150,7 @@ class User implements UserInterface, \Serializable
         $this->valid = false;
         $this->tasks = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->contact = new ArrayCollection();
     }
 
     /**
@@ -576,6 +582,47 @@ class User implements UserInterface, \Serializable
             // set the owning side to null (unless already changed)
             if ($category->getAuthor() === $this) {
                 $category->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Contact[]
+     */
+    public function getContact(): Collection
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @param \App\Entity\Contact $contact
+     *
+     * @return \App\Entity\User
+     */
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contact->contains($contact)) {
+            $this->contact[] = $contact;
+            $contact->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param \App\Entity\Contact $contact
+     *
+     * @return \App\Entity\User
+     */
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contact->contains($contact)) {
+            $this->contact->removeElement($contact);
+            // set the owning side to null (unless already changed)
+            if ($contact->getUser() === $this) {
+                $contact->setUser(null);
             }
         }
 

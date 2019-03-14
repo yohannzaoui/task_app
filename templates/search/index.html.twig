@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <h1 class="center">{{ title }}</h1>
+    {{ title | h1center }}
     {% if results | length == 1 %}<h3 class="center">Résultat :  {{ results | length }}</h3>{% endif %}
     {% if results | length > 1 %}<h3 class="center">Résultats :  {{ results | length }}</h3>{% endif %}
     {% if results | length == 0 %}<h3 class="center">Pas de résultat</h3>{% endif %}

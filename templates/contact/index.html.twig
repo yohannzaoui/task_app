@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    {{ title | h1 }}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Non</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>
+                    <p>{% include 'contact/_delete_form.html.twig' %}</p>
+                    <p><a class="btn btn-primary btn-sm" href="{{ path('contact_edit', {'id': contact.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a></p>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Pas de contact</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('contact_new') }}"><i class="fas fa-plus fa-2x"></i></a>
+{% endblock %}

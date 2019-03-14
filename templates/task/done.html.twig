@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h1 class="center">{{ title }}</h1>
+    {{ title | h1center }}
 
     {% if tasks | length > 1 %}<h3 class="center">tâches terminées {{ tasks | length }}</h3>{% endif %}
     {% if tasks | length == 1 %}<h3 class="center">tâche terminée {{ tasks | length }}</h3>{% endif %}

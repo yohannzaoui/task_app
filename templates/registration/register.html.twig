@@ -7,7 +7,7 @@
         <div class="col-lg-6">
     {% if app.user is null %}
 
-                <h1>{{ title }}</h1>
+        {{ title | h1 }}
 
                 {{ form_start(registrationForm) }}
                     {{ form_row(registrationForm.username) }}

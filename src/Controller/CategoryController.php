@@ -128,9 +128,7 @@ class CategoryController extends AbstractController
 
             $this->manager->flush();
 
-            return $this->redirectToRoute('category_index', [
-                'id' => $category->getId(),
-            ]);
+            return $this->redirectToRoute('category_index');
         }
 
         return $this->render('category/edit.html.twig', [

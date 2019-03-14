@@ -49,6 +49,22 @@ class Email
     }
 
     /**
+     * @param $title
+     * @param $content
+     * @param $email
+     * @param $myEmail
+     */
+    public function taskByEmail($title, $content, $email, $myEmail)
+    {
+        $this->emailSender->mail(
+            'I send my task'.$title,
+            $email,
+            'Title : '.$title.' Content : '.$content,
+            $myEmail
+        );
+    }
+
+    /**
      * @param $userMail
      * @param $token
      * @param $id

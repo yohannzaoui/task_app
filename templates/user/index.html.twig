@@ -30,7 +30,7 @@
                 <td>{{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                 <td>{{ user.valid ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="confirm('Delete this user?')">delete</a>
+                    <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="return confirm('Delete this user?')">supprimer</a>
                 </td>
             </tr>
         {% else %}

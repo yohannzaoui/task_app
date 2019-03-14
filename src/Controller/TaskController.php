@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\EditTaskType;
+use App\Form\TaskByEmailType;
 use App\Form\TaskType;
 use App\Helper\Email;
 use App\Repository\TaskRepository;
@@ -37,20 +38,28 @@ class TaskController extends AbstractController
     private $manager;
 
     /**
+     * @var \App\Helper\Email
+     */
+    private $sendEmail;
+
+    /**
      * TaskController constructor.
      *
      * @param \App\Repository\TaskRepository                    $repository
      * @param \Symfony\Component\Cache\Adapter\AdapterInterface $cache
      * @param \Doctrine\Common\Persistence\ObjectManager        $manager
+     * @param \App\Helper\Email                                 $sendEmail
      */
     public function __construct(
         TaskRepository $repository,
         AdapterInterface $cache,
-        ObjectManager $manager
+        ObjectManager $manager,
+        Email $sendEmail
     ){
         $this->repository = $repository;
         $this->cache = $cache;
         $this->manager = $manager;
+        $this->sendEmail = $sendEmail;
     }
 
     /**
@@ -259,17 +268,16 @@ class TaskController extends AbstractController
      * @Route(path="/send/task/myEmail/{id}", name="send_task_myEmail", methods={"GET"})
      *
      * @param                   $id
-     * @param \App\Helper\Email $sendEmail
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function sendTaskToMyEmail($id, Email $sendEmail)
+    public function sendTaskToMyEmail($id)
     {
         $task = $this->repository->find($id);
 
         $this->denyAccessUnlessGranted('send', $task);
 
-        $sendEmail->taskToMyEmail(
+        $this->sendEmail->taskToMyEmail(
             $this->getUser()->getEmail(),
             $task->getTitle(),
             $task->getContent()
@@ -281,6 +289,45 @@ class TaskController extends AbstractController
         );
 
         return $this->redirectToRoute('tasks');
+    }
+
+    /**
+     * @Route(path="/send/task/byEmail/{id}", name="send_task_byEmail", methods={"GET", "POST"})
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param                                           $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sendTaskByEmail(Request $request ,$id): Response
+    {
+        $task = $this->repository->find($id);
+
+        $form = $this->createForm(TaskByEmailType::class, $task)
+            ->handleRequest($request);
+
+        $this->denyAccessUnlessGranted('send', $task);
+
+        if ($request->request->get('email')){
+            $this->sendEmail->taskByEmail(
+                $task->getTitle(),
+                $task->getContent(),
+                $request->request->get('email'),
+                $this->getUser()->getEmail()
+            );
+
+            $this->addFlash(
+                'success',
+                'Votre tâche à bien été envoyer à : '.$request->request->get('email')
+            );
+
+            return $this->redirectToRoute('tasks');
+        }
+
+        return $this->render('task/task_byEmail.html.twig', [
+            'title' => 'Partager vers mes contacts',
+            'form' => $form->createView()
+        ]);
     }
 
     /**
