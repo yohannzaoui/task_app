@@ -3,14 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Event\TaskToMyEmailEvent;
 use App\Form\EditTaskType;
 use App\Form\TaskByEmailType;
 use App\Form\TaskType;
-use App\Helper\Email;
 use App\Repository\TaskRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,45 +28,28 @@ class TaskController extends AbstractController
     private $repository;
 
     /**
-     * @var \Symfony\Component\Cache\Adapter\AdapterInterface
-     */
-    private $cache;
-
-    /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     private $manager;
 
     /**
-     * @var \App\Helper\Email
-     */
-    private $sendEmail;
-
-    /**
      * TaskController constructor.
      *
-     * @param \App\Repository\TaskRepository                    $repository
-     * @param \Symfony\Component\Cache\Adapter\AdapterInterface $cache
-     * @param \Doctrine\Common\Persistence\ObjectManager        $manager
-     * @param \App\Helper\Email                                 $sendEmail
+     * @param \App\Repository\TaskRepository             $repository
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
     public function __construct(
         TaskRepository $repository,
-        AdapterInterface $cache,
-        ObjectManager $manager,
-        Email $sendEmail
+        ObjectManager $manager
     ){
         $this->repository = $repository;
-        $this->cache = $cache;
         $this->manager = $manager;
-        $this->sendEmail = $sendEmail;
     }
 
     /**
      * @Route(path="/", name="tasks", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function show(): Response
     {
@@ -82,14 +65,6 @@ class TaskController extends AbstractController
                 'author' => $this->getUser()
             ]);
 
-        $items = $this->cache->getItem('tasks');
-
-        if (!$items->isHit()){
-            $items->set($tasks);
-            $this->cache->save($items);
-        }
-        $tasks = $items->get();
-
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
             'tasksPin' => $tasksPin,
@@ -101,10 +76,10 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/create", name="create_task", methods={"GET", "POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request         $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function create(Request $request): Response
     {
@@ -112,8 +87,6 @@ class TaskController extends AbstractController
 
         $form = $this->createForm(TaskType::class, $task)
             ->handleRequest($request);
-
-        $this->cache->deleteItem('tasks');
 
         if ($form->isSubmitted() && $form->isValid()){
             $task->setAuthor($this->getUser());
@@ -136,11 +109,11 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/edit/{id}", name="edit_task", methods={"GET", "POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request         $request
-     * @param                                                   $id
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param                                           $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function edit(Request $request, $id): Response
     {
@@ -157,8 +130,6 @@ class TaskController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()){
-
-            $this->cache->deleteItem('tasks');
 
             $task->updateDate();
 
@@ -184,7 +155,7 @@ class TaskController extends AbstractController
      * @param $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \Exception
      */
     public function delete($id): Response
     {
@@ -193,8 +164,6 @@ class TaskController extends AbstractController
         if (!$task){
             throw new \Exception('no task with this ID');
         }
-
-        $this->cache->deleteItem('tasks');
 
         $this->denyAccessUnlessGranted('delete', $task);
 
@@ -215,7 +184,7 @@ class TaskController extends AbstractController
      * @param $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \Exception
      */
     public function done($id): Response
     {
@@ -226,8 +195,6 @@ class TaskController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('done', $task);
-
-        $this->cache->deleteItem('tasks');
 
         if ($task->isDone() == true){
             $task->notDone();
@@ -267,21 +234,24 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/send/task/myEmail/{id}", name="send_task_myEmail", methods={"GET"})
      *
-     * @param                   $id
+     * @param                                                             $id
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function sendTaskToMyEmail($id)
+    public function sendTaskToMyEmail($id, EventDispatcherInterface $eventDispatcher)
     {
         $task = $this->repository->find($id);
 
         $this->denyAccessUnlessGranted('send', $task);
 
-        $this->sendEmail->taskToMyEmail(
-            $this->getUser()->getEmail(),
-            $task->getTitle(),
-            $task->getContent()
-        );
+        $eventDispatcher->dispatch(
+            TaskToMyEmailEvent::NAME,
+            new TaskToMyEmailEvent(
+                $this->getUser()->getEmail(),
+                $task->getTitle(),
+                $task->getContent()
+            ));
 
         $this->addFlash(
             'success',
@@ -336,7 +306,7 @@ class TaskController extends AbstractController
      * @param $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \Exception
      */
     public function pin($id): Response
     {
@@ -347,8 +317,6 @@ class TaskController extends AbstractController
         if (!$taskPin){
             throw new \Exception('no task with this ID');
         }
-
-        $this->cache->deleteItem('tasks');
 
         if ($taskPin->getPin() == true){
             $taskPin->notPin();
@@ -369,6 +337,7 @@ class TaskController extends AbstractController
 
         $this->addFlash(
             'success',
+
             'Tâche épinglée'
         );
 

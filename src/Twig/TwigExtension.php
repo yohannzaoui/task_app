@@ -27,7 +27,8 @@ class TwigExtension extends AbstractExtension
         return [
             new TwigFilter('h1center', [$this, 'h1Center'], ['is_safe' => ['html']]),
             new TwigFilter('h1', [$this, 'h1'], ['is_safe' => ['html']]),
-            new TwigFilter('h3error', [$this, 'h3Error'], ['is_safe' => ['html']])
+            new TwigFilter('h3error', [$this, 'h3Error'], ['is_safe' => ['html']]),
+            new TwigFilter('h5strong', [$this, 'h5Strong'], ['is_safe' => ['html']])
         ];
     }
 
@@ -59,5 +60,15 @@ class TwigExtension extends AbstractExtension
     public function h3Error($text)
     {
         return '<h3 class="error">'.$text.'</h3>';
+    }
+
+    /**
+     * @param $text
+     *
+     * @return string
+     */
+    public function h5Strong($text)
+    {
+        return '<h5><strong>'.$text.'</strong></h5>';
     }
 }

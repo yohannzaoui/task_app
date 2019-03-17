@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\EmailRegisterEvent;
 use App\Form\RegistrationFormType;
-use App\Helper\Email;
 use App\Service\TokenGenerator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,17 +22,17 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/register", name="app_register")
+     * @Route(path="/register", name="app_register", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request                             $request
      * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder
      * @param \App\Service\TokenGenerator                                           $tokenGenerator
-     * @param \App\Helper\Email                                                     $email
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface           $eventDispatcher
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGenerator $tokenGenerator, Email $email): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGenerator $tokenGenerator, EventDispatcherInterface $eventDispatcher): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -51,7 +52,14 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $email->emailRegister($form->getData()->getEmail(), $token, $user->getId());
+            $eventDispatcher->dispatch(
+                EmailRegisterEvent::NAME,
+                new EmailRegisterEvent(
+                    $form->getData()->getEmail(),
+                    $token,
+                    $user->getId()
+                )
+            );
 
             $this->addFlash(
                 'success',

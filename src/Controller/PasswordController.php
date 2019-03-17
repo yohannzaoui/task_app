@@ -10,11 +10,12 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Event\EmailPasswordEvent;
 use App\Form\EmailFormType;
 use App\Form\PasswordFormType;
 use App\Service\TokenGenerator;
-use App\Helper\Email;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,14 +47,14 @@ class PasswordController extends AbstractController
     /**
      * @Route(path="/checkUser", name="check_user", methods={"GET", "POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request  $request
-     * @param \App\Service\TokenGenerator                $tokenGenerator
-     * @param \App\Helper\Email                          $email
+     * @param \Symfony\Component\HttpFoundation\Request                   $request
+     * @param \App\Service\TokenGenerator                                 $tokenGenerator
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function checkUser(Request $request, TokenGenerator $tokenGenerator, Email $email): Response
+    public function checkUser(Request $request, TokenGenerator $tokenGenerator, EventDispatcherInterface $eventDispatcher): Response
     {
         $form = $this->createForm(EmailFormType::class)
             ->handleRequest($request);
@@ -73,7 +74,14 @@ class PasswordController extends AbstractController
 
             $this->manager->flush();
 
-            $email->emailPassword($user->getEmail(), $token, $user->getId());
+            $eventDispatcher->dispatch(
+                EmailPasswordEvent::NAME,
+                new EmailPasswordEvent(
+                    $user->getEmail(),
+                    $token,
+                    $user->getId()
+                )
+            );
 
             $this->addFlash(
                 'success',
