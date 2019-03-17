@@ -3,17 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Event\TaskByEmailEvent;
 use App\Event\TaskToMyEmailEvent;
 use App\Form\EditTaskType;
 use App\Form\TaskByEmailType;
 use App\Form\TaskType;
-use App\Repository\TaskRepository;
+use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Event\FileRemoverEvent;
 
 /**
  * Class TaskController
@@ -22,10 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TaskController extends AbstractController
 {
-    /**
-     * @var \App\Repository\TaskRepository
-     */
-    private $repository;
 
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
@@ -33,17 +31,30 @@ class TaskController extends AbstractController
     private $manager;
 
     /**
+     * @var \App\Service\FileUploader
+     */
+    private $fileUploader;
+
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * TaskController constructor.
      *
-     * @param \App\Repository\TaskRepository             $repository
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
+     * @param \App\Service\FileUploader                                   $fileUploader
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        TaskRepository $repository,
-        ObjectManager $manager
+        ObjectManager $manager,
+        FileUploader $fileUploader,
+        EventDispatcherInterface $eventDispatcher
     ){
-        $this->repository = $repository;
         $this->manager = $manager;
+        $this->fileUploader = $fileUploader;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -55,13 +66,17 @@ class TaskController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $tasks = $this->repository->findBy([
+        $tasks = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->findBy([
                 'done'=> false,
                 'pin' => false,
                 'author' => $this->getUser()
             ]);
 
-        $tasksPin = $this->repository->findBy([
+        $tasksPin = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->findBy([
                 'done'=> false,
                 'pin' => true,
                 'author' => $this->getUser()
@@ -76,7 +91,7 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route(path="/task/show/{id}", name="show_task", methods={"GET"})
+     * @Route(path="/task/show/{id}", name="show_task", methods={"GET", "POST"})
      *
      * @param $id
      *
@@ -87,7 +102,9 @@ class TaskController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $task = $this->repository->find($id);
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
 
         if (!$task){
             throw new \Exception('Pas de tâche avec cet ID');
@@ -115,6 +132,11 @@ class TaskController extends AbstractController
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
+            if ($form->getData()->getFile()){
+                $fileName = $this->fileUploader->upload($form->getData()->getFile());
+                $task->setImage($fileName);
+            }
+
             $task->setAuthor($this->getUser());
 
             $this->manager->persist($task);
@@ -124,9 +146,7 @@ class TaskController extends AbstractController
                 'Tâche ajouter'
             );
 
-
-
-            return $this->redirectToRoute('tasks');
+            return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
         }
         return $this->render('task/create.html.twig', [
             'form' =>$form->createView(),
@@ -145,7 +165,9 @@ class TaskController extends AbstractController
      */
     public function edit(Request $request, $id): Response
     {
-        $task = $this->repository->find($id);
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
 
         if (!$task){
             throw new \Exception('Pas de tâche avec cet ID');
@@ -158,6 +180,16 @@ class TaskController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()){
+            if ($form->getData()->getFile()){
+                $this->eventDispatcher->dispatch(
+                    FileRemoverEvent::NAME,
+                    new FileRemoverEvent($task->getImage()
+                    )
+                );
+
+                $fileName = $this->fileUploader->upload($form->getData()->getFile());
+                $task->setImage($fileName);
+            }
 
             $task->updateDate();
 
@@ -168,13 +200,41 @@ class TaskController extends AbstractController
                 'Tâche modifier'
             );
 
-            return $this->redirectToRoute('tasks');
+            return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
         }
 
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'title' => 'Modifier la tâche'
         ]);
+    }
+
+    /**
+     * @Route(path="/task/delete/image/{id}", name="delete_task_image", methods={"GET"})
+     *
+     * @param $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteTaskImage($id)
+    {
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
+
+        $this->denyAccessUnlessGranted('delete', $task);
+
+        $this->eventDispatcher->dispatch(
+            FileRemoverEvent::NAME,
+            new FileRemoverEvent($task->getImage()
+            )
+        );
+
+        $task->setImage(null);
+
+        $this->manager->flush();
+
+        return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
     }
 
     /**
@@ -187,7 +247,9 @@ class TaskController extends AbstractController
      */
     public function delete($id): Response
     {
-        $task = $this->repository->find($id);
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
 
         if (!$task){
             throw new \Exception('Pas de tâche avec cet ID ');
@@ -216,7 +278,9 @@ class TaskController extends AbstractController
      */
     public function done($id): Response
     {
-        $task = $this->repository->find($id);
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
 
         if (!$task){
             throw new \Exception('Pas de tâche avec cet ID');
@@ -250,7 +314,9 @@ class TaskController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $tasks = $this->repository->findBy([
+        $tasks = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->findBy([
                 'done'=> true,
                 'author' => $this->getUser()
             ]);
@@ -271,7 +337,9 @@ class TaskController extends AbstractController
      */
     public function sendTaskToMyEmail($id, EventDispatcherInterface $eventDispatcher)
     {
-        $task = $this->repository->find($id);
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
 
         $this->denyAccessUnlessGranted('send', $task);
 
@@ -292,42 +360,36 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route(path="/send/task/byEmail/{id}", name="send_task_byEmail", methods={"GET", "POST"})
+     * @Route(path="/send/task/byEmail", name="send_task_byEmail", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param                                           $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sendTaskByEmail(Request $request ,$id): Response
+    public function sendTaskByEmail(Request $request): Response
     {
-        $task = $this->repository->find($id);
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($request->request->get('task_id'));
 
-        $form = $this->createForm(TaskByEmailType::class, $task)
-            ->handleRequest($request);
+        if ($this->isCsrfTokenValid('email', $request->request->get('_csrf_token'))){
+            $this->denyAccessUnlessGranted('send', $task);
 
-        $this->denyAccessUnlessGranted('send', $task);
-
-        if ($request->request->get('email')){
-            $this->sendEmail->taskByEmail(
-                $task->getTitle(),
-                $task->getContent(),
-                $request->request->get('email'),
-                $this->getUser()->getEmail()
+            $this->eventDispatcher->dispatch(
+                TaskByEmailEvent::NAME,
+                new TaskByEmailEvent(
+                    $request->request->get('email'),
+                    $task->getTitle(),
+                    $task->getContent()
+                )
             );
 
             $this->addFlash(
                 'success',
                 'Votre tâche à bien été envoyer à : '.$request->request->get('email')
             );
-
-            return $this->redirectToRoute('tasks');
+            return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
         }
-
-        return $this->render('task/task_byEmail.html.twig', [
-            'title' => 'Partager vers mes contacts',
-            'form' => $form->createView()
-        ]);
     }
 
     /**
@@ -342,7 +404,9 @@ class TaskController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $taskPin = $this->repository->find($id);
+        $taskPin = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
 
         if (!$taskPin){
             throw new \Exception('no task with this ID');

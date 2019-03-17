@@ -5,8 +5,9 @@
 {% block body %}
     <div class="row justify-content-center">
         <div class="col-lg-6">
-            <h1>{{ title }}</h1>
+            {{ title | h1 }}
 
+            <p><a class="btn btn-danger btn-sm" href="{{ path('delete_task_image', {'id' : app.request.get('id')}) }}">supprimer image</a></p>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-check fa-2x"></i></button>

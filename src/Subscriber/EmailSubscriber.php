@@ -9,6 +9,7 @@
 namespace App\Subscriber;
 
 
+use App\Event\TaskByEmailEvent;
 use App\Helper\Email;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Event\TaskToMyEmailEvent;
@@ -47,7 +48,8 @@ class EmailSubscriber implements EventSubscriberInterface
         return [
             TaskToMyEmailEvent::NAME  => 'onTaskToMyEmailEvent',
             EmailRegisterEvent::NAME => 'onRegisterEmailEvent',
-            EmailPasswordEvent::NAME => 'onEmailPasswordEvent'
+            EmailPasswordEvent::NAME => 'onEmailPasswordEvent',
+            TaskByEmailEvent::NAME => 'onTaskByEmail'
         ];
     }
 
@@ -84,6 +86,18 @@ class EmailSubscriber implements EventSubscriberInterface
             $event->getUserEmail(),
             $event->getToken(),
             $event->getId()
+        );
+    }
+
+    /**
+     * @param \App\Event\TaskByEmailEvent $event
+     */
+    public function onTaskByEmail(TaskByEmailEvent $event)
+    {
+        $this->email->taskByEmail(
+            $event->getEmail(),
+            $event->getTitle(),
+            $event->getContent()
         );
     }
 

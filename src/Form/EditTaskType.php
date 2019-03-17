@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Task;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -32,6 +33,10 @@ class EditTaskType extends AbstractType
             ->add('content', TextareaType::class, [
                 'required' => false,
                 'label' => 'Déscription'
+            ])
+            ->add('file', FileType::class, [
+                'required' => false,
+                'label' => 'Modifier l\'image'
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
