@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Ramsey\Uuid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -66,6 +67,28 @@ class Task
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="tasks")
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var
+     * @Assert\Image(
+     *     mimeTypes="image/jpeg",
+     *     mimeTypesMessage="only jpeg",
+     *     minHeight="100",
+     *     minHeightMessage="min {{ min_height }} pixels",
+     *     maxHeight="400",
+     *     maxHeightMessage="max {{ max_height }} pixels",
+     *     minWidth="100",
+     *     minWidthMessage="min {{ min_width }} pixels",
+     *     maxWidth="400",
+     *     maxWidthMessage="max {{ max_width }} pixels"
+     * )
+     */
+    private $file;
 
     /**
      * Task constructor.
@@ -304,4 +327,38 @@ class Task
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getImage(): ? string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage(? string $image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile|null
+     */
+    public function getFile(): ? UploadedFile
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile|null $file
+     */
+    public function setFile(? UploadedFile $file): void
+    {
+        $this->file = $file;
+    }
+
+
 }

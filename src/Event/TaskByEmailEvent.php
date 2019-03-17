@@ -12,16 +12,16 @@ namespace App\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class TaskToMyEmailEvent
+ * Class TaskByEmailEvent
  *
  * @package App\Event
  */
-class TaskToMyEmailEvent extends Event
+class TaskByEmailEvent extends Event
 {
     /**
      *
      */
-    const NAME = "taskToMyEmail.event";
+    const NAME = "taskByEmail.event";
 
     /**
      * @var

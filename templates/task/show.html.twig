@@ -4,11 +4,15 @@
 
 {% block body %}
 
-
+{% include 'success_flash_message.html.twig' %}
 
     <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
         <h3>{{ task.title }}</h3>
         <p>{{ task.content }}</p>
+
+        {% if task.image is not null %}
+        <p><img src="{{ asset('/uploads/images/'~ task.image) }}" alt="task_image"></p>
+        {% endif %}
 
         <p>
             Ajouté le : {{ task.createdAt | date('d/m/Y')}}
@@ -22,6 +26,13 @@
         <p>
             <a class="btn btn-warning btn-sm" onclick="return confirm('Envoyer cette tâche sur votre email ?');" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">Envoyer sur mon email</a>
         </p>
+            <form class="form-group col-lg-4" action="{{ path('send_task_byEmail') }}" method="post">
+                <label for="email" >Partager par email</label>
+                <input class="form-control" type="email" name="email" id="email" required>
+                <input type="hidden" name="task_id" value="{{ task.id }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('email') }}">
+                <button type="submit" name="task_by_email" class="btn btn-success btn-sm mt-3">Envoyer</button>
+            </form>
         <p>
             <a class="link-white ml-2" href="{{ path('edit_task', {'id': task.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
             <a class="link-white ml-2" href="{{ path('done_task', {'id': task.id}) }}"><i class="fas fa-check fa-2x"></i></a>

@@ -48,6 +48,20 @@ class Email
         );
     }
 
+    /**
+     * @param $email
+     * @param $title
+     * @param $content
+     */
+    public function taskByEmail($email, $title, $content)
+    {
+        $this->emailSender->mail(
+            'I share my Task : '.$title,
+            $email,
+            'Title : '.$title.' Content : '.$content,
+            'task@task_app.com'
+        );
+    }
 
     /**
      * @param $email
