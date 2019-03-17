@@ -9,7 +9,7 @@
 namespace App\Subscriber;
 
 
-use App\Service\EmailSender;
+use App\Helper\Email;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Event\TaskToMyEmailEvent;
 use App\Event\EmailRegisterEvent;
@@ -22,19 +22,21 @@ use App\Event\EmailPasswordEvent;
  */
 class EmailSubscriber implements EventSubscriberInterface
 {
+
     /**
-     * @var \App\Service\EmailSender
+     * @var \App\Helper\Email
      */
-    private $emailSender;
+    private $email;
+
 
     /**
      * EmailSubscriber constructor.
      *
-     * @param \App\Service\EmailSender $emailSender
+     * @param \App\Helper\Email $email
      */
-    public function __construct(EmailSender $emailSender)
+    public function __construct(Email $email)
     {
-        $this->emailSender = $emailSender;
+        $this->email = $email;
     }
 
     /**
@@ -54,11 +56,10 @@ class EmailSubscriber implements EventSubscriberInterface
      */
     public function onTaskToMyEmailEvent(TaskToMyEmailEvent $event)
     {
-        $this->emailSender->mail(
-            'My Task : '.$event->getTitle(),
+        $this->email->taskToMyEmail(
             $event->getEmail(),
-            'Title : '.$event->getTitle().' Content : '.$event->getContent(),
-            'task@task_app.com'
+            $event->getTitle(),
+            $event->getContent()
         );
     }
 
@@ -67,11 +68,10 @@ class EmailSubscriber implements EventSubscriberInterface
      */
     public function onRegisterEmailEvent(EmailRegisterEvent $event)
     {
-        $this->emailSender->mail(
-            'Confimer la création de votre compte',
+        $this->email->registerEmail(
             $event->getUserEmail(),
-            'Pour confimer la création de votre compte veuillez cliquez sur ce lien: http://127.0.0.1:8000/confirm/'.$event->getToken().'/'.$event->getId(),
-            'register@shedule.com'
+            $event->getToken(),
+            $event->getId()
         );
     }
 
@@ -80,11 +80,10 @@ class EmailSubscriber implements EventSubscriberInterface
      */
     public function onEmailPasswordEvent(EmailPasswordEvent $event)
     {
-        $this->emailSender->mail(
-            'Récuperation de votre compte',
+        $this->email->emailPassword(
             $event->getUserEmail(),
-            'Pour récuperer votre compte veuillez cliquez sur ce lien: http://127.0.0.1:8000/confirm/password/'.$event->getToken().'/'.$event->getId(),
-            'account@shedule.com'
+            $event->getToken(),
+            $event->getId()
         );
     }
 
