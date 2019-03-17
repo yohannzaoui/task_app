@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\FileRemoverEvent;
 use App\Form\EditProfileFormType;
 use App\Form\PasswordFormType;
-use App\Service\FileRemover;
 use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,26 +28,26 @@ class ProfileController extends AbstractController
     private $manager;
 
     /**
-     * @var \App\Service\FileRemover
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
-    private $fileRemover;
+    private $eventDispatcher;
 
     /**
      * ProfileController constructor.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param \App\Service\FileRemover                   $fileRemover
+     * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectManager $manager,
-        FileRemover $fileRemover
+        EventDispatcherInterface $eventDispatcher
     ){
         $this->manager = $manager;
-        $this->fileRemover = $fileRemover;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
-     * @Route("/profile", name="profile", methods={"GET"})
+     * @Route(path="/profile", name="profile", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -61,13 +62,13 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/profile/{id}", name="edit_profile", methods={"GET", "POST"})
+     * @Route(path="/profile/{id}", name="edit_profile", methods={"GET", "POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\Service\FileUploader                 $fileUploader
-     * @param                                           $id
+     * @param \Symfony\Component\HttpFoundation\Request                   $request
+     * @param \App\Service\FileUploader                                   $fileUploader
+     * @param                                                             $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
     public function edit(Request $request, FileUploader $fileUploader, $id): Response
@@ -84,7 +85,12 @@ class ProfileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
 
             if ($form->getData()->getFile()){
-                $this->fileRemover->deleteFile($this->getUser()->getImage());
+                $this->eventDispatcher->dispatch(
+                    FileRemoverEvent::NAME,
+                    new FileRemoverEvent($this->getUser()->getImage()
+                    )
+                );
+
                 $fileName = $fileUploader->upload($form->getData()->getFile());
                 $user->setImage($fileName);
             }
@@ -105,7 +111,7 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/profile/password/{id}", name="edit_password", methods={"GET", "POST"})
+     * @Route(path="/profile/password/{id}", name="edit_password", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request                             $request
      * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder
@@ -150,13 +156,17 @@ class ProfileController extends AbstractController
     /**
      * @Route(path="/delete/avatar/", name="delete_avatar", methods={"GET"})
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAvatar(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $this->fileRemover->deleteFile($this->getUser()->getImage());
+        $this->eventDispatcher->dispatch(
+            FileRemoverEvent::NAME,
+            new FileRemoverEvent($this->getUser()->getImage()
+            )
+        );
 
         $this->getUser()->setImage(null);
 
