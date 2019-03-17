@@ -6,11 +6,14 @@
  * Time: 06:49
  */
 
-namespace App\Event;
+namespace App\Subscriber;
 
 
 use App\Service\EmailSender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use App\Event\TaskToMyEmailEvent;
+use App\Event\EmailRegisterEvent;
+use App\Event\EmailPasswordEvent;
 
 /**
  * Class EmailSubscriber
