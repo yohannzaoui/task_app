@@ -51,8 +51,10 @@ class TaskController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show(): Response
+    public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $tasks = $this->repository->findBy([
                 'done'=> false,
                 'pin' => false,
@@ -70,6 +72,30 @@ class TaskController extends AbstractController
             'tasksPin' => $tasksPin,
             'title' => 'Mes tâches'
 
+        ]);
+    }
+
+    /**
+     * @Route(path="/task/show/{id}", name="show_task", methods={"GET"})
+     *
+     * @param $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function show($id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $task = $this->repository->find($id);
+
+        if (!$task){
+            throw new \Exception('Pas de tâche avec cet ID');
+        }
+
+        return $this->render('task/show.html.twig', [
+            'task' => $task,
+            'title' => $task->getTitle()
         ]);
     }
 
@@ -94,7 +120,9 @@ class TaskController extends AbstractController
             $this->manager->persist($task);
             $this->manager->flush();
 
-            $this->addFlash('success', 'Task created');
+            $this->addFlash('success',
+                'Tâche ajouter'
+            );
 
 
 
@@ -120,7 +148,7 @@ class TaskController extends AbstractController
         $task = $this->repository->find($id);
 
         if (!$task){
-            throw new \Exception('no task with this ID');
+            throw new \Exception('Pas de tâche avec cet ID');
         }
 
         $form = $this->createForm(EditTaskType::class, $task)
@@ -137,7 +165,7 @@ class TaskController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Task edited'
+                'Tâche modifier'
             );
 
             return $this->redirectToRoute('tasks');
@@ -162,7 +190,7 @@ class TaskController extends AbstractController
         $task = $this->repository->find($id);
 
         if (!$task){
-            throw new \Exception('no task with this ID');
+            throw new \Exception('Pas de tâche avec cet ID ');
         }
 
         $this->denyAccessUnlessGranted('delete', $task);
@@ -172,7 +200,7 @@ class TaskController extends AbstractController
 
         $this->addFlash(
             'success',
-            'Task deleted'
+            'Tâche supprimer'
         );
 
         return $this->redirectToRoute('tasks');
@@ -191,7 +219,7 @@ class TaskController extends AbstractController
         $task = $this->repository->find($id);
 
         if (!$task){
-            throw new \Exception('no task with this ID');
+            throw new \Exception('Pas de tâche avec cet ID');
         }
 
         $this->denyAccessUnlessGranted('done', $task);
@@ -220,6 +248,8 @@ class TaskController extends AbstractController
      */
     public function doneTask(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $tasks = $this->repository->findBy([
                 'done'=> true,
                 'author' => $this->getUser()
@@ -255,7 +285,7 @@ class TaskController extends AbstractController
 
         $this->addFlash(
             'success',
-            'Task send in your email : '.$this->getUser()->getEmail()
+            'Tâche envoyer sur votre adresse email : '.$this->getUser()->getEmail()
         );
 
         return $this->redirectToRoute('tasks');
