@@ -136,7 +136,7 @@ class PasswordController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    'Votre mot de passe a bien été '
+                    'Votre mot de passe a bien été modifier'
                 );
 
                 return $this->redirectToRoute('app_login');

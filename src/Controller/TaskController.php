@@ -6,7 +6,6 @@ use App\Entity\Task;
 use App\Event\TaskByEmailEvent;
 use App\Event\TaskToMyEmailEvent;
 use App\Form\EditTaskType;
-use App\Form\TaskByEmailType;
 use App\Form\TaskType;
 use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -365,12 +364,17 @@ class TaskController extends AbstractController
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function sendTaskByEmail(Request $request): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
             ->find($request->request->get('task_id'));
+
+        if (!$task){
+            throw new \Exception('Pas de tâche avec cet ID');
+        }
 
         if ($this->isCsrfTokenValid('email', $request->request->get('_csrf_token'))){
             $this->denyAccessUnlessGranted('send', $task);

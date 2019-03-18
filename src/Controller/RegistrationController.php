@@ -22,6 +22,21 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegistrationController extends AbstractController
 {
     /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    private $manager;
+
+    /**
+     * RegistrationController constructor.
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     */
+    public function __construct(ObjectManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
      * @Route(path="/register", name="app_register", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request                             $request
@@ -48,9 +63,8 @@ class RegistrationController extends AbstractController
             $token = $tokenGenerator::generate();
             $user ->setToken($token);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->manager->persist($user);
+            $this->manager->flush();
 
             $eventDispatcher->dispatch(
                 EmailRegisterEvent::NAME,
@@ -80,12 +94,11 @@ class RegistrationController extends AbstractController
      *
      * @param                                            $id
      * @param \Symfony\Component\HttpFoundation\Request  $request
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */
-    public function confirm($id, Request $request, ObjectManager $manager): Response
+    public function confirm($id, Request $request): Response
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
@@ -98,7 +111,7 @@ class RegistrationController extends AbstractController
         if ($request->get('token') == $user->getToken()){
             $user->validate();
 
-            $manager->flush();
+            $this->manager->flush();
 
             $this->addFlash(
                 'success',

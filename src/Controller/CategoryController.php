@@ -44,12 +44,10 @@ class CategoryController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $categories = $repository->findBy([
-            'author' => $this->getUser()
-        ]);
-
         return $this->render('category/index.html.twig', [
-            'categories' => $categories,
+            'categories' => $repository->findBy([
+                'author' => $this->getUser()
+            ]),
             'title' => 'Mes catégories'
         ]);
     }

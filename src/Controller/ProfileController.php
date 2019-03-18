@@ -83,7 +83,6 @@ class ProfileController extends AbstractController
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-
             if ($form->getData()->getFile()){
                 $this->eventDispatcher->dispatch(
                     FileRemoverEvent::NAME,
@@ -92,6 +91,7 @@ class ProfileController extends AbstractController
                 );
 
                 $fileName = $fileUploader->upload($form->getData()->getFile());
+
                 $user->setImage($fileName);
             }
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,17 +36,17 @@ class UserController extends AbstractController
     /**
      * @Route(path="/user/{id}", name="user_delete", methods={"GET"})
      *
-     * @param \App\Entity\User $user
-     * @param                  $id
+     * @param \App\Entity\User                           $user
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param                                            $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function delete(User $user, $id): Response
+    public function delete(User $user, ObjectManager $manager, $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($id) {
-            $manager = $this->getDoctrine()->getManager();
             $manager->remove($user);
             $manager->flush();
         }
