@@ -21,3 +21,7 @@
 .idea/
 /.idea/
 /public/uploads/images/
+
+###> phpunit/phpunit ###
+/phpunit.xml
+###< phpunit/phpunit ###
