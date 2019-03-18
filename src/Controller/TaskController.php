@@ -10,6 +10,9 @@ use App\Form\TaskType;
 use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,20 +43,28 @@ class TaskController extends AbstractController
     private $eventDispatcher;
 
     /**
+     * @var \Symfony\Component\Cache\Adapter\AdapterInterface|\Symfony\Component\Cache\Simple\FilesystemCache
+     */
+    private $cache;
+
+    /**
      * TaskController constructor.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
      * @param \App\Service\FileUploader                                   $fileUploader
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \Symfony\Component\Cache\Adapter\AdapterInterface           $cache
      */
     public function __construct(
         ObjectManager $manager,
         FileUploader $fileUploader,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        AdapterInterface $cache
     ){
         $this->manager = $manager;
         $this->fileUploader = $fileUploader;
         $this->eventDispatcher = $eventDispatcher;
+        $this->cache = $cache;
     }
 
     /**
@@ -81,6 +92,7 @@ class TaskController extends AbstractController
                 'author' => $this->getUser()
             ]);
 
+
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
             'tasksPin' => $tasksPin,
@@ -97,7 +109,7 @@ class TaskController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function show($id)
+    public function show($id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -215,7 +227,7 @@ class TaskController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteTaskImage($id)
+    public function deleteTaskImage($id): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -334,7 +346,7 @@ class TaskController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function sendTaskToMyEmail($id, EventDispatcherInterface $eventDispatcher)
+    public function sendTaskToMyEmail($id, EventDispatcherInterface $eventDispatcher): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
