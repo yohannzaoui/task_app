@@ -10,9 +10,6 @@ use App\Form\TaskType;
 use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,28 +40,20 @@ class TaskController extends AbstractController
     private $eventDispatcher;
 
     /**
-     * @var \Symfony\Component\Cache\Adapter\AdapterInterface|\Symfony\Component\Cache\Simple\FilesystemCache
-     */
-    private $cache;
-
-    /**
      * TaskController constructor.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
      * @param \App\Service\FileUploader                                   $fileUploader
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param \Symfony\Component\Cache\Adapter\AdapterInterface           $cache
      */
     public function __construct(
         ObjectManager $manager,
         FileUploader $fileUploader,
-        EventDispatcherInterface $eventDispatcher,
-        AdapterInterface $cache
+        EventDispatcherInterface $eventDispatcher
     ){
         $this->manager = $manager;
         $this->fileUploader = $fileUploader;
         $this->eventDispatcher = $eventDispatcher;
-        $this->cache = $cache;
     }
 
     /**
@@ -91,7 +80,6 @@ class TaskController extends AbstractController
                 'pin' => true,
                 'author' => $this->getUser()
             ]);
-
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
