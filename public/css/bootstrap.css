@@ -34,6 +34,8 @@
   --danger: #e51c23;
   --light: #fff;
   --dark: #222;
+  --postIt : #757575;
+  --pinPostIt : #7986CB;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
@@ -56,7 +58,7 @@
 .post-it{
   padding: 5px;
   margin: 4px;
-  background-color: #757575;
+  background-color: var(--postIt);
   color: white;
   box-shadow: 6px 6px 6px lightgray;
   border-radius: 10px;
@@ -65,7 +67,7 @@
 .pin-post-it{
   padding: 5px;
   margin: 4px;
-  background-color: #7986CB;
+  background-color: var(--pinPostIt);
   color: white;
   box-shadow: 6px 6px 6px lightgray;
   border-radius: 10px;

@@ -256,6 +256,13 @@ class TaskController extends AbstractController
 
         $this->denyAccessUnlessGranted('delete', $task);
 
+        $this->eventDispatcher->dispatch(
+            FileRemoverEvent::NAME,
+            new FileRemoverEvent($task->getImage()
+            )
+        );
+        $task->setImage(null);
+
         $this->manager->remove($task);
         $this->manager->flush();
 
