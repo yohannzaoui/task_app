@@ -34,55 +34,6 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route(path="/category", name="category_index", methods={"GET"})
-     *
-     * @param \App\Repository\CategoryRepository $repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function index(CategoryRepository $repository): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
-        return $this->render('category/index.html.twig', [
-            'categories' => $repository->findBy([
-                'author' => $this->getUser()
-            ]),
-            'title' => 'Mes catégories'
-        ]);
-    }
-
-    /**
-     * @Route(path="/category/new", name="category_new", methods={"GET","POST"})
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function new(Request $request): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
-        $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category)
-            ->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $category->setAuthor($this->getUser());
-            $this->manager->persist($category);
-            $this->manager->flush();
-
-            return $this->redirectToRoute('category_index');
-        }
-
-        return $this->render('category/new.html.twig', [
-            'category' => $category,
-            'title' => 'Ajouter une catégorie',
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route(path="/category/{id}/edit", name="category_edit", methods={"GET","POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
