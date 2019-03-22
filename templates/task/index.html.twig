@@ -18,6 +18,7 @@
 
     {% if tasksPin | length == 0 %}<h5 class="center">Pas de tâches épinglées</h5>{% endif %}
 
+
     <div class="row justify-content-center">
         {% if tasksPin | length >= 1  %}<h3 class="center">Tâches épinglées</h3>{% endif %}
         {% for taskPin in tasksPin %}
