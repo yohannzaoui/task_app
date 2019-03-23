@@ -10,7 +10,7 @@ namespace App\Controller\Category;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
-use App\FormHandler\CreateCategoryControllerFormHandler;
+use App\FormHandler\CreateCategoryFormHandler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +26,12 @@ class CreateCategoryController extends AbstractController
     /**
      * @Route(path="/category/new", name="category_new", methods={"GET","POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request            $request
-     * @param \App\FormHandler\CreateCategoryControllerFormHandler $handler
+     * @param \Symfony\Component\HttpFoundation\Request  $request
+     * @param \App\FormHandler\CreateCategoryFormHandler $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function new(Request $request, CreateCategoryControllerFormHandler $handler): Response
+    public function new(Request $request, CreateCategoryFormHandler $handler): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

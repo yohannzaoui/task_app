@@ -17,11 +17,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Security;
 
 /**
- * Class CreateTaskControllerFormHandler
+ * Class CreateTaskFormHandler
  *
  * @package App\FormHandler
  */
-class CreateTaskControllerFormHandler
+class CreateTaskFormHandler
 {
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
@@ -44,7 +44,7 @@ class CreateTaskControllerFormHandler
     private $security;
 
     /**
-     * CreateTaskControllerFormHandler constructor.
+     * CreateTaskFormHandler constructor.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager                 $manager
      * @param \App\Service\FileUploader                                  $fileUploader

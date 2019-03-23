@@ -2,55 +2,59 @@
 /**
  * Created by PhpStorm.
  * User: yohann
- * Date: 22/03/19
- * Time: 13:48
+ * Date: 23/03/19
+ * Time: 10:42
  */
 
 namespace App\FormHandler;
 
 
-use App\Entity\Category;
+use App\Entity\Contact;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Security;
 
 /**
- * Class CreateCategoryControllerFormHandler
+ * Class CreateContactFormHandler
  *
  * @package App\FormHandler
  */
-class CreateCategoryControllerFormHandler
+class CreateContactFormHandler
 {
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     private $manager;
 
+    /**
+     * @var \Symfony\Component\Security\Core\Security
+     */
     private $security;
 
     /**
-     * CreateCategoryControllerFormHandler constructor.
+     * CreateContactFormHandler constructor.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      * @param \Symfony\Component\Security\Core\Security  $security
      */
     public function __construct(ObjectManager $manager, Security $security)
     {
-           $this->manager = $manager;
-           $this->security = $security;
+        $this->manager = $manager;
+        $this->security = $security;
     }
 
     /**
      * @param \Symfony\Component\Form\FormInterface $form
-     * @param \App\Entity\Category                  $category
+     * @param \App\Entity\Contact                   $contact
      *
      * @return bool
      */
-    public function handle(FormInterface $form, Category $category)
+    public function handle(FormInterface $form, Contact $contact)
     {
         if ($form->isSubmitted() && $form->isValid()) {
-            $category->setAuthor($this->security->getUser());
-            $this->manager->persist($category);
+            $contact->setUser($this->security->getUser());
+
+            $this->manager->persist($contact);
             $this->manager->flush();
 
             return true;

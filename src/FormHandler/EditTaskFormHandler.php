@@ -19,11 +19,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 /**
- * Class EditTaskControllerFormHandler
+ * Class EditTaskFormHandler
  *
  * @package App\FormHandler
  */
-class EditTaskControllerFormHandler
+class EditTaskFormHandler
 {
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
@@ -46,7 +46,7 @@ class EditTaskControllerFormHandler
     private $flashMessage;
 
     /**
-     * EditTaskControllerFormHandler constructor.
+     * EditTaskFormHandler constructor.
      *
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \Doctrine\Common\Persistence\ObjectManager                  $manager

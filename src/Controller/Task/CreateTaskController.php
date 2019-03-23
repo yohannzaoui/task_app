@@ -9,7 +9,7 @@
 namespace App\Controller\Task;
 
 use App\Entity\Task;
-use App\FormHandler\CreateTaskControllerFormHandler;
+use App\FormHandler\CreateTaskFormHandler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,13 +26,13 @@ class CreateTaskController extends AbstractController
     /**
      * @Route(path="/task/create", name="create_task", methods={"GET", "POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request        $request
-     * @param \App\FormHandler\CreateTaskControllerFormHandler $handler
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \App\FormHandler\CreateTaskFormHandler    $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function create(Request $request, CreateTaskControllerFormHandler $handler): Response
+    public function create(Request $request, CreateTaskFormHandler $handler): Response
     {
         $task = new Task();
 

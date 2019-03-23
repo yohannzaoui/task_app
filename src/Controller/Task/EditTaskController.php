@@ -10,7 +10,7 @@ namespace App\Controller\Task;
 
 use App\Entity\Task;
 use App\Form\EditTaskType;
-use App\FormHandler\EditTaskControllerFormHandler;
+use App\FormHandler\EditTaskFormHandler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,12 +28,12 @@ class EditTaskController extends AbstractController
      *
      * @param                                                $id
      * @param \Symfony\Component\HttpFoundation\Request      $request
-     * @param \App\FormHandler\EditTaskControllerFormHandler $handler
+     * @param \App\FormHandler\EditTaskFormHandler           $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function edit($id, Request $request, EditTaskControllerFormHandler $handler): Response
+    public function edit($id, Request $request, EditTaskFormHandler $handler): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
