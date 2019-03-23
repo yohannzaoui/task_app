@@ -17,11 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class CreateCategoryController
+ * Class CreateController
  *
  * @package App\Controller\Category
  */
-class CreateCategoryController extends AbstractController
+class CreateController extends AbstractController
 {
     /**
      * @Route(path="/category/new", name="category_new", methods={"GET","POST"})

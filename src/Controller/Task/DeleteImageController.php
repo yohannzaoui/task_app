@@ -17,11 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class DeleteTaskImageController
+ * Class DeleteImageController
  *
  * @package App\Controller\Task
  */
-class DeleteTaskImageController extends AbstractController
+class DeleteImageController extends AbstractController
 {
     /**
      * @Route(path="/task/delete/image/{id}", name="delete_task_image", methods={"GET"})
@@ -38,7 +38,7 @@ class DeleteTaskImageController extends AbstractController
             ->getRepository(Task::class)
             ->find($id);
 
-        $this->denyAccessUnlessGranted('delete', $task);
+        $this->denyAccessUnlessGranted('access', $task);
 
         $eventDispatcher->dispatch(
             FileRemoverEvent::NAME,

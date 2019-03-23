@@ -17,11 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class DeleteTaskController
+ * Class DeleteController
  *
  * @package App\Controller\Task
  */
-class DeleteTaskController extends AbstractController
+class DeleteController extends AbstractController
 {
     /**
      * @Route(path="/task/delete/{id}", name="delete_task", methods={"GET"})
@@ -43,7 +43,7 @@ class DeleteTaskController extends AbstractController
             throw new \Exception('Pas de tâche avec cet ID ');
         }
 
-        $this->denyAccessUnlessGranted('delete', $task);
+        $this->denyAccessUnlessGranted('access', $task);
 
         $eventDispatcher->dispatch(
             FileRemoverEvent::NAME,

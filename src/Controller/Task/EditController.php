@@ -17,11 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class EditTaskController
+ * Class EditController
  *
  * @package App\Controller\Task
  */
-class EditTaskController extends AbstractController
+class EditController extends AbstractController
 {
     /**
      * @Route(path="/task/edit/{id}", name="edit_task", methods={"GET", "POST"})
@@ -46,7 +46,7 @@ class EditTaskController extends AbstractController
         $form = $this->createForm(EditTaskType::class, $task)
             ->handleRequest($request);
 
-        $this->denyAccessUnlessGranted('edit', $task);
+        $this->denyAccessUnlessGranted('access', $task);
 
 
         if ($handler->handle($form, $task)){

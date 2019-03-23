@@ -16,11 +16,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class DeleteCategoryController
+ * Class DeleteController
  *
  * @package App\Controller\Category
  */
-class DeleteCategoryController extends AbstractController
+class DeleteController extends AbstractController
 {
     /**
      * @Route(path="/category/delete/{id}", name="category_delete", methods={"DELETE"})

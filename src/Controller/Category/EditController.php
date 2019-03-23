@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class EditCategoryController extends AbstractController
+class EditController extends AbstractController
 {
     /**
      * @Route(path="/category/{id}/edit", name="category_edit", methods={"GET","POST"})

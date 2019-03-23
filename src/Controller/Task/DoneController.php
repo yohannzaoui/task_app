@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class DoneTaskController
+ * Class DoneController
  *
  * @package App\Controller\Task
  */
-class DoneTaskController extends AbstractController
+class DoneController extends AbstractController
 {
     /**
      * @Route(path="/task/done/{id}", name="done_task", methods={"GET"})
@@ -40,7 +40,7 @@ class DoneTaskController extends AbstractController
             throw new \Exception('Pas de tâche avec cet ID');
         }
 
-        $this->denyAccessUnlessGranted('done', $task);
+        $this->denyAccessUnlessGranted('access', $task);
 
         if ($task->isDone() == true){
             $task->notDone();

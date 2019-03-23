@@ -17,11 +17,11 @@ use App\Form\TaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class CreateTaskController
+ * Class CreateController
  *
  * @package App\Controller\Task
  */
-class CreateTaskController extends AbstractController
+class CreateController extends AbstractController
 {
     /**
      * @Route(path="/task/create", name="create_task", methods={"GET", "POST"})

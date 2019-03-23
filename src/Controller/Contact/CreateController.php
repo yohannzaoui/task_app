@@ -3,49 +3,50 @@
  * Created by PhpStorm.
  * User: yohann
  * Date: 23/03/19
- * Time: 10:21
+ * Time: 10:39
  */
 
 namespace App\Controller\Contact;
 
 use App\Entity\Contact;
 use App\Form\ContactType;
+use App\FormHandler\CreateContactFormHandler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\FormHandler\EditContactFormHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class EditContactController
+ * Class CreateController
  *
  * @package App\Controller\Contact
  */
-class EditContactController extends AbstractController
+class CreateController extends AbstractController
 {
     /**
-     * @Route(path="/contact/{id}/edit", name="contact_edit", methods={"GET","POST"})
+     * @Route(path="/contact/new", name="contact_new", methods={"GET","POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\Entity\Contact                       $contact
-     * @param \App\FormHandler\EditContactFormHandler   $handler
+     * @param \App\FormHandler\CreateContactFormHandler $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
-    public function edit(Request $request, Contact $contact, EditContactFormHandler $handler): Response
+    public function create(Request $request, CreateContactFormHandler $handler): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $contact = new Contact();
 
         $form = $this->createForm(ContactType::class, $contact)
             ->handleRequest($request);
 
-        if ($handler->handle($form)) {
+        if ($handler->handle($form, $contact)) {
             return $this->redirectToRoute('contact_index');
         }
-
-        return $this->render('contact/edit.html.twig', [
+        return $this->render('contact/new.html.twig', [
             'contact' => $contact,
-            'title' => 'Modifier le contact',
+            'title' => 'Ajouter un contact',
             'form' => $form->createView(),
         ]);
     }

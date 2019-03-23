@@ -14,11 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class ContactController
+ * Class ContactsController
  *
  * @package App\Controller\Contact
  */
-class ContactController extends AbstractController
+class ContactsController extends AbstractController
 {
     /**
      * @Route(path="/contact", name="contact_index", methods={"GET"})

@@ -16,11 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class DeleteContactController
+ * Class DeleteController
  *
  * @package App\Controller\Contact
  */
-class DeleteContactController extends AbstractController
+class DeleteController extends AbstractController
 {
     /**
      * @Route(path="/contact/{id}/delete", name="contact_delete", methods={"DELETE"})

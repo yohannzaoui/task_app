@@ -9,7 +9,9 @@
 namespace App\Subscriber;
 
 use App\Event\FileRemoverEvent;
+use App\Event\FileUploaderEvent;
 use App\Service\FileRemover;
+use App\Service\FileUploader;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -24,14 +26,18 @@ class FileSubscriber implements EventSubscriberInterface
      */
     private $fileRemover;
 
+    private $fileUploader;
+
     /**
      * FileSubscriber constructor.
      *
-     * @param \App\Service\FileRemover $fileRemover
+     * @param \App\Service\FileRemover  $fileRemover
+     * @param \App\Service\FileUploader $fileUploader
      */
-    public function __construct(FileRemover $fileRemover)
+    public function __construct(FileRemover $fileRemover, FileUploader $fileUploader)
     {
         $this->fileRemover = $fileRemover;
+        $this->fileUploader = $fileUploader;
     }
 
     /**
@@ -41,6 +47,7 @@ class FileSubscriber implements EventSubscriberInterface
     {
         return [
             FileRemoverEvent::NAME => 'onFileRemoverEvent'
+
         ];
     }
 

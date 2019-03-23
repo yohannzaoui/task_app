@@ -23,22 +23,7 @@ class TaskVoter extends Voter
     /**
      *
      */
-    const EDIT = 'edit';
-
-    /**
-     *
-     */
-    const DELETE = 'delete';
-
-    /**
-     *
-     */
-    const DONE = 'done';
-
-    /**
-     *
-     */
-    const SEND = 'send';
+    const ACCESS = 'access';
 
     /**
      * @param string $attribute
@@ -48,7 +33,7 @@ class TaskVoter extends Voter
      */
     protected function supports($attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::EDIT, self::DELETE, self::DONE, self::SEND])) {
+        if (!in_array($attribute, [self::ACCESS])) {
             return false;
         }
         if (!$subject instanceof Task) {
@@ -72,14 +57,9 @@ class TaskVoter extends Voter
         }
         $task = $subject;
         switch ($attribute) {
-            case self::EDIT:
-                return $this->canEdit($task, $user);
-            case self::DELETE:
-                return $this->canDelete($task, $user);
-            case self::DONE:
-                return $this->canDone($task, $user);
-            case self::SEND:
-                return $this->canSend($task, $user);
+            case self::ACCESS:
+                return $this->canAccess($task, $user);
+
         }
         throw new \LogicException('This code should not be reached!');
     }
@@ -90,42 +70,7 @@ class TaskVoter extends Voter
      *
      * @return bool
      */
-    private function canEdit(Task $task, User $user): bool
-    {
-        return $user === $task->getAuthor();
-    }
-
-    /**
-     * @param \App\Entity\Task $task
-     * @param \App\Entity\User $user
-     *
-     * @return bool
-     */
-    private function canDelete(Task $task, User $user)
-    {
-        if ($task->getAuthor() === null & $user->getRoles() === ['ROLE_ADMIN'] or $user === $task->getAuthor()) {
-            return true;
-        }
-    }
-
-    /**
-     * @param \App\Entity\Task $task
-     * @param \App\Entity\User $user
-     *
-     * @return bool
-     */
-    private function canDone(Task $task, User $user): bool
-    {
-        return $user === $task->getAuthor();
-    }
-
-    /**
-     * @param \App\Entity\Task $task
-     * @param \App\Entity\User $user
-     *
-     * @return bool
-     */
-    private function canSend(Task $task, User $user): bool
+    private function canAccess(Task $task, User $user): bool
     {
         return $user === $task->getAuthor();
     }

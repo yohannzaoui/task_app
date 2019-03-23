@@ -15,11 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class PinTaskController
+ * Class PinController
  *
  * @package App\Controller\Task
  */
-class PinTaskController extends AbstractController
+class PinController extends AbstractController
 {
 
     /**

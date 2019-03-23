@@ -86,8 +86,7 @@ class ProfileController extends AbstractController
             if ($form->getData()->getFile()){
                 $this->eventDispatcher->dispatch(
                     FileRemoverEvent::NAME,
-                    new FileRemoverEvent($this->getUser()->getImage()
-                    )
+                    new FileRemoverEvent($this->getUser()->getImage())
                 );
 
                 $fileName = $fileUploader->upload($form->getData()->getFile());
