@@ -24,22 +24,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class EditController extends AbstractController
 {
     /**
-     * @Route(path="/profile/{id}", name="edit_profile", methods={"GET", "POST"})
+     * @Route(path="/edit/profile", name="edit_profile", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \App\FormHandler\EditProfileFormHandler   $handler
-     * @param                                           $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function edit(Request $request, EditProfileFormHandler $handler,$id): Response
+    public function edit(Request $request, EditProfileFormHandler $handler): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->getDoctrine()
             ->getRepository(User::class)
-            ->find($id);
+            ->find($this->getUser()->getId());
 
         $form = $this->createForm(EditProfileFormType::class, $user)
             ->handleRequest($request);

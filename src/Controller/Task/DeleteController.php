@@ -33,7 +33,7 @@ class DeleteController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function delete($id, ObjectManager $manager, EventDispatcherInterface $eventDispatcher): Response
+    public function delete(string $id, ObjectManager $manager, EventDispatcherInterface $eventDispatcher): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)

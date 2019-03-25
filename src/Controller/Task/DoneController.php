@@ -30,7 +30,7 @@ class DoneController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function done($id, ObjectManager $manager): Response
+    public function done(string $id, ObjectManager $manager): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)

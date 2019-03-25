@@ -28,7 +28,7 @@ class TaskController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function show($id): Response
+    public function show(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

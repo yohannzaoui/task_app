@@ -24,16 +24,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteController extends AbstractController
 {
     /**
-     * @Route(path="/user/{id}", name="user_delete", methods={"GET"})
+     * @Route(path="/user/delete", name="user_delete", methods={"GET"})
      *
      * @param \App\Entity\User                                            $user
      * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param                                                             $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function delete(User $user, ObjectManager $manager, EventDispatcherInterface $eventDispatcher,$id): Response
+    public function delete(User $user, ObjectManager $manager, EventDispatcherInterface $eventDispatcher): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -44,7 +43,7 @@ class DeleteController extends AbstractController
         );
         $user->setImage(null);
 
-        if ($id) {
+        if ($this->getUser()->getId()) {
             $manager->remove($user);
             $manager->flush();
         }

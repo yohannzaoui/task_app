@@ -30,7 +30,7 @@ class TaskToMyEmailController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function sendToMyEmail($id, EventDispatcherInterface $eventDispatcher): Response
+    public function sendToMyEmail(string $id, EventDispatcherInterface $eventDispatcher): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)

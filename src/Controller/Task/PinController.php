@@ -31,7 +31,7 @@ class PinController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function pin($id, ObjectManager $manager): Response
+    public function pin(string $id, ObjectManager $manager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 

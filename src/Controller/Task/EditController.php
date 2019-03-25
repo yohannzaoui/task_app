@@ -33,7 +33,7 @@ class EditController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function edit($id, Request $request, EditTaskFormHandler $handler): Response
+    public function edit(string $id, Request $request, EditTaskFormHandler $handler): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)

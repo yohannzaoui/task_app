@@ -32,7 +32,7 @@ class DeleteImageController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteImage($id, ObjectManager $manager, EventDispatcherInterface $eventDispatcher): Response
+    public function deleteImage(string $id, ObjectManager $manager, EventDispatcherInterface $eventDispatcher): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)

@@ -26,23 +26,22 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class EditPasswordController extends AbstractController
 {
     /**
-     * @Route(path="/profile/password/{id}", name="edit_password", methods={"GET", "POST"})
+     * @Route(path="/profile/password", name="edit_password", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request                             $request
      * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder
      * @param \Doctrine\Common\Persistence\ObjectManager                            $manager
-     * @param                                                                       $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, ObjectManager $manager, $id): Response
+    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, ObjectManager $manager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->getDoctrine()
             ->getRepository(User::class)
-            ->find($id);
+            ->find($this->getUser()->getId());
 
         $form = $this->createForm(PasswordFormType::class)
             ->handleRequest($request);
