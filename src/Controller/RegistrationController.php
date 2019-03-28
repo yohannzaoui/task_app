@@ -98,7 +98,7 @@ class RegistrationController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */
-    public function confirm($id, Request $request): Response
+    public function confirm(string $id, Request $request): Response
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)

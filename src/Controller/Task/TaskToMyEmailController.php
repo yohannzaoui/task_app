@@ -36,7 +36,7 @@ class TaskToMyEmailController extends AbstractController
             ->getRepository(Task::class)
             ->find($id);
 
-        $this->denyAccessUnlessGranted('send', $task);
+        $this->denyAccessUnlessGranted('access', $task);
 
         $eventDispatcher->dispatch(
             TaskToMyEmailEvent::NAME,

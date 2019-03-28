@@ -108,7 +108,7 @@ class PasswordController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function confirm($id, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function confirm(string $id, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = $this->getDoctrine()
             ->getRepository(User::class)

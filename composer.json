@@ -40,7 +40,8 @@
         "symfony/phpunit-bridge": "4.2.*",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "^1.0",
-        "symfony/web-server-bundle": "4.2.*"
+        "symfony/web-server-bundle": "4.2.*",
+        "theofidry/psysh-bundle": "^3.5"
     },
     "config": {
         "preferred-install": {

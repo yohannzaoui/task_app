@@ -19,7 +19,7 @@ use App\Event\EmailPasswordEvent;
 /**
  * Class EmailSubscriber
  *
- * @package App\Event
+ * @package App\Subscriber
  */
 class EmailSubscriber implements EventSubscriberInterface
 {

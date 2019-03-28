@@ -24,6 +24,7 @@ class TasksController extends AbstractController
      * @Route(path="/", name="tasks", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function index(): Response
     {

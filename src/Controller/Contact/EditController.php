@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * Class EditController
  *
- * @package App\Controller\Contact
+ * @package AppFixtures\Controller\Contact
  */
 class EditController extends AbstractController
 {

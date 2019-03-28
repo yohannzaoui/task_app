@@ -19,7 +19,7 @@ use App\Event\TaskByEmailEvent;
 /**
  * Class TaskByEmailController
  *
- * @package App\Controller\Task
+ * @package AppFixtures\Controller\Task
  */
 class TaskByEmailController extends AbstractController
 {

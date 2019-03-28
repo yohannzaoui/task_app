@@ -8,7 +8,6 @@
 
 namespace App\Controller\Profile;
 
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -20,8 +19,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProfileController extends AbstractController
 {
     /**
-     * @Route(path="/profile", name="profile", methods={"GET"})
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function show(): Response

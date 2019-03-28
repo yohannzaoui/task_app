@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * Class EditPasswordController
  *
- * @package App\Controller\Profile
+ * @package AppFixtures\Controller\Profile
  */
 class EditPasswordController extends AbstractController
 {
