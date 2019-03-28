@@ -10,7 +10,6 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
-
 use App\Form\EditTaskType;
 use App\FormHandler\EditTaskFormHandler;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +30,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class TaskController extends AbstractController
 {
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    private $manager;
+
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * TaskController constructor.
+     *
+     * @param $manager
+     * @param $eventDispatcher
+     */
+    public function __construct(
+        ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher
+    ){
+        $this->manager = $manager;
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+
     /**
      * @Route(path="/", name="tasks", methods={"GET"})
      *
@@ -162,13 +186,11 @@ class TaskController extends AbstractController
      * @Route(path="/task/delete/{id}", name="delete_task", methods={"GET"})
      *
      * @param                                                             $id
-     * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function delete(string $id, ObjectManager $manager, EventDispatcherInterface $eventDispatcher): Response
+    public function delete(string $id): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -180,15 +202,15 @@ class TaskController extends AbstractController
 
         $this->denyAccessUnlessGranted('access', $task);
 
-        $eventDispatcher->dispatch(
+        $this->eventDispatcher->dispatch(
             FileRemoverEvent::NAME,
             new FileRemoverEvent($task->getImage()
             )
         );
         $task->setImage(null);
 
-        $manager->remove($task);
-        $manager->flush();
+        $this->manager->remove($task);
+        $this->manager->flush();
 
         $this->addFlash(
             'success',
@@ -203,12 +225,10 @@ class TaskController extends AbstractController
      * @Route(path="/task/delete/image/{id}", name="delete_task_image", methods={"GET"})
      *
      * @param                                                             $id
-     * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteImage(string $id, ObjectManager $manager, EventDispatcherInterface $eventDispatcher): Response
+    public function deleteImage(string $id): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -216,7 +236,7 @@ class TaskController extends AbstractController
 
         $this->denyAccessUnlessGranted('access', $task);
 
-        $eventDispatcher->dispatch(
+        $this->eventDispatcher->dispatch(
             FileRemoverEvent::NAME,
             new FileRemoverEvent($task->getImage()
             )
@@ -224,7 +244,7 @@ class TaskController extends AbstractController
 
         $task->setImage(null);
 
-        $manager->flush();
+        $this->manager->flush();
 
         return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
     }
@@ -234,12 +254,11 @@ class TaskController extends AbstractController
      * @Route(path="/task/done/{id}", name="done_task", methods={"GET"})
      *
      * @param                                            $id
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function done(string $id, ObjectManager $manager): Response
+    public function done(string $id): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -254,7 +273,7 @@ class TaskController extends AbstractController
         if ($task->isDone() == true){
             $task->notDone();
 
-            $manager->flush();
+            $this->manager->flush();
 
             return $this->redirectToRoute('tasks');
         }
@@ -263,7 +282,7 @@ class TaskController extends AbstractController
         $task->setPin(false);
         $task->doneDate();
 
-        $manager->flush();
+        $this->manager->flush();
 
         return $this->redirectToRoute('view_done_task');
     }
@@ -296,12 +315,11 @@ class TaskController extends AbstractController
      * @Route(path="/task/pin/{id}", name="task_pin", methods={"GET"})
      *
      * @param                                            $id
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function pin(string $id, ObjectManager $manager): Response
+    public function pin(string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -316,7 +334,7 @@ class TaskController extends AbstractController
         if ($taskPin->getPin() == true){
             $taskPin->notPin();
 
-            $manager->flush();
+            $this->manager->flush();
 
             $this->addFlash(
                 'success',
@@ -328,7 +346,7 @@ class TaskController extends AbstractController
 
         $taskPin->pin();
 
-        $manager->flush();
+        $this->manager->flush();
 
         $this->addFlash(
             'success',
@@ -344,12 +362,11 @@ class TaskController extends AbstractController
      * @Route(path="/send/task/byEmail", name="send_task_byEmail", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request                   $request
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function sendByEmail(Request $request, EventDispatcherInterface $eventDispatcher): Response
+    public function sendByEmail(Request $request): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -362,7 +379,7 @@ class TaskController extends AbstractController
         if ($this->isCsrfTokenValid('email', $request->request->get('_csrf_token'))){
             $this->denyAccessUnlessGranted('send', $task);
 
-            $eventDispatcher->dispatch(
+            $this->eventDispatcher->dispatch(
                 TaskByEmailEvent::NAME,
                 new TaskByEmailEvent(
                     $request->request->get('email'),
@@ -384,11 +401,10 @@ class TaskController extends AbstractController
      * @Route(path="/send/task/myEmail/{id}", name="send_task_myEmail", methods={"GET"})
      *
      * @param                                                             $id
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function sendToMyEmail(string $id, EventDispatcherInterface $eventDispatcher): Response
+    public function sendToMyEmail(string $id): Response
     {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
@@ -396,7 +412,7 @@ class TaskController extends AbstractController
 
         $this->denyAccessUnlessGranted('access', $task);
 
-        $eventDispatcher->dispatch(
+        $this->eventDispatcher->dispatch(
             TaskToMyEmailEvent::NAME,
             new TaskToMyEmailEvent(
                 $this->getUser()->getEmail(),
