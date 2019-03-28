@@ -26,6 +26,9 @@ class CreateCategoryFormHandler
      */
     private $manager;
 
+    /**
+     * @var \Symfony\Component\Security\Core\Security
+     */
     private $security;
 
     /**

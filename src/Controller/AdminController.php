@@ -2,27 +2,47 @@
 /**
  * Created by PhpStorm.
  * User: yohann
- * Date: 23/03/19
- * Time: 19:20
+ * Date: 28/03/19
+ * Time: 15:52
  */
 
-namespace App\Controller\Admin;
+namespace App\Controller;
+
 
 use App\Entity\User;
 use App\Event\FileRemoverEvent;
 use Doctrine\Common\Persistence\ObjectManager;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class DeleteController
+ * Class AdminController
  *
- * @package App\Controller\Admin
+ * @package App\Controller
  */
-class DeleteController extends AbstractController
+class AdminController extends AbstractController
 {
+    /**
+     * @Route(path="/user", name="user_index", methods={"GET"})
+     *
+     * @param \App\Repository\UserRepository $userRepository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function index(UserRepository $userRepository): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+            'title' => 'Liste des membres'
+        ]);
+    }
+
+
     /**
      * @Route(path="/user/delete", name="user_delete", methods={"GET"})
      *

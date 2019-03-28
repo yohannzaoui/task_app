@@ -1,7 +1,2 @@
 logout:
   path: /logout
-
-profile:
-  path: /profile
-  controller: App\Controller\Profile\ProfileController::show
-  methods : [GET]
