@@ -6,7 +6,7 @@
  * Time: 13:48
  */
 
-namespace App\FormHandler;
+namespace App\Form\Handler;
 
 
 use App\Entity\Category;

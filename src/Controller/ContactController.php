@@ -10,8 +10,8 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\ContactType;
-use App\FormHandler\CreateContactFormHandler;
-use App\FormHandler\EditContactFormHandler;
+use App\Form\Handler\CreateContactFormHandler;
+use App\Form\Handler\EditContactFormHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Repository\ContactRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +50,7 @@ class ContactController extends AbstractController
      * @Route(path="/contact/new", name="contact_new", methods={"GET","POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\FormHandler\CreateContactFormHandler $handler
+     * @param \App\Form\Handler\CreateContactFormHandler $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
@@ -80,7 +80,7 @@ class ContactController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \App\Entity\Contact                       $contact
-     * @param \App\FormHandler\EditContactFormHandler   $handler
+     * @param \App\Form\Handler\EditContactFormHandler   $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

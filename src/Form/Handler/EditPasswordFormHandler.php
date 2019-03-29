@@ -6,7 +6,7 @@
  * Time: 16:37
  */
 
-namespace App\FormHandler;
+namespace App\Form\Handler;
 
 
 use App\Entity\User;

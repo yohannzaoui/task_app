@@ -30,7 +30,8 @@ class CategoryRepository extends ServiceEntityRepository
             ->setParameter('val', $value)
             ->orderBy('c.id', 'ASC')
             ->setMaxResults(10)
-            ->getQuery()
+            ->getQuery()use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityRepository;
             ->getResult()
         ;
     }

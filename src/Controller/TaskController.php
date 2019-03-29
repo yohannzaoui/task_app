@@ -11,10 +11,10 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Form\EditTaskType;
-use App\FormHandler\EditTaskFormHandler;
+use App\Form\Handler\EditTaskFormHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use App\FormHandler\CreateTaskFormHandler;
+use App\Form\Handler\CreateTaskFormHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Event\FileRemoverEvent;
 use App\Event\TaskByEmailEvent;
@@ -121,7 +121,7 @@ class TaskController extends AbstractController
      * @Route(path="/task/create", name="create_task", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\FormHandler\CreateTaskFormHandler    $handler
+     * @param \App\Form\Handler\CreateTaskFormHandler    $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
@@ -149,7 +149,7 @@ class TaskController extends AbstractController
      *
      * @param                                                $id
      * @param \Symfony\Component\HttpFoundation\Request      $request
-     * @param \App\FormHandler\EditTaskFormHandler           $handler
+     * @param \App\Form\Handler\EditTaskFormHandler           $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception

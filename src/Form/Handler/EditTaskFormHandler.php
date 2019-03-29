@@ -2,43 +2,38 @@
 /**
  * Created by PhpStorm.
  * User: yohann
- * Date: 23/03/19
- * Time: 19:46
+ * Date: 22/03/19
+ * Time: 13:22
  */
 
-namespace App\FormHandler;
+namespace App\Form\Handler;
 
 
-use App\Entity\User;
+use App\Entity\Task;
 use App\Service\FileUploader;
-use App\Event\FileRemoverEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
+use App\Event\FileRemoverEvent;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Security;
+
 
 /**
- * Class EditProfileFormHandler
+ * Class EditTaskFormHandler
  *
  * @package App\FormHandler
  */
-class EditProfileFormHandler
+class EditTaskFormHandler
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    private $manager;
-
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
     private $eventDispatcher;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
-    private $flashMessage;
+    private $manager;
 
     /**
      * @var \App\Service\FileUploader
@@ -46,62 +41,63 @@ class EditProfileFormHandler
     private $fileUploader;
 
     /**
-     * @var \Symfony\Component\Security\Core\Security
+     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
      */
-    private $security;
+    private $flashMessage;
 
     /**
-     * EditProfileFormHandler constructor.
+     * EditTaskFormHandler constructor.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface  $flashMessage
+     * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
      * @param \App\Service\FileUploader                                   $fileUploader
-     * @param \Symfony\Component\Security\Core\Security                   $security
+     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface  $flashMessage
      */
     public function __construct(
-        ObjectManager $manager,
         EventDispatcherInterface $eventDispatcher,
-        SessionInterface $flashMessage,
+        ObjectManager $manager,
         FileUploader $fileUploader,
-        Security $security
+        SessionInterface $flashMessage
     ){
-        $this->manager = $manager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->flashMessage = $flashMessage;
+        $this->manager = $manager;
         $this->fileUploader = $fileUploader;
-        $this->security = $security;
+        $this->flashMessage = $flashMessage;
     }
 
     /**
      * @param \Symfony\Component\Form\FormInterface $form
-     * @param \App\Entity\User                      $user
+     * @param \App\Entity\Task                      $task
      *
      * @return bool
      * @throws \Exception
      */
-    public function handle(FormInterface $form, User $user)
+    public function handle(FormInterface $form, Task $task)
     {
         if ($form->isSubmitted() && $form->isValid()){
             if ($form->getData()->getFile()){
                 $this->eventDispatcher->dispatch(
                     FileRemoverEvent::NAME,
-                    new FileRemoverEvent($this->security->getUser()->getImage())
+                    new FileRemoverEvent($task->getImage()
+                    )
                 );
 
                 $fileName = $this->fileUploader->upload($form->getData()->getFile());
-
-                $user->setImage($fileName);
+                $task->setImage($fileName);
             }
 
-            $user->updateDate();
+            $task->updateDate();
 
             $this->manager->flush();
 
-            $this->flashMessage->getFlashBag()->add('success', 'Profile edited');
+            $this->flashMessage->getFlashBag()->add(
+                'success',
+                'Tâche modifier'
+            );
 
             return true;
         }
+
         return false;
     }
 }

@@ -6,7 +6,7 @@
  * Time: 10:42
  */
 
-namespace App\FormHandler;
+namespace App\Form\Handler;
 
 
 use App\Entity\Contact;

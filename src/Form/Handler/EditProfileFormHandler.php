@@ -2,43 +2,38 @@
 /**
  * Created by PhpStorm.
  * User: yohann
- * Date: 22/03/19
- * Time: 13:22
+ * Date: 23/03/19
+ * Time: 19:46
  */
 
-namespace App\FormHandler;
+namespace App\Form\Handler;
 
 
-use App\Entity\Task;
+use App\Entity\User;
 use App\Service\FileUploader;
+use App\Event\FileRemoverEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
-use App\Event\FileRemoverEvent;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
+use Symfony\Component\Security\Core\Security;
 
 /**
- * Class EditTaskFormHandler
+ * Class EditProfileFormHandler
  *
  * @package App\FormHandler
  */
-class EditTaskFormHandler
+class EditProfileFormHandler
 {
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     private $manager;
 
     /**
-     * @var \App\Service\FileUploader
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
-    private $fileUploader;
+    private $eventDispatcher;
 
     /**
      * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
@@ -46,58 +41,67 @@ class EditTaskFormHandler
     private $flashMessage;
 
     /**
-     * EditTaskFormHandler constructor.
+     * @var \App\Service\FileUploader
+     */
+    private $fileUploader;
+
+    /**
+     * @var \Symfony\Component\Security\Core\Security
+     */
+    private $security;
+
+    /**
+     * EditProfileFormHandler constructor.
      *
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
-     * @param \App\Service\FileUploader                                   $fileUploader
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface  $flashMessage
+     * @param \App\Service\FileUploader                                   $fileUploader
+     * @param \Symfony\Component\Security\Core\Security                   $security
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher,
+        SessionInterface $flashMessage,
         FileUploader $fileUploader,
-        SessionInterface $flashMessage
+        Security $security
     ){
-        $this->eventDispatcher = $eventDispatcher;
         $this->manager = $manager;
-        $this->fileUploader = $fileUploader;
+        $this->eventDispatcher = $eventDispatcher;
         $this->flashMessage = $flashMessage;
+        $this->fileUploader = $fileUploader;
+        $this->security = $security;
     }
 
     /**
      * @param \Symfony\Component\Form\FormInterface $form
-     * @param \App\Entity\Task                      $task
+     * @param \App\Entity\User                      $user
      *
      * @return bool
      * @throws \Exception
      */
-    public function handle(FormInterface $form, Task $task)
+    public function handle(FormInterface $form, User $user)
     {
         if ($form->isSubmitted() && $form->isValid()){
             if ($form->getData()->getFile()){
                 $this->eventDispatcher->dispatch(
                     FileRemoverEvent::NAME,
-                    new FileRemoverEvent($task->getImage()
-                    )
+                    new FileRemoverEvent($this->security->getUser()->getImage())
                 );
 
                 $fileName = $this->fileUploader->upload($form->getData()->getFile());
-                $task->setImage($fileName);
+
+                $user->setImage($fileName);
             }
 
-            $task->updateDate();
+            $user->updateDate();
 
             $this->manager->flush();
 
-            $this->flashMessage->getFlashBag()->add(
-                'success',
-                'Tâche modifier'
-            );
+            $this->flashMessage->getFlashBag()->add('success', 'Profile edited');
 
             return true;
         }
-
         return false;
     }
 }

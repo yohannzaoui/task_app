@@ -6,7 +6,7 @@
  * Time: 09:51
  */
 
-namespace App\FormHandler;
+namespace App\Form\Handler;
 
 
 use Doctrine\Common\Persistence\ObjectManager;

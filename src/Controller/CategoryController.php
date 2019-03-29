@@ -10,11 +10,11 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
-use App\FormHandler\CreateCategoryFormHandler;
+use App\Form\Handler\CreateCategoryFormHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\FormHandler\EditCategoryFormHandler;
+use App\Form\Handler\EditCategoryFormHandler;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,7 +50,7 @@ class CategoryController extends AbstractController
      * @Route(path="/category/new", name="category_new", methods={"GET","POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request  $request
-     * @param \App\FormHandler\CreateCategoryFormHandler $handler
+     * @param \App\Form\Handler\CreateCategoryFormHandler $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -80,7 +80,7 @@ class CategoryController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \App\Entity\Category                      $category
-     * @param \App\FormHandler\EditCategoryFormHandler  $handler
+     * @param \App\Form\Handler\EditCategoryFormHandler  $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

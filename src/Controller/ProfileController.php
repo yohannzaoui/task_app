@@ -9,8 +9,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\FormHandler\EditPasswordFormHandler;
-use App\FormHandler\EditProfileFormHandler;
+use App\Form\Handler\EditPasswordFormHandler;
+use App\Form\Handler\EditProfileFormHandler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +48,7 @@ class ProfileController extends AbstractController
      * @Route(path="/edit/profile", name="edit_profile", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\FormHandler\EditProfileFormHandler   $handler
+     * @param \App\Form\Handler\EditProfileFormHandler   $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
@@ -80,7 +80,7 @@ class ProfileController extends AbstractController
      * @Route(path="/profile/password", name="edit_password", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\FormHandler\EditPasswordFormHandler  $handler
+     * @param \App\Form\Handler\EditPasswordFormHandler  $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
