@@ -377,7 +377,7 @@ class TaskController extends AbstractController
         }
 
         if ($this->isCsrfTokenValid('email', $request->request->get('_csrf_token'))){
-            $this->denyAccessUnlessGranted('send', $task);
+            $this->denyAccessUnlessGranted('access', $task);
 
             $this->eventDispatcher->dispatch(
                 TaskByEmailEvent::NAME,

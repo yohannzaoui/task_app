@@ -16,7 +16,7 @@
         {% for task in tasks %}
             <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3>{{ task.title }}</h3>
-                <p>{{ task.content }}</p>
+                {{ task.content | raw }}
                 <p>Ajouter le : {{ task.createdAt | date('d/m/Y')}}
                 {% if task.updatedAt %}
                     - Mise à jour le : {{ task.updatedAt | date('d/m/Y')}}
