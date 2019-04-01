@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Form\EditTaskType;
@@ -107,7 +108,7 @@ class TaskController extends AbstractController
             ->find($id);
 
         if (!$task){
-            throw new \Exception('Pas de tâche avec cet ID');
+            throw new Exception('Pas de tâche avec cet ID');
         }
 
         return $this->render('task/show.html.twig', [
@@ -161,7 +162,7 @@ class TaskController extends AbstractController
             ->find($id);
 
         if (!$task){
-            throw new \Exception('Pas de tâche avec cet ID');
+            throw new Exception('Pas de tâche avec cet ID');
         }
 
         $form = $this->createForm(EditTaskType::class, $task)
@@ -197,7 +198,7 @@ class TaskController extends AbstractController
             ->find($id);
 
         if (!$task){
-            throw new \Exception('Pas de tâche avec cet ID ');
+            throw new Exception('Pas de tâche avec cet ID ');
         }
 
         $this->denyAccessUnlessGranted('access', $task);
@@ -265,7 +266,7 @@ class TaskController extends AbstractController
             ->find($id);
 
         if (!$task){
-            throw new \Exception('Pas de tâche avec cet ID');
+            throw new Exception('Pas de tâche avec cet ID');
         }
 
         $this->denyAccessUnlessGranted('access', $task);
@@ -328,7 +329,7 @@ class TaskController extends AbstractController
             ->find($id);
 
         if (!$taskPin){
-            throw new \Exception('no task with this ID');
+            throw new Exception('no task with this ID');
         }
 
         if ($taskPin->getPin() == true){
@@ -373,7 +374,7 @@ class TaskController extends AbstractController
             ->find($request->request->get('task_id'));
 
         if (!$task){
-            throw new \Exception('Pas de tâche avec cet ID');
+            throw new Exception('Pas de tâche avec cet ID');
         }
 
         if ($this->isCsrfTokenValid('email', $request->request->get('_csrf_token'))){

@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-
+use Exception;
 use App\Entity\User;
 use App\Event\EmailPasswordEvent;
 use App\Form\EmailFormType;
@@ -65,7 +65,7 @@ class PasswordController extends AbstractController
                 ->findOneBy(['email' => $form->getData()['email']]);
 
             if (!$user){
-                throw new \Exception('utilisateur inconnu');
+                throw new Exception('utilisateur inconnu');
             }
 
             $token = $tokenGenerator::generate();
@@ -115,7 +115,7 @@ class PasswordController extends AbstractController
             ->find($id);
 
         if (!$user){
-            throw new \Exception('utilisateur inconnu');
+            throw new Exception('utilisateur inconnu');
         }
 
         if ($request->get('token') == $user->getToken()){
@@ -149,7 +149,7 @@ class PasswordController extends AbstractController
         }
 
         if ($request->get('token') != $user->getToken()){
-            throw new \Exception('Token invalide');
+            throw new Exception('Token invalide');
         }
     }
 }

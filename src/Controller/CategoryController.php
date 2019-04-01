@@ -88,8 +88,8 @@ class CategoryController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $form = $this->createForm(CategoryType::class, $category);
-        $form->handleRequest($request);
+        $form = $this->createForm(CategoryType::class, $category)
+            ->handleRequest($request);
 
         if ($handler->handle($form)) {
             return $this->redirectToRoute('category_index');

@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\User;
 use App\Form\Handler\EditPasswordFormHandler;
 use App\Form\Handler\EditProfileFormHandler;
@@ -61,6 +62,10 @@ class ProfileController extends AbstractController
             ->getRepository(User::class)
             ->find($this->getUser()->getId());
 
+        if (!$user){
+            throw new Exception('Pas d\'utilisateur avec cet Id');
+        }
+
         $form = $this->createForm(EditProfileFormType::class, $user)
             ->handleRequest($request);
 
@@ -92,6 +97,10 @@ class ProfileController extends AbstractController
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($this->getUser()->getId());
+
+        if (!$user){
+            throw new Exception('Pas d\'utilisateur avec cet Id');
+        }
 
         $form = $this->createForm(PasswordFormType::class)
             ->handleRequest($request);
