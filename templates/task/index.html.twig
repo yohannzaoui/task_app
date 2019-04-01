@@ -24,7 +24,7 @@
         {% for taskPin in tasksPin %}
             <div class="pin-post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3><a class="link-white" href="{{ path('show_task', {'id': taskPin.id}) }}">{{ taskPin.title }}</a></h3>
-                <p>{{ taskPin.content }}</p>
+                {{ taskPin.content | raw }}
                 <p>
                     Ajouté le : {{ taskPin.createdAt | date('d/m/Y')}}
                 {% if taskPin.updatedAt %}
@@ -53,7 +53,7 @@
     {% for task in tasks %}
                 <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                     <h3><a class="link-white" href="{{ path('show_task', {'id': task.id}) }}">{{ task.title }}</a></h3>
-                    <p>{{ task.content }}</p>
+                    {{ task.content | raw }}
                     <p>
                         Ajouté le : {{ task.createdAt | date('d/m/Y')}}
                     {% if task.updatedAt %}

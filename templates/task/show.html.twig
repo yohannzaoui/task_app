@@ -8,7 +8,7 @@
 
     <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
         <h3>{{ task.title }}</h3>
-        <p>{{ task.content }}</p>
+        {{ task.content | raw }}
 
         {% if task.image is not null %}
         <p><img src="{{ asset('/uploads/images/'~ task.image) }}" alt="task_image"></p>

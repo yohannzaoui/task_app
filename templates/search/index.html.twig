@@ -12,7 +12,7 @@
         {% for result in results %}
             <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3>{{ result.title }}</h3>
-                <p>{{ result.content }}</p>
+                {{ result.content | raw }}
                 <p>Ajouté le : {{ result.createdAt | date('d/m/Y')}}
                 {% if result.updatedAt %}
                     - Mise à jour le : {{ result.updatedAt | date('d/m/Y')}}
