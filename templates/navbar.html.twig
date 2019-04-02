@@ -2,7 +2,7 @@
     <div class="container">
     <a class="navbar-brand" href="{{ path('tasks') }}">Task App
         {% if app.user %}
-            Bonjour {{ app.user.username }}
+            {% trans %}Bonjour{% endtrans %} {{ app.user.username }}
             {% if app.user.image %}
                 <img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar">
             {% else %}
