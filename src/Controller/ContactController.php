@@ -40,8 +40,7 @@ class ContactController extends AbstractController
         return $this->render('contact/index.html.twig', [
             'contacts' => $repository->findBy([
                 'user' => $this->getUser()
-            ]),
-            'title' => 'Mes contacts'
+            ])
         ]);
     }
 
@@ -69,8 +68,7 @@ class ContactController extends AbstractController
         }
         return $this->render('contact/new.html.twig', [
             'contact' => $contact,
-            'title' => 'Ajouter un contact',
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -97,8 +95,7 @@ class ContactController extends AbstractController
 
         return $this->render('contact/edit.html.twig', [
             'contact' => $contact,
-            'title' => 'Modifier le contact',
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 

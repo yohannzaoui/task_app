@@ -92,8 +92,7 @@ class PasswordController extends AbstractController
         }
 
         return $this->render('password/checkUser.html.twig', [
-            'form' => $form->createView(),
-            'title' => 'Récuperer mon mot de passe'
+            'form' => $form->createView()
         ]);
     }
 
@@ -143,8 +142,7 @@ class PasswordController extends AbstractController
             }
 
             return $this->render('password/confirm.html.twig', [
-                'form' => $form->createView(),
-                'title' => 'Récuperer mon mot de passe'
+                'form' => $form->createView()
             ]);
         }
 

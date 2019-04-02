@@ -36,6 +36,7 @@
     --dark: #222;
     --postIt : #757575;
     --pinPostIt : #7986CB;
+    --logout : yellow;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
@@ -50,6 +51,10 @@
 *::after {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+#logout{
+    color: var(--logout);
 }
 
 .copyright{

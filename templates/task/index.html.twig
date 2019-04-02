@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% trans %}Mes tâches{% endtrans %}{% endblock %}
 
 {% block body %}
 
-    {{ title | h1center }}
+    <h1 class="center">{% trans %}Mes tâches{% endtrans %}</h1>
 
     {% if tasksPin | length == 1 %}<h3 class="center">Tâche épinglée à terminer {{ tasksPin | length }}</h3>{% endif %}
     {% if tasksPin | length > 1 %}<h3 class="center">Tâches épinglées à terminer {{ tasksPin | length }}</h3>{% endif %}
     {% if tasks | length == 1 %}<h3 class="center">Tâche non épinglée à terminer {{ tasks | length }}</h3>{% endif %}
     {% if tasks | length > 1 %}<h3 class="center">Tâches non épinglées à terminer {{ tasks | length }}</h3>{% endif %}
 
-    <a class="btn btn-success" href="{{ path('create_task') }}">Crée une tâche</a>
-    <a class="btn btn-warning" href="{{ path('view_done_task') }}">Tâches terminées</a>
+    <a class="btn btn-success" href="{{ path('create_task') }}">{% trans %}Crée une tâche{% endtrans %}</a>
+    <a class="btn btn-warning" href="{{ path('view_done_task') }}">{% trans %}Tâches terminées{% endtrans %}</a>
 
     <hr>
 
@@ -26,16 +26,16 @@
                 <h3><a class="link-white" href="{{ path('show_task', {'id': taskPin.id}) }}">{{ taskPin.title }}</a></h3>
                 {{ taskPin.content | raw }}
                 <p>
-                    Ajouté le : {{ taskPin.createdAt | date('d/m/Y')}}
+                    {% trans %}Ajouté le{% endtrans %} : {{ taskPin.createdAt | date('d/m/Y')}}
                 {% if taskPin.updatedAt %}
-                     - Mise à jour le : {{ taskPin.updatedAt | date('d/m/Y')}}
+                     - {% trans %}Mise à jour le{% endtrans %} : {{ taskPin.updatedAt | date('d/m/Y')}}
                 {% endif %}
                     {% if taskPin.category %}
-                        - Dans la catégorie : {{ taskPin.category.name }}
+                        - {% trans %}Dans la catégorie{% endtrans %} : {{ taskPin.category.name }}
                     {% endif %}
                 </p>
                 <p>
-                    <a class="btn btn-warning btn-sm" onclick="return confirm('Envoyer cette tâche sur votre email ?');" href="{{ path('send_task_myEmail', {'id' : taskPin.id}) }}">Envoyer sur mon email</a>
+                    <a class="btn btn-warning btn-sm" onclick="return confirm('Envoyer cette tâche sur votre email ?');" href="{{ path('send_task_myEmail', {'id' : taskPin.id}) }}">{% trans %}Envoyer sur mon email{% endtrans %}</a>
                 </p>
                 <p>
                     <a class="link-white ml-2" href="{{ path('edit_task', {'id': taskPin.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
@@ -55,16 +55,16 @@
                     <h3><a class="link-white" href="{{ path('show_task', {'id': task.id}) }}">{{ task.title }}</a></h3>
                     {{ task.content | raw }}
                     <p>
-                        Ajouté le : {{ task.createdAt | date('d/m/Y')}}
+                        {% trans %}Ajouté le{% endtrans %} : {{ task.createdAt | date('d/m/Y')}}
                     {% if task.updatedAt %}
-                        - Mise à jour le : {{ task.updatedAt | date('d/m/Y')}}
+                        - {% trans %}Mise à jour le{% endtrans %} : {{ task.updatedAt | date('d/m/Y')}}
                         {% endif %}
                         {% if task.category %}
-                    - Dans la catégorie : {{ task.category.name }}
+                    - {% trans %}Dans la catégorie{% endtrans %} : {{ task.category.name }}
                     {% endif %}
                     </p>
                     <p>
-                        <a class="btn btn-warning btn-sm" onclick="return confirm('Envoyer cette tâche sur votre email ?');" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">Envoyer sur mon email</a>
+                        <a class="btn btn-warning btn-sm" onclick="return confirm('Envoyer cette tâche sur votre email ?');" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">{% trans %}Envoyer sur mon email{% endtrans %}</a>
                     </p>
                     <p>
                         <a class="link-white ml-2" href="{{ path('edit_task', {'id': task.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>

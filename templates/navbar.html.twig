@@ -39,7 +39,7 @@
             {% endif %}
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('logout') }}">{% trans %}Se déconnecter{% endtrans %}</a>
+                    <a class="nav-link" id="logout" href="{{ path('logout') }}"><strong>{% trans %}Se déconnecter{% endtrans %}</strong></a>
                 </li>
 
         </ul>
