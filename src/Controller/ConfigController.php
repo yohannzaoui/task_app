@@ -29,8 +29,6 @@ class ConfigController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        return $this->render('config.html.twig', [
-            'title' => 'Paramètres'
-        ]);
+        return $this->render('config.html.twig');
     }
 }
