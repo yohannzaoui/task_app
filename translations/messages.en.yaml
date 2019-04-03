@@ -4,6 +4,8 @@ Editer: Edit
 Terminer: Done
 Effacer: Reset
 Envoyer: Send
+Ajouter: Add
+Ajouter une image: Add picture
 Mot de passe oublié: Forgot password
 Nom d'utilisateur: Username
 Mot de passe: Password
@@ -34,7 +36,7 @@ Dans la catégorie: In category
 Pas de contact: No contact
 Adresse email: Email addresse
 Modifier un contact: Edit contact
-Ajouter un contact: Add contact
+Ajouter un contact: Ad contact
 Récuperer mon mot de passe: Recover my password
 Nouveau mot de passe: New password
 Tapez le mot de passe à nouveau: Type the password again
@@ -42,5 +44,23 @@ Langue de l'application: Language of the application
 Crée une tâche: Add task
 Tâches terminées: Done task
 Envoyer sur mon email: Send to my email
+Partager par email: Share by email
+Tâche épinglée à terminer: Task pinned to finish
+Tâches épinglées à terminer: Tasks pinned to finish
+Tâche non épinglée à terminer: Task not pinned to finish
+Tâches non épinglées à terminer: Tasks not pinned to finish
+tâches terminées: completed tasks
+tâche terminée: completed task
+Pas de tâches: No tasks
+Pas de tâches épinglées: No pinned tasks
+Tâches épinglées: Pinned tasks
+Modifier la tâche: Task edit
+Mes tâches terminées: My completed tasks
+Créer une tâche: Create task
+Supprimer image: Delete picture
+Titre: Title
+Modifier l'image: Edit picture
+Catégorie: Category
+par: by
 Français: French
 Anglais: English

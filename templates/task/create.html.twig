@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% trans %}Créer une tâche{% endtrans %}{% endblock %}
 
 {% block body %}
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            {{ title | h1 }}
+            <h1>{% trans %}Créer une tâche{% endtrans %}</h1>
 
             {{ form_start(form) }}
             {{ form_widget(form) }}
-            <button class="btn btn-primary" type="submit">envoyer</button>
-            <button class="btn btn-danger" type="reset">effacer</button>
+            <button class="btn btn-primary" type="submit">{% trans %}Envoyer{% endtrans %}</button>
+            <button class="btn btn-danger" type="reset">{% trans %}Effacer{% endtrans %}</button>
             {{ form_end(form) }}
         </div>
     </div>

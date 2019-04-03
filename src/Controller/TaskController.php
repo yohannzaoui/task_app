@@ -84,8 +84,7 @@ class TaskController extends AbstractController
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
-            'tasksPin' => $tasksPin,
-            'title' => 'Mes tâches'
+            'tasksPin' => $tasksPin
 
         ]);
     }
@@ -139,8 +138,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
         }
         return $this->render('task/create.html.twig', [
-            'form' =>$form->createView(),
-            'title' => 'Créer une tâche'
+            'form' =>$form->createView()
         ]);
     }
 
@@ -177,8 +175,7 @@ class TaskController extends AbstractController
         }
 
         return $this->render('task/edit.html.twig', [
-            'form' => $form->createView(),
-            'title' => 'Modifier la tâche'
+            'form' => $form->createView()
         ]);
     }
 
@@ -306,8 +303,7 @@ class TaskController extends AbstractController
             ]);
 
         return $this->render('task/done.html.twig', [
-            'tasks' => $tasks,
-            'title' => 'Mes tâches terminées'
+            'tasks' => $tasks
         ]);
     }
 

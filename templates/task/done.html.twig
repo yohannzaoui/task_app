@@ -1,29 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% trans%}Mes tâches terminées{% endtrans %}{% endblock %}
 
 {% block body %}
 
-    {{ title | h1center }}
+    <h1 class="center">{% trans%}Mes tâches terminées{% endtrans %}</h1>
 
-    {% if tasks | length > 1 %}<h3 class="center">tâches terminées {{ tasks | length }}</h3>{% endif %}
-    {% if tasks | length == 1 %}<h3 class="center">tâche terminée {{ tasks | length }}</h3>{% endif %}
-    {% if tasks | length == 0 %}<h3 class="center">Pas de tâches</h3>{% endif %}
+    {% if tasks | length > 1 %}<h3 class="center">{% trans %}tâches terminées{% endtrans %} {{ tasks | length }}</h3>{% endif %}
+    {% if tasks | length == 1 %}<h3 class="center">{% trans %}tâche terminée{% endtrans %} {{ tasks | length }}</h3>{% endif %}
+    {% if tasks | length == 0 %}<h3 class="center">{% trans %}Pas de tâches{% endtrans %}</h3>{% endif %}
 
-    <a class="btn btn-success" href="{{ path('tasks') }}">Mes tâches</a>
+    <a class="btn btn-success" href="{{ path('tasks') }}">{% trans %}Mes tâches{% endtrans %}</a>
 
     <div class="row justify-content-center">
         {% for task in tasks %}
             <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3>{{ task.title }}</h3>
                 {{ task.content | raw }}
-                <p>Ajouter le : {{ task.createdAt | date('d/m/Y')}}
+                <p>{% trans %}Ajouter {% endtrans %} : {{ task.createdAt | date('d/m/Y')}}
                 {% if task.updatedAt %}
-                    - Mise à jour le : {{ task.updatedAt | date('d/m/Y')}}
+                    - {% trans %}Mise à jour le{% endtrans %} : {{ task.updatedAt | date('d/m/Y')}}
                 {% endif %}
-                 - Terminée le : {{ task.doneAt | date('d/m/Y')}}
+                 - {% trans %}Terminer {% endtrans %} : {{ task.doneAt | date('d/m/Y')}}
                 {% if task.category %}
-                    - Dans la catégories : {{ task.category.name }}
+                    - {% trans %}Dans la catégorie {% endtrans%} : {{ task.category.name }}
                     {% endif %}
                 </p>
                 <p>
