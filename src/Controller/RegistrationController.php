@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\User;
 use App\Event\EmailRegisterEvent;
 use App\Form\RegistrationFormType;
@@ -47,12 +48,8 @@ class RegistrationController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function register(
-        Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
-        TokenGenerator $tokenGenerator,
-        EventDispatcherInterface $eventDispatcher
-    ): Response {
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGenerator $tokenGenerator, EventDispatcherInterface $eventDispatcher): Response
+    {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -109,7 +106,7 @@ class RegistrationController extends AbstractController
             ->findOneBy(['id' => $id]);
 
         if (!$user){
-            throw new \Exception('utilisateur inconnu');
+            throw new Exception('utilisateur inconnu');
         }
 
         if ($request->get('token') == $user->getToken()){
@@ -123,7 +120,7 @@ class RegistrationController extends AbstractController
             );
 
         } else {
-            throw new \Exception('Erreur : le token de validation est incorrect ou le compte à déja été validé');
+            throw new Exception('Erreur : le token de validation est incorrect ou le compte à déja été validé');
         }
         return $this->redirectToRoute('app_login');
     }

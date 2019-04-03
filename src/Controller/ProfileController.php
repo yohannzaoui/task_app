@@ -53,10 +53,8 @@ class ProfileController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function edit(
-        Request $request,
-        EditProfileFormHandler $handler
-    ): Response {
+    public function edit(Request $request, EditProfileFormHandler $handler): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->getDoctrine()
@@ -90,10 +88,8 @@ class ProfileController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function editPassword(
-        Request $request,
-        EditPasswordFormHandler $handler
-    ): Response {
+    public function editPassword(Request $request, EditPasswordFormHandler $handler): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->getDoctrine()
@@ -124,10 +120,8 @@ class ProfileController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAvatar(
-        EventDispatcherInterface $eventDispatcher,
-        ObjectManager $manager
-    ): Response {
+    public function deleteAvatar(EventDispatcherInterface $eventDispatcher, ObjectManager $manager): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $eventDispatcher->dispatch(
