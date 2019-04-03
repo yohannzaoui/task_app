@@ -11,11 +11,11 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Form\Handler\CreateCategoryFormHandler;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\Handler\EditCategoryFormHandler;
-use App\Repository\CategoryRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -27,9 +27,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CategoryController extends AbstractController
 {
     /**
+     * @var \Psr\Cache\CacheItemPoolInterface
+     */
+    private $pool;
+
+    /**
+     * CategoryController constructor.
+     *
+     * @param \Psr\Cache\CacheItemPoolInterface $pool
+     */
+    public function __construct(CacheItemPoolInterface $pool)
+    {
+        $this->pool = $pool;
+    }
+
+    /**
      * @Route(path="/category", name="category_index", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function index(): Response
     {
@@ -38,6 +54,15 @@ class CategoryController extends AbstractController
         $categories = $this->getDoctrine()
             ->getRepository(Category::class)
             ->findBy(['author' => $this->getUser()]);
+
+        $item = $this->pool->getItem('cat');
+
+        if (!$item->isHit()){
+            $item->expiresAfter(3600);
+            $this->pool->save($item->set($categories));
+        }
+
+        $categories = $item->get();
 
         return $this->render('category/index.html.twig', [
             'categories' => $categories
@@ -48,14 +73,17 @@ class CategoryController extends AbstractController
     /**
      * @Route(path="/category/new", name="category_new", methods={"GET","POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request  $request
+     * @param \Symfony\Component\HttpFoundation\Request   $request
      * @param \App\Form\Handler\CreateCategoryFormHandler $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function create(Request $request, CreateCategoryFormHandler $handler): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $this->pool->deleteItem('cat');
 
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category)
@@ -78,16 +106,16 @@ class CategoryController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \App\Entity\Category                      $category
-     * @param \App\Form\Handler\EditCategoryFormHandler  $handler
+     * @param \App\Form\Handler\EditCategoryFormHandler $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function edit(
-        Request $request,
-        Category $category,
-        EditCategoryFormHandler $handler
-    ): Response {
+    public function edit(Request $request, Category $category, EditCategoryFormHandler $handler): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $this->pool->deleteItem('cat');
 
         $form = $this->createForm(CategoryType::class, $category)
             ->handleRequest($request);
@@ -111,13 +139,13 @@ class CategoryController extends AbstractController
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function delete(
-        Request $request,
-        Category $category,
-        ObjectManager $manager
-    ): Response {
+    public function delete(Request $request, Category $category, ObjectManager $manager): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $this->pool->deleteItem('cat');
 
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $manager->remove($category);
