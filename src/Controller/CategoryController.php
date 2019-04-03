@@ -83,14 +83,14 @@ class CategoryController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $this->pool->deleteItem('cat');
-
         $category = new Category();
+
         $form = $this->createForm(CategoryType::class, $category)
             ->handleRequest($request);
 
         if ($handler->handle($form, $category)) {
-
+            $this->pool->deleteItem('cat');
+            
             return $this->redirectToRoute('category_index');
         }
 
@@ -115,12 +115,13 @@ class CategoryController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $this->pool->deleteItem('cat');
 
         $form = $this->createForm(CategoryType::class, $category)
             ->handleRequest($request);
 
         if ($handler->handle($form)) {
+            $this->pool->deleteItem('cat');
+
             return $this->redirectToRoute('category_index');
         }
 
@@ -145,9 +146,9 @@ class CategoryController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $this->pool->deleteItem('cat');
-
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+            $this->pool->deleteItem('cat');
+
             $manager->remove($category);
             $manager->flush();
         }
