@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% trans %}Mes catégories{% endtrans %}{% endblock %}
 
 {% block body %}
-    {{ title | h1 }}
+    <h1>{% trans %}Mes catégories{% endtrans %}</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Nom</th>
-                <th>Déscription</th>
+                <th>{% trans %}Nom{% endtrans %}</th>
+                <th>{% trans %}Déscription{% endtrans %}</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,7 +25,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">aucune catégorie</td>
+                <td colspan="4">{% trans %}Aucune catégorie{% endtrans %}</td>
             </tr>
         {% endfor %}
         </tbody>

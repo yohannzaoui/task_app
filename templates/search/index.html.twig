@@ -1,30 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% trans %}Recherche{% endtrans %}{% endblock %}
 
 {% block body %}
-    {{ title | h1center }}
-    {% if results | length == 1 %}<h3 class="center">Résultat :  {{ results | length }}</h3>{% endif %}
-    {% if results | length > 1 %}<h3 class="center">Résultats :  {{ results | length }}</h3>{% endif %}
-    {% if results | length == 0 %}<h3 class="center">Pas de résultat</h3>{% endif %}
+    <h1 class="center">{% trans %}Recherche{% endtrans %}</h1>
+    {% if results | length == 1 %}<h3 class="center">{% trans %}Résultat{% endtrans %} :  {{ results | length }}</h3>{% endif %}
+    {% if results | length > 1 %}<h3 class="center">{% trans %}Résultats{% endtrans %} :  {{ results | length }}</h3>{% endif %}
+    {% if results | length == 0 %}<h3 class="center">{% trans %}Pas de résultat{% endtrans %}</h3>{% endif %}
 
     <div class="row justify-content-center">
         {% for result in results %}
             <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3>{{ result.title }}</h3>
                 {{ result.content | raw }}
-                <p>Ajouté le : {{ result.createdAt | date('d/m/Y')}}
+                <p>{% trans %}Ajouté le{% endtrans %} : {{ result.createdAt | date('d/m/Y')}}
                 {% if result.updatedAt %}
-                    - Mise à jour le : {{ result.updatedAt | date('d/m/Y')}}
+                    - {% trans %}Mise à jour le{% endtrans %} : {{ result.updatedAt | date('d/m/Y')}}
                 {% endif %}
                     {% if result.category %}
-                        - Dans la catégorie : {{ result.category.name }}
+                        - {% trans %}Dans la catégorie{% endtrans %} : {{ result.category.name }}
                     {% endif %}
                 </p>
                 <p>
-                    <a class="btn btn-success" href="{{ path('edit_task', {'id': result.id}) }}">editer</a>
-                    <a class="btn btn-primary" href="{{ path('done_task', {'id': result.id}) }}">terminer</a>
-                    <a class="btn btn-danger" href="{{ path('delete_task', {'id': result.id}) }}">effacer</a>
+                    <a class="btn btn-success" href="{{ path('edit_task', {'id': result.id}) }}">{% trans %}Editer{% endtrans %}</a>
+                    <a class="btn btn-primary" href="{{ path('done_task', {'id': result.id}) }}">{% trans %}Terminer{% endtrans %}</a>
+                    <a class="btn btn-danger" href="{{ path('delete_task', {'id': result.id}) }}">{% trans %}Effacer{% endtrans %}</a>
                 </p>
             </div>
         {% endfor %}

@@ -29,7 +29,7 @@ class ContactType extends AbstractType
             ])
             ->add('email', EmailType::class,[
                 'required' => true,
-                'label' => 'Adresse Email'
+                'label' => 'Adresse email'
             ])
         ;
     }

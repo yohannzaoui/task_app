@@ -15,5 +15,3 @@ framework:
     #fragments: true
     php_errors:
         log: true
-
-    ide: 'myide://open?url=file://%%f&line=%%l'

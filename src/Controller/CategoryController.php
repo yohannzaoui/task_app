@@ -40,8 +40,7 @@ class CategoryController extends AbstractController
         return $this->render('category/index.html.twig', [
             'categories' => $repository->findBy([
                 'author' => $this->getUser()
-            ]),
-            'title' => 'Mes catégories'
+            ])
         ]);
     }
 
@@ -69,8 +68,7 @@ class CategoryController extends AbstractController
 
         return $this->render('category/new.html.twig', [
             'category' => $category,
-            'title' => 'Ajouter une catégorie',
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -97,8 +95,7 @@ class CategoryController extends AbstractController
 
         return $this->render('category/edit.html.twig', [
             'category' => $category,
-            'title' => 'Modifier la catégorie',
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 

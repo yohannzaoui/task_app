@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% trans %}Mes contacts{% endtrans %}{% endblock %}
 
 {% block body %}
-    {{ title | h1 }}
+    <h1>{% trans %}Mes contacts{% endtrans %}</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Non</th>
-                <th>Email</th>
-                <th>Actions</th>
+                <th>{% trans %}Nom{% endtrans %}</th>
+                <th>{% trans %}Email{% endtrans %}</th>
+                <th>{% trans %}Actions{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -25,7 +25,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">Pas de contact</td>
+                <td colspan="5">{% trans %}Pas de contact{% endtrans %}</td>
             </tr>
         {% endfor %}
         </tbody>
