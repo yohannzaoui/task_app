@@ -28,17 +28,18 @@ class AdminController extends AbstractController
     /**
      * @Route(path="/user", name="user_index", methods={"GET"})
      *
-     * @param \App\Repository\UserRepository $userRepository
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        $users = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findAll();
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-            'title' => 'Liste des membres'
+            'users' => $users
         ]);
     }
 
@@ -52,8 +53,11 @@ class AdminController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function delete(User $user, ObjectManager $manager, EventDispatcherInterface $eventDispatcher): Response
-    {
+    public function delete(
+        User $user,
+        ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $eventDispatcher->dispatch(

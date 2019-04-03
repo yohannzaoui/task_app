@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% trans %}Mon profil{% endtrans %}{% endblock %}
 
 {% block body %}
-    {{ title | h1 }}
+    <h1>{% trans %}Mon profil{% endtrans %}</h1>
 
-    <p>Nom d'utilisateur : {{ user.username }}</p>
-    <p>Email : {{ user.email }}</p>
-    <p>Téléphone : {{ user.phone }}</p>
-    <p>Adresse : {{ user.address }}</p>
-    <p>Code postale : {{ user.zipCode }}</p>
-    <p>Ville : {{ user.city }}</p>
-    <p>Pays : {{ user.country }}</p>
+    <p>{% trans %}Nom d'utilisateur{% endtrans %} : {{ user.username }}</p>
+    <p>{% trans %}Email{% endtrans %} : {{ user.email }}</p>
+    <p>{% trans %}Téléphone{% endtrans %} : {{ user.phone }}</p>
+    <p>{% trans %}Adresse{% endtrans %} : {{ user.address }}</p>
+    <p>{% trans %}Code postale{% endtrans %} : {{ user.zipCode }}</p>
+    <p>{% trans %}Ville{% endtrans %} : {{ user.city }}</p>
+    <p>{% trans %}Pays{% endtrans %} : {{ user.country }}</p>
     <p>Inscrit le : {{ user.createdAt | date("d/m/Y") }}</p>
     <p>Nombre de tâches : {{ user.tasks | length }}</p>
     <p>Nombre de catégories : {{ user.categories | length }}</p>

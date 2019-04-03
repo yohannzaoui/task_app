@@ -54,8 +54,11 @@ class PasswordController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function checkUser(Request $request, TokenGenerator $tokenGenerator, EventDispatcherInterface $eventDispatcher): Response
-    {
+    public function checkUser(
+        Request $request,
+        TokenGenerator $tokenGenerator,
+        EventDispatcherInterface $eventDispatcher
+    ): Response {
         $form = $this->createForm(EmailFormType::class)
             ->handleRequest($request);
 
@@ -107,8 +110,11 @@ class PasswordController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function confirm(string $id, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
-    {
+    public function confirm(
+        string $id,
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder
+    ): Response {
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);

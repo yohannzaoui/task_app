@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /home/yohann/Bureau/projets/task_app/src/Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../.css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../.css/nv.d3.min.css" rel="stylesheet" type="text/css">
+  <link href="../.css/style.css" rel="stylesheet" type="text/css">
+  <!--[if lt IE 9]>
+  <script src="../.js/html5shiv.min.js"></script>
+  <script src="../.js/respond.min.js"></script>
+  <![endif]-->
+ </head>
+ <body>
+  <header>
+   <div class="container">
+    <div class="row">
+     <div class="col-md-12">
+      <ol class="breadcrumb">
+        <li><a href="../index.html">/home/yohann/Bureau/projets/task_app/src</a></li>
+        <li><a href="index.html">Controller</a></li>
+        <li class="active">(Dashboard)</li>
+
+      </ol>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="AdminController.php.html#26">App\Controller\AdminController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CategoryController.php.html#27">App\Controller\CategoryController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ConfigController.php.html#21">App\Controller\ConfigController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ContactController.php.html#26">App\Controller\ContactController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="LocaleController.php.html#16">App\Controller\LocaleController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="PasswordController.php.html#30">App\Controller\PasswordController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ProfileController.php.html#30">App\Controller\ProfileController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RegistrationController.php.html#22">App\Controller\RegistrationController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SearchController.php.html#17">App\Controller\SearchController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SecurityController.php.html#15">App\Controller\SecurityController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#32">App\Controller\TaskController</a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="TaskController.php.html#32">App\Controller\TaskController</a></td><td class="text-right">552</td></tr>
+       <tr><td><a href="PasswordController.php.html#30">App\Controller\PasswordController</a></td><td class="text-right">132</td></tr>
+       <tr><td><a href="ProfileController.php.html#30">App\Controller\ProfileController</a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="CategoryController.php.html#27">App\Controller\CategoryController</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="ContactController.php.html#26">App\Controller\ContactController</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="RegistrationController.php.html#22">App\Controller\RegistrationController</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="AdminController.php.html#26">App\Controller\AdminController</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="LocaleController.php.html#16">App\Controller\LocaleController</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="SearchController.php.html#17">App\Controller\SearchController</a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="AdminController.php.html#33"><abbr title="App\Controller\AdminController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#101"><abbr title="App\Controller\TaskController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RegistrationController.php.html#50"><abbr title="App\Controller\RegistrationController::register">register</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RegistrationController.php.html#105"><abbr title="App\Controller\RegistrationController::confirm">confirm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SearchController.php.html#27"><abbr title="App\Controller\SearchController::search">search</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="SecurityController.php.html#24"><abbr title="App\Controller\SecurityController::login">login</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#50"><abbr title="App\Controller\TaskController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#65"><abbr title="App\Controller\TaskController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#129"><abbr title="App\Controller\TaskController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ProfileController.php.html#127"><abbr title="App\Controller\ProfileController::deleteAvatar">deleteAvatar</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#156"><abbr title="App\Controller\TaskController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#191"><abbr title="App\Controller\TaskController::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#229"><abbr title="App\Controller\TaskController::deleteImage">deleteImage</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#259"><abbr title="App\Controller\TaskController::done">done</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#294"><abbr title="App\Controller\TaskController::doneTask">doneTask</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#319"><abbr title="App\Controller\TaskController::pin">pin</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#366"><abbr title="App\Controller\TaskController::sendByEmail">sendByEmail</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RegistrationController.php.html#34"><abbr title="App\Controller\RegistrationController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ProfileController.php.html#93"><abbr title="App\Controller\ProfileController::editPassword">editPassword</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="AdminController.php.html#56"><abbr title="App\Controller\AdminController::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ContactController.php.html#56"><abbr title="App\Controller\ContactController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CategoryController.php.html#34"><abbr title="App\Controller\CategoryController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CategoryController.php.html#56"><abbr title="App\Controller\CategoryController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CategoryController.php.html#85"><abbr title="App\Controller\CategoryController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CategoryController.php.html#115"><abbr title="App\Controller\CategoryController::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ConfigController.php.html#28"><abbr title="App\Controller\ConfigController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ContactController.php.html#33"><abbr title="App\Controller\ContactController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ContactController.php.html#84"><abbr title="App\Controller\ContactController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ProfileController.php.html#56"><abbr title="App\Controller\ProfileController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ContactController.php.html#111"><abbr title="App\Controller\ContactController::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="LocaleController.php.html#23"><abbr title="App\Controller\LocaleController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="LocaleController.php.html#40"><abbr title="App\Controller\LocaleController::locale">locale</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="PasswordController.php.html#42"><abbr title="App\Controller\PasswordController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="PasswordController.php.html#57"><abbr title="App\Controller\PasswordController::checkUser">checkUser</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="PasswordController.php.html#113"><abbr title="App\Controller\PasswordController::confirm">confirm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ProfileController.php.html#37"><abbr title="App\Controller\ProfileController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#404"><abbr title="App\Controller\TaskController::sendToMyEmail">sendToMyEmail</abbr></a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="PasswordController.php.html#113"><abbr title="App\Controller\PasswordController::confirm">confirm</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="PasswordController.php.html#57"><abbr title="App\Controller\PasswordController::checkUser">checkUser</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="TaskController.php.html#366"><abbr title="App\Controller\TaskController::sendByEmail">sendByEmail</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="TaskController.php.html#319"><abbr title="App\Controller\TaskController::pin">pin</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="TaskController.php.html#259"><abbr title="App\Controller\TaskController::done">done</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="TaskController.php.html#156"><abbr title="App\Controller\TaskController::edit">edit</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="RegistrationController.php.html#105"><abbr title="App\Controller\RegistrationController::confirm">confirm</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="RegistrationController.php.html#50"><abbr title="App\Controller\RegistrationController::register">register</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="ProfileController.php.html#56"><abbr title="App\Controller\ProfileController::edit">edit</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="ProfileController.php.html#93"><abbr title="App\Controller\ProfileController::editPassword">editPassword</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="LocaleController.php.html#40"><abbr title="App\Controller\LocaleController::locale">locale</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="CategoryController.php.html#56"><abbr title="App\Controller\CategoryController::create">create</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="ContactController.php.html#111"><abbr title="App\Controller\ContactController::delete">delete</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="ContactController.php.html#84"><abbr title="App\Controller\ContactController::edit">edit</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="SearchController.php.html#27"><abbr title="App\Controller\SearchController::search">search</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="TaskController.php.html#101"><abbr title="App\Controller\TaskController::show">show</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="TaskController.php.html#129"><abbr title="App\Controller\TaskController::create">create</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="ContactController.php.html#56"><abbr title="App\Controller\ContactController::create">create</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="TaskController.php.html#191"><abbr title="App\Controller\TaskController::delete">delete</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="CategoryController.php.html#115"><abbr title="App\Controller\CategoryController::delete">delete</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="CategoryController.php.html#85"><abbr title="App\Controller\CategoryController::edit">edit</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="AdminController.php.html#56"><abbr title="App\Controller\AdminController::delete">delete</abbr></a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 5.3.2</a> using <a href="https://secure.php.net/" target="_top">PHP 7.2.15-0ubuntu0.18.04.2</a> with <a href="https://xdebug.org/">Xdebug 2.6.0</a> and <a href="https://phpunit.de/">PHPUnit 6.5.14</a> at Wed Apr 3 18:11:59 CEST 2019.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../.js/jquery.min.js" type="text/javascript"></script>
+  <script src="../.js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="../.js/holder.min.js" type="text/javascript"></script>
+  <script src="../.js/d3.min.js" type="text/javascript"></script>
+  <script src="../.js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([11,0,0,0,0,0,0,0,0,0,0,0], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([37,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[0,3,"<a href=\"AdminController.php.html#26\">App\\Controller\\AdminController<\/a>"],[0,7,"<a href=\"CategoryController.php.html#27\">App\\Controller\\CategoryController<\/a>"],[0,1,"<a href=\"ConfigController.php.html#21\">App\\Controller\\ConfigController<\/a>"],[0,7,"<a href=\"ContactController.php.html#26\">App\\Controller\\ContactController<\/a>"],[0,3,"<a href=\"LocaleController.php.html#16\">App\\Controller\\LocaleController<\/a>"],[0,11,"<a href=\"PasswordController.php.html#30\">App\\Controller\\PasswordController<\/a>"],[0,8,"<a href=\"ProfileController.php.html#30\">App\\Controller\\ProfileController<\/a>"],[0,7,"<a href=\"RegistrationController.php.html#22\">App\\Controller\\RegistrationController<\/a>"],[0,2,"<a href=\"SearchController.php.html#17\">App\\Controller\\SearchController<\/a>"],[0,1,"<a href=\"SecurityController.php.html#15\">App\\Controller\\SecurityController<\/a>"],[0,23,"<a href=\"TaskController.php.html#32\">App\\Controller\\TaskController<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,1,"<a href=\"AdminController.php.html#33\">App\\Controller\\AdminController::index<\/a>"],[0,2,"<a href=\"AdminController.php.html#56\">App\\Controller\\AdminController::delete<\/a>"],[0,1,"<a href=\"CategoryController.php.html#34\">App\\Controller\\CategoryController::index<\/a>"],[0,2,"<a href=\"CategoryController.php.html#56\">App\\Controller\\CategoryController::create<\/a>"],[0,2,"<a href=\"CategoryController.php.html#85\">App\\Controller\\CategoryController::edit<\/a>"],[0,2,"<a href=\"CategoryController.php.html#115\">App\\Controller\\CategoryController::delete<\/a>"],[0,1,"<a href=\"ConfigController.php.html#28\">App\\Controller\\ConfigController::index<\/a>"],[0,1,"<a href=\"ContactController.php.html#33\">App\\Controller\\ContactController::index<\/a>"],[0,2,"<a href=\"ContactController.php.html#56\">App\\Controller\\ContactController::create<\/a>"],[0,2,"<a href=\"ContactController.php.html#84\">App\\Controller\\ContactController::edit<\/a>"],[0,2,"<a href=\"ContactController.php.html#111\">App\\Controller\\ContactController::delete<\/a>"],[0,1,"<a href=\"LocaleController.php.html#23\">App\\Controller\\LocaleController::index<\/a>"],[0,2,"<a href=\"LocaleController.php.html#40\">App\\Controller\\LocaleController::locale<\/a>"],[0,1,"<a href=\"PasswordController.php.html#42\">App\\Controller\\PasswordController::__construct<\/a>"],[0,4,"<a href=\"PasswordController.php.html#57\">App\\Controller\\PasswordController::checkUser<\/a>"],[0,6,"<a href=\"PasswordController.php.html#113\">App\\Controller\\PasswordController::confirm<\/a>"],[0,1,"<a href=\"ProfileController.php.html#37\">App\\Controller\\ProfileController::show<\/a>"],[0,3,"<a href=\"ProfileController.php.html#56\">App\\Controller\\ProfileController::edit<\/a>"],[0,3,"<a href=\"ProfileController.php.html#93\">App\\Controller\\ProfileController::editPassword<\/a>"],[0,1,"<a href=\"ProfileController.php.html#127\">App\\Controller\\ProfileController::deleteAvatar<\/a>"],[0,1,"<a href=\"RegistrationController.php.html#34\">App\\Controller\\RegistrationController::__construct<\/a>"],[0,3,"<a href=\"RegistrationController.php.html#50\">App\\Controller\\RegistrationController::register<\/a>"],[0,3,"<a href=\"RegistrationController.php.html#105\">App\\Controller\\RegistrationController::confirm<\/a>"],[0,2,"<a href=\"SearchController.php.html#27\">App\\Controller\\SearchController::search<\/a>"],[0,1,"<a href=\"SecurityController.php.html#24\">App\\Controller\\SecurityController::login<\/a>"],[0,1,"<a href=\"TaskController.php.html#50\">App\\Controller\\TaskController::__construct<\/a>"],[0,1,"<a href=\"TaskController.php.html#65\">App\\Controller\\TaskController::index<\/a>"],[0,2,"<a href=\"TaskController.php.html#101\">App\\Controller\\TaskController::show<\/a>"],[0,2,"<a href=\"TaskController.php.html#129\">App\\Controller\\TaskController::create<\/a>"],[0,3,"<a href=\"TaskController.php.html#156\">App\\Controller\\TaskController::edit<\/a>"],[0,2,"<a href=\"TaskController.php.html#191\">App\\Controller\\TaskController::delete<\/a>"],[0,1,"<a href=\"TaskController.php.html#229\">App\\Controller\\TaskController::deleteImage<\/a>"],[0,3,"<a href=\"TaskController.php.html#259\">App\\Controller\\TaskController::done<\/a>"],[0,1,"<a href=\"TaskController.php.html#294\">App\\Controller\\TaskController::doneTask<\/a>"],[0,3,"<a href=\"TaskController.php.html#319\">App\\Controller\\TaskController::pin<\/a>"],[0,3,"<a href=\"TaskController.php.html#366\">App\\Controller\\TaskController::sendByEmail<\/a>"],[0,1,"<a href=\"TaskController.php.html#404\">App\\Controller\\TaskController::sendToMyEmail<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

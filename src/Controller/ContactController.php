@@ -13,7 +13,6 @@ use App\Form\ContactType;
 use App\Form\Handler\CreateContactFormHandler;
 use App\Form\Handler\EditContactFormHandler;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Repository\ContactRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,18 +28,18 @@ class ContactController extends AbstractController
     /**
      * @Route(path="/contact", name="contact_index", methods={"GET"})
      *
-     * @param \App\Repository\ContactRepository $repository
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(ContactRepository $repository): Response
+    public function index(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
+        $contacts = $this->getDoctrine()
+            ->getRepository(Contact::class)
+            ->findBy(['user' => $this->getUser()]);
+
         return $this->render('contact/index.html.twig', [
-            'contacts' => $repository->findBy([
-                'user' => $this->getUser()
-            ])
+            'contacts' => $contacts
         ]);
     }
 

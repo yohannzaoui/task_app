@@ -29,18 +29,18 @@ class CategoryController extends AbstractController
     /**
      * @Route(path="/category", name="category_index", methods={"GET"})
      *
-     * @param \App\Repository\CategoryRepository $repository
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(CategoryRepository $repository): Response
+    public function index(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
+        $categories = $this->getDoctrine()
+            ->getRepository(Category::class)
+            ->findBy(['author' => $this->getUser()]);
+
         return $this->render('category/index.html.twig', [
-            'categories' => $repository->findBy([
-                'author' => $this->getUser()
-            ])
+            'categories' => $categories
         ]);
     }
 
@@ -82,8 +82,11 @@ class CategoryController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, Category $category, EditCategoryFormHandler $handler): Response
-    {
+    public function edit(
+        Request $request,
+        Category $category,
+        EditCategoryFormHandler $handler
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $form = $this->createForm(CategoryType::class, $category)
@@ -109,8 +112,11 @@ class CategoryController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function delete(Request $request, Category $category, ObjectManager $manager): Response
-    {
+    public function delete(
+        Request $request,
+        Category $category,
+        ObjectManager $manager
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {

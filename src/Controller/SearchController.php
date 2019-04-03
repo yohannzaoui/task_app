@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\Task;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,10 +34,9 @@ class SearchController extends AbstractController
                 ->search($request->request->get('search'));
 
             return $this->render('search/index.html.twig', [
-                'results' => $results,
-                'title' => 'Résultat de recherche'
+                'results' => $results
             ]);
         }
-        throw new \Exception('Error: invalid CSRF token');
+        throw new Exception('Error: invalid CSRF token');
     }
 }

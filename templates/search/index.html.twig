@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Recherche{% endtrans %}{% endblock %}
+{% block title %}{% trans %}Résultat de recherche{% endtrans %}{% endblock %}
 
 {% block body %}
-    <h1 class="center">{% trans %}Recherche{% endtrans %}</h1>
+    <h1 class="center">{% trans %}Résultat de recherche{% endtrans %}</h1>
     {% if results | length == 1 %}<h3 class="center">{% trans %}Résultat{% endtrans %} :  {{ results | length }}</h3>{% endif %}
     {% if results | length > 1 %}<h3 class="center">{% trans %}Résultats{% endtrans %} :  {{ results | length }}</h3>{% endif %}
     {% if results | length == 0 %}<h3 class="center">{% trans %}Pas de résultat{% endtrans %}</h3>{% endif %}
