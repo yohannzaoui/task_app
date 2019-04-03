@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{% trans %}Liste des membres{% endtrans %}{% endblock %}
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-        <h1>{{ title }} ({{ users | length }})</h1>
+        <h1>{% trans %}Liste des membres{% endtrans %} ({{ users | length }})</h1>
 
     <table class="table">
         <thead>
@@ -30,7 +30,7 @@
                 <td>{{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                 <td>{{ user.valid ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="return confirm('Delete this user?')">supprimer</a>
+                    <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="return confirm('Delete this user?')">{% trans %}supprimer{% endtrans %}</a>
                 </td>
             </tr>
         {% else %}

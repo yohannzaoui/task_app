@@ -5,6 +5,7 @@ Terminer: Done
 Effacer: Reset
 Envoyer: Send
 Ajouter: Add
+supprimer: delete
 Ajouter une image: Add picture
 Mot de passe oublié: Forgot password
 Nom d'utilisateur: Username
@@ -61,6 +62,7 @@ Supprimer image: Delete picture
 Titre: Title
 Modifier l'image: Edit picture
 Catégorie: Category
+Liste des membres: List of members
 par: by
 Français: French
 Anglais: English
