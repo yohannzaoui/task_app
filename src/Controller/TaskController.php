@@ -13,6 +13,7 @@ use App\Entity\Task;
 use App\Form\TaskType;
 use App\Form\EditTaskType;
 use App\Form\Handler\EditTaskFormHandler;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\Handler\CreateTaskFormHandler;
@@ -42,17 +43,25 @@ class TaskController extends AbstractController
     private $eventDispatcher;
 
     /**
+     * @var \Psr\Cache\CacheItemPoolInterface
+     */
+    private $pool;
+
+    /**
      * TaskController constructor.
      *
-     * @param $manager
-     * @param $eventDispatcher
+     * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \Psr\Cache\CacheItemPoolInterface                           $pool
      */
     public function __construct(
         ObjectManager $manager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        CacheItemPoolInterface $pool
     ){
         $this->manager = $manager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->pool = $pool;
     }
 
 
@@ -60,7 +69,7 @@ class TaskController extends AbstractController
      * @Route(path="/", name="tasks", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function index(): Response
     {
@@ -81,6 +90,24 @@ class TaskController extends AbstractController
                 'pin' => true,
                 'author' => $this->getUser()
             ]);
+
+        $itemTasks = $this->pool->getItem('tasks');
+
+        if (!$itemTasks->isHit()){
+            $itemTasks->expiresAfter(3600);
+            $this->pool->save($itemTasks->set($tasks));
+        }
+
+        $tasks = $itemTasks->get();
+
+        $itemTasksPin = $this->pool->getItem('tasks_pin');
+
+        if (!$itemTasksPin->isHit()){
+            $itemTasksPin->expiresAfter(3600);
+            $this->pool->save($itemTasksPin->set($tasksPin));
+        }
+
+        $tasksPin = $itemTasksPin->get();
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
@@ -121,10 +148,10 @@ class TaskController extends AbstractController
      * @Route(path="/task/create", name="create_task", methods={"GET", "POST"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\Form\Handler\CreateTaskFormHandler    $handler
+     * @param \App\Form\Handler\CreateTaskFormHandler   $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function create(Request $request, CreateTaskFormHandler $handler): Response
     {
@@ -134,6 +161,7 @@ class TaskController extends AbstractController
             ->handleRequest($request);
 
         if ($handler->handle($form, $task)){
+            $this->pool->deleteItems(['tasks','tasks_pin']);
 
             return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
         }
@@ -146,12 +174,12 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/edit/{id}", name="edit_task", methods={"GET", "POST"})
      *
-     * @param                                                $id
-     * @param \Symfony\Component\HttpFoundation\Request      $request
-     * @param \App\Form\Handler\EditTaskFormHandler           $handler
+     * @param string                                    $id
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \App\Form\Handler\EditTaskFormHandler     $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function edit(string $id, Request $request, EditTaskFormHandler $handler): Response
     {
@@ -170,6 +198,7 @@ class TaskController extends AbstractController
 
 
         if ($handler->handle($form, $task)){
+            $this->pool->deleteItems(['tasks','tasks_pin']);
 
             return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
         }
@@ -183,10 +212,10 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/delete/{id}", name="delete_task", methods={"GET"})
      *
-     * @param                                                             $id
+     * @param string $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function delete(string $id): Response
     {
@@ -199,6 +228,8 @@ class TaskController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('access', $task);
+
+        $this->pool->deleteItems(['tasks','tasks_pin']);
 
         $this->eventDispatcher->dispatch(
             FileRemoverEvent::NAME,
@@ -251,10 +282,10 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/done/{id}", name="done_task", methods={"GET"})
      *
-     * @param                                            $id
+     * @param string $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function done(string $id): Response
     {
@@ -267,6 +298,8 @@ class TaskController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('access', $task);
+
+        $this->pool->deleteItems(['tasks','tasks_pin']);
 
         if ($task->isDone() == true){
             $task->notDone();
@@ -311,10 +344,10 @@ class TaskController extends AbstractController
     /**
      * @Route(path="/task/pin/{id}", name="task_pin", methods={"GET"})
      *
-     * @param                                            $id
+     * @param string $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function pin(string $id): Response
     {
@@ -327,6 +360,8 @@ class TaskController extends AbstractController
         if (!$taskPin){
             throw new Exception('no task with this ID');
         }
+
+        $this->pool->deleteItems(['tasks','tasks_pin']);
 
         if ($taskPin->getPin() == true){
             $taskPin->notPin();

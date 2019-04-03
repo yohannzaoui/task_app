@@ -90,7 +90,7 @@ class CategoryController extends AbstractController
 
         if ($handler->handle($form, $category)) {
             $this->pool->deleteItem('cat');
-            
+
             return $this->redirectToRoute('category_index');
         }
 
