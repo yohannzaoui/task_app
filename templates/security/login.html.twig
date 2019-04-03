@@ -14,9 +14,9 @@
                     <h1>{% trans %}Connexion{% endtrans %}</h1>
 
                     <label for="inputUsername" class="sr-only">username</label>
-                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder={% trans %}Nom d'utilisateur{% endtrans %} required autofocus>
+                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder={% trans %}"Nom d'utilisateur"{% endtrans %} required autofocus>
                     <label for="inputPassword" class="sr-only">Password</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder={% trans %}Mot de passe{% endtrans %} required>
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder={% trans %}"Mot de passe"{% endtrans %} required>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <button class="btn btn-primary mt-3 btn-sm" type="submit">{% trans %}Connexion{% endtrans %}</button>
                     <button type="reset" class="btn btn-danger mt-3 btn-sm">{% trans %}Effacer{% endtrans %}</button>
