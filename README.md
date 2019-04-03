@@ -9,9 +9,9 @@ Task Manager Application
 
 * Developped with the Symfony 4.2 framework
 * CSS : Bootstrap 4
-
 * Translate in french and english
 * Include TinyMCE
+* Symfony cache PSR-6
 
 ## Prérequisites
 * **Php 7.2**
@@ -25,6 +25,12 @@ clone or download the repository into your environment. https://github.com/yohan
 
 ```
 $ composer install
+```
+```
+$ yarn install
+```
+```
+$ yarn encore dev
 ```
 enter your parameters database and email in .env (rename .env_example)
 ```
