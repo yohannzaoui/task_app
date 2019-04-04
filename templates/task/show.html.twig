@@ -15,28 +15,28 @@
         {% endif %}
 
         <p>
-            {% trans %}Ajouté le{% endtrans %} : {{ task.createdAt | date('d/m/Y')}}
+            {% trans %}Add{% endtrans %} : {{ task.createdAt | date('d/m/Y')}}
             {% if task.updatedAt %}
-                - {% trans %}Mise à jour le{% endtrans %} : {{ task.updatedAt | date('d/m/Y')}}
+                - {% trans %}Updated{% endtrans %} : {{ task.updatedAt | date('d/m/Y')}}
             {% endif %}
             {% if task.category %}
-                - {% trans %}Dans la catégorie{% endtrans %} : {{ task.category.name }}
+                - {% trans %}In category{% endtrans %} : {{ task.category.name }}
             {% endif %}
         </p>
         <p>
-            <a class="btn btn-warning btn-sm" onclick="return confirm('Envoyer cette tâche sur votre email ?');" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">{% trans %}Envoyer sur mon email{% endtrans %}</a>
+            <a class="btn btn-warning btn-sm" onclick="return confirm('Send task to my email ?');" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">{% trans %}Send to my email{% endtrans %}</a>
         </p>
             <form class="form-group col-lg-4" action="{{ path('send_task_byEmail') }}" method="post">
                 <label for="email" >{% trans %}Partager par email{% endtrans %}</label>
                 <input class="form-control" type="email" name="email" id="email" required>
                 <input type="hidden" name="task_id" value="{{ task.id }}">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('email') }}">
-                <button type="submit" name="task_by_email" class="btn btn-success btn-sm mt-3">{% trans %}Envoyer{% endtrans %}</button>
+                <button type="submit" name="task_by_email" class="btn btn-success btn-sm mt-3">{% trans %}Send{% endtrans %}</button>
             </form>
         <p>
             <a class="link-white ml-2" href="{{ path('edit_task', {'id': task.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
             <a class="link-white ml-2" href="{{ path('done_task', {'id': task.id}) }}"><i class="fas fa-check fa-2x"></i></a>
-            <a class="link-white ml-2" onclick="return confirm('Supprimer cette tâche ?');" href="{{ path('delete_task', {'id': task.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
+            <a class="link-white ml-2" onclick="return confirm('Delete task ?');" href="{{ path('delete_task', {'id': task.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
         </p>
     </div>
     <p><a class="btn btn-primary btn-sm mt-3" href="{{ path('tasks') }}"><i class="fas fa-arrow-left fa-2x"></i></a></p>

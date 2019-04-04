@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Paramètres{% endtrans %}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
 
-    <h1>{% trans %}Paramètres{% endtrans %}</h1>
+    {{ title | h1 }}
 
-    <h5><a href="{{ path('profile') }}">{% trans %}Mon profil{% endtrans %}</a></h5>
-    <h5><a href="{{ path('contact_index') }}">{% trans %}Mes contacts{% endtrans %}</a></h5>
-    <h5><a href="{{ path('category_index') }}">{% trans %}Mes catégories{% endtrans %} </a></h5>
-    <h5><a href="{{ path('lang') }}">{% trans %}Langue de l'application{% endtrans %} </a></h5>
+    <h5><a href="{{ path('profile') }}">{% trans %}My profile{% endtrans %}</a></h5>
+    <h5><a href="{{ path('contact_index') }}">{% trans %}My contacts{% endtrans %}</a></h5>
+    <h5><a href="{{ path('category_index') }}">{% trans %}My categories{% endtrans %} </a></h5>
+    <h5><a href="{{ path('lang') }}">{% trans %}Language of the application{% endtrans %} </a></h5>
 
 {% endblock %}

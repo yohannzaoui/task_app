@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class AdminController
@@ -28,9 +29,11 @@ class AdminController extends AbstractController
     /**
      * @Route(path="/user", name="user_index", methods={"GET"})
      *
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(): Response
+    public function index(TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -38,8 +41,11 @@ class AdminController extends AbstractController
             ->getRepository(User::class)
             ->findAll();
 
+        $title = $translator->trans('List of members');
+
         return $this->render('user/index.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'title' => $title
         ]);
     }
 

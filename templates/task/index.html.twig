@@ -1,47 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Mes tâches{% endtrans %}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
 
-    <h1 class="center">{% trans %}Mes tâches{% endtrans %}</h1>
+    {{ title | h1center }}
 
-    {% if tasksPin | length == 1 %}<h3 class="center">{% trans %}Tâche épinglée à terminer{% endtrans %} {{ tasksPin | length }}</h3>{% endif %}
-    {% if tasksPin | length > 1 %}<h3 class="center">{% trans %}Tâches épinglées à terminer{% endtrans %} {{ tasksPin | length }}</h3>{% endif %}
-    {% if tasks | length == 1 %}<h3 class="center">{% trans %}Tâche non épinglée à terminer{% endtrans %} {{ tasks | length }}</h3>{% endif %}
-    {% if tasks | length > 1 %}<h3 class="center">{% trans %}Tâches non épinglées à terminer{% endtrans %} {{ tasks | length }}</h3>{% endif %}
+    {% if tasksPin | length == 1 %}<h3 class="center">{% trans %}Task pinned to finish{% endtrans %} {{ tasksPin | length }}</h3>{% endif %}
+    {% if tasksPin | length > 1 %}<h3 class="center">{% trans %}Tasks pinned to finish{% endtrans %} {{ tasksPin | length }}</h3>{% endif %}
+    {% if tasks | length == 1 %}<h3 class="center">{% trans %}Task not pinned to finish{% endtrans %} {{ tasks | length }}</h3>{% endif %}
+    {% if tasks | length > 1 %}<h3 class="center">{% trans %}Tasks not pinned to finish{% endtrans %} {{ tasks | length }}</h3>{% endif %}
 
-    <a class="btn btn-success" href="{{ path('create_task') }}">{% trans %}Crée une tâche{% endtrans %}</a>
-    <a class="btn btn-warning" href="{{ path('view_done_task') }}">{% trans %}Tâches terminées{% endtrans %}</a>
+    <a class="btn btn-success" href="{{ path('create_task') }}">{% trans %}Add task{% endtrans %}</a>
+    <a class="btn btn-warning" href="{{ path('view_done_task') }}">{% trans %}Done task{% endtrans %}</a>
 
     <hr>
 
-    {% if tasksPin | length == 0 %}<h5 class="center">{% trans %}Pas de tâches épinglées{% endtrans %}</h5>{% endif %}
+    {% if tasksPin | length == 0 %}<h5 class="center">{% trans %}No pinned tasks{% endtrans %}</h5>{% endif %}
 
 
     <div class="row justify-content-center">
-        {% if tasksPin | length >= 1  %}<h3 class="center">{% trans %}Tâches épinglées{% endtrans %}</h3>{% endif %}
+        {% if tasksPin | length >= 1  %}<h3 class="center">{% trans %}Pinned tasks{% endtrans %}</h3>{% endif %}
         {% for taskPin in tasksPin %}
             <div class="pin-post-it mt-3 col-lg-12 col-md-12 col-sm-12">
-                <h3><a class="link-white" href="{{ path('show_task', {'id': taskPin.id}) }}">{{ taskPin.title }}</a></h3>
+                <h3><i class="fas fa-eye"></i> <a class="link-white" href="{{ path('show_task', {'id': taskPin.id}) }}">{{ taskPin.title }}</a></h3>
                 {{ taskPin.content | raw }}
                 <p>
-                    {% trans %}Ajouté le{% endtrans %} : {{ taskPin.createdAt | date('d/m/Y')}}
+                    {% trans %}Add{% endtrans %} : {{ taskPin.createdAt | date('d/m/Y')}}
                 {% if taskPin.updatedAt %}
-                     - {% trans %}Mise à jour le{% endtrans %} : {{ taskPin.updatedAt | date('d/m/Y')}}
+                     - {% trans %}Updated{% endtrans %} : {{ taskPin.updatedAt | date('d/m/Y')}}
                 {% endif %}
                     {% if taskPin.category %}
-                        - {% trans %}Dans la catégorie{% endtrans %} : {{ taskPin.category.name }}
+                        - {% trans %}In category{% endtrans %} : {{ taskPin.category.name }}
                     {% endif %}
                 </p>
                 <p>
-                    <a class="btn btn-warning btn-sm" onclick="return confirm('Envoyer cette tâche sur votre email ?');" href="{{ path('send_task_myEmail', {'id' : taskPin.id}) }}">{% trans %}Envoyer sur mon email{% endtrans %}</a>
+                    <a class="btn btn-warning btn-sm" onclick="return confirm('Send task to my email ?');" href="{{ path('send_task_myEmail', {'id' : taskPin.id}) }}">{% trans %}Send to my email{% endtrans %}</a>
                 </p>
                 <p>
                     <a class="link-white ml-2" href="{{ path('edit_task', {'id': taskPin.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
                     <a class="link-white ml-2" href="{{ path('done_task', {'id': taskPin.id}) }}"><i class="fas fa-check fa-2x"></i></a>
                     <a class="link-white ml-2" href="{{ path('task_pin', {'id': taskPin.id}) }}"><i class="fas fa-arrow-down fa-2x"></i></a>
-                    <a class="link-white ml-2" onclick="return confirm('Supprimer cette tâche ?');" href="{{ path('delete_task', {'id': taskPin.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
+                    <a class="link-white ml-2" onclick="return confirm('Delete task ?');" href="{{ path('delete_task', {'id': taskPin.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
                 </p>
             </div>
         {% endfor %}
@@ -52,25 +52,25 @@
     <div class="row justify-content-center">
     {% for task in tasks %}
                 <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
-                    <h3><a class="link-white" href="{{ path('show_task', {'id': task.id}) }}">{{ task.title }}</a></h3>
+                    <h3><i class="fas fa-eye"></i> <a class="link-white" href="{{ path('show_task', {'id': task.id}) }}">{{ task.title }}</a></h3>
                     {{ task.content | raw }}
                     <p>
-                        {% trans %}Ajouté le{% endtrans %} : {{ task.createdAt | date('d/m/Y')}}
+                        {% trans %}Add{% endtrans %} : {{ task.createdAt | date('d/m/Y')}}
                     {% if task.updatedAt %}
-                        - {% trans %}Mise à jour le{% endtrans %} : {{ task.updatedAt | date('d/m/Y')}}
+                        - {% trans %}Updated{% endtrans %} : {{ task.updatedAt | date('d/m/Y')}}
                         {% endif %}
                         {% if task.category %}
-                    - {% trans %}Dans la catégorie{% endtrans %} : {{ task.category.name }}
+                    - {% trans %}In category{% endtrans %} : {{ task.category.name }}
                     {% endif %}
                     </p>
                     <p>
-                        <a class="btn btn-warning btn-sm" onclick="return confirm('Envoyer cette tâche sur votre email ?');" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">{% trans %}Envoyer sur mon email{% endtrans %}</a>
+                        <a class="btn btn-warning btn-sm" onclick="return confirm('Send task to my email ?');" href="{{ path('send_task_myEmail', {'id' : task.id}) }}">{% trans %}Send to my email{% endtrans %}</a>
                     </p>
                     <p>
                         <a class="link-white ml-2" href="{{ path('edit_task', {'id': task.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
                         <a class="link-white ml-2" href="{{ path('done_task', {'id': task.id}) }}"><i class="fas fa-check fa-2x"></i></a>
                         <a class="link-white ml-2" href="{{ path('task_pin', {'id': task.id}) }}"><i class="fas fa-thumbtack fa-2x"></i></a>
-                        <a class="link-white ml-2" onclick="return confirm('Supprimer cette tâche ?');" href="{{ path('delete_task', {'id': task.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
+                        <a class="link-white ml-2" onclick="return confirm('Delete task ?');" href="{{ path('delete_task', {'id': task.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
                     </p>
                 </div>
     {% endfor %}

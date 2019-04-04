@@ -1,22 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Récuperer mon mot de passe{% endtrans %}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
     <div class="row justify-content-center">
         <div class="col-lg-6">
             {% if app.user is null %}
 
-                <h1>{% trans %}Récuperer mon mot de passe{% endtrans %}</h1>
+                {{ title | h1 }}
 
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
-                <button type="submit" class="btn btn-primary btn-sm">{% trans %}Envoyer{% endtrans %}</button>
-                <button type="reset" class="btn btn-danger btn-sm">{% trans %}Effacer{% endtrans %}</button>
+                <button type="submit" class="btn btn-primary btn-sm">{% trans %}Send{% endtrans %}</button>
+                <button type="reset" class="btn btn-danger btn-sm">{% trans %}Reset{% endtrans %}</button>
                 {{ form_end(form) }}
 
             {% else %}
-                <h3>{% trans %}Vous êtes déja connecter{% endtrans %}</h3>
+                <h3>{% trans %}You are already logged in{% endtrans %}</h3>
             {% endif %}
         </div>
     </div>

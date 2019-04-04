@@ -28,23 +28,23 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => 'Votre nom d\'utilisateur',
+                'label' => 'Username',
                 'required' => true
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Votre adresse email',
+                'label' => 'Your email',
                 'required' => true
             ])
             ->add('password',PasswordType::class, [
-                'label' => 'Votre mot de passe',
+                'label' => 'Your password',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'SVP entrer un mot de passe',
+                        'message' => 'Type the password again',
                     ]),
                     new Length([
                         'min' => 8,
-                        'minMessage' => 'Votre mot de passe ne peut dépasser {{ limit }} caractères',
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
                         'max' => 4096,
                     ]),
                     new Regex(

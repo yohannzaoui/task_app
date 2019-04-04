@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier mon profil{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
     <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <h1>Modifier mon profil</h1>
-            <p><a class="btn btn-danger btn-sm" href="{{ path('edit_password') }}">modifier mon mot de passe</a></p>
+        <div class="col-lg-8">
+            {{ title | h1center }}
+            <p><a class="btn btn-danger btn-sm" href="{{ path('edit_password') }}">{% trans %}Edit my password{% endtrans %}</a></p>
 
             {{ form_start(form) }}
             {{ form_widget(form) }}

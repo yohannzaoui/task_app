@@ -14,12 +14,12 @@
                     {{ form_row(registrationForm.email) }}
                     {{ form_row(registrationForm.password) }}
 
-                    <button type="submit" class="btn btn-primary btn-sm">S'inscrire</button>
-                    <button type="reset" class="btn btn-danger btn-sm">Effacer</button>
+                    <button type="submit" class="btn btn-primary btn-sm">{% trans %}Register{% endtrans %}</button>
+                    <button type="reset" class="btn btn-danger btn-sm">{% trans %}Reset{% endtrans %}</button>
                 {{ form_end(registrationForm) }}
 
                 {% else %}
-                    <h3>Vous êtes déja connecter</h3>
+                    <h3>{% trans %}You are already logged in{% endtrans %}</h3>
 
     {% endif %}
         </div>

@@ -11,13 +11,13 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Form\Handler\CreateCategoryFormHandler;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\Handler\EditCategoryFormHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class CategoryController
@@ -26,26 +26,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class CategoryController extends AbstractController
 {
+
     /**
-     * @var \Psr\Cache\CacheItemPoolInterface
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
      */
-    private $pool;
+    private $translator;
 
     /**
      * CategoryController constructor.
      *
-     * @param \Psr\Cache\CacheItemPoolInterface $pool
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      */
-    public function __construct(CacheItemPoolInterface $pool)
-    {
-        $this->pool = $pool;
+    public function __construct(
+        TranslatorInterface $translator
+    ){
+        $this->translator = $translator;
     }
 
     /**
      * @Route(path="/category", name="category_index", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function index(): Response
     {
@@ -55,17 +56,11 @@ class CategoryController extends AbstractController
             ->getRepository(Category::class)
             ->findBy(['author' => $this->getUser()]);
 
-        $item = $this->pool->getItem('cat');
-
-        if (!$item->isHit()){
-            $item->expiresAfter(3600);
-            $this->pool->save($item->set($categories));
-        }
-
-        $categories = $item->get();
+        $title = $this->translator->trans('My categories');
 
         return $this->render('category/index.html.twig', [
-            'categories' => $categories
+            'categories' => $categories,
+            'title' => $title
         ]);
     }
 
@@ -77,7 +72,6 @@ class CategoryController extends AbstractController
      * @param \App\Form\Handler\CreateCategoryFormHandler $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function create(Request $request, CreateCategoryFormHandler $handler): Response
     {
@@ -89,13 +83,15 @@ class CategoryController extends AbstractController
             ->handleRequest($request);
 
         if ($handler->handle($form, $category)) {
-            $this->pool->deleteItem('cat');
 
             return $this->redirectToRoute('category_index');
         }
 
+        $title = $this->translator->trans('Add category');
+
         return $this->render('category/new.html.twig', [
             'category' => $category,
+            'title' => $title,
             'form' => $form->createView()
         ]);
     }
@@ -109,7 +105,6 @@ class CategoryController extends AbstractController
      * @param \App\Form\Handler\EditCategoryFormHandler $handler
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function edit(Request $request, Category $category, EditCategoryFormHandler $handler): Response
     {
@@ -120,13 +115,15 @@ class CategoryController extends AbstractController
             ->handleRequest($request);
 
         if ($handler->handle($form)) {
-            $this->pool->deleteItem('cat');
 
             return $this->redirectToRoute('category_index');
         }
 
+        $title = $this->translator->trans('Edit category');
+
         return $this->render('category/edit.html.twig', [
             'category' => $category,
+            'title' => $title,
             'form' => $form->createView()
         ]);
     }
@@ -140,14 +137,12 @@ class CategoryController extends AbstractController
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function delete(Request $request, Category $category, ObjectManager $manager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
-            $this->pool->deleteItem('cat');
 
             $manager->remove($category);
             $manager->flush();

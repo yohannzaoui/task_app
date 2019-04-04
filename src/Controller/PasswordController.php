@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class PasswordController
@@ -35,13 +36,22 @@ class PasswordController extends AbstractController
     private $manager;
 
     /**
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * PasswordController constructor.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Common\Persistence\ObjectManager         $manager
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      */
-    public function __construct(ObjectManager $manager)
-    {
+    public function __construct(
+        ObjectManager $manager,
+        TranslatorInterface $translator
+    ){
         $this->manager = $manager;
+        $this->translator = $translator;
     }
 
     /**
@@ -91,8 +101,11 @@ class PasswordController extends AbstractController
             return $this->redirectToRoute('check_user');
         }
 
+        $title = $this->translator->trans('Recover my password');
+
         return $this->render('password/checkUser.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'title' => $title
         ]);
     }
 
@@ -141,13 +154,16 @@ class PasswordController extends AbstractController
                 return $this->redirectToRoute('app_login');
             }
 
+            $title = $this->translator->trans('Recover my password');
+
             return $this->render('password/confirm.html.twig', [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'title' => $title
             ]);
         }
 
         if ($request->get('token') != $user->getToken()){
-            throw new Exception('Token invalide');
+            throw new Exception('Invalid token');
         }
     }
 }

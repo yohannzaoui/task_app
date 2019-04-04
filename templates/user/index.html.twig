@@ -1,22 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Liste des membres{% endtrans %}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-        <h1>{% trans %}Liste des membres{% endtrans %} ({{ users | length }})</h1>
+        {{ title | h1 }}
+
+        <h1>({{ users | length }}) </h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>Valid</th>
-                <th>actions</th>
+                <th>{% trans %}Username{% endtrans %}</th>
+                <th>{% trans %}Email{% endtrans %}</th>
+                <th>{% trans %}Roles{% endtrans %}</th>
+                <th>{% trans %}Created{% endtrans %}</th>
+                <th>{% trans %}Updated{% endtrans %}</th>
+                <th>{% trans %}Valid{% endtrans %}</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -30,17 +32,17 @@
                 <td>{{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                 <td>{{ user.valid ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="return confirm('Delete this user?')">{% trans %}supprimer{% endtrans %}</a>
+                    <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="return confirm('Delete this user?')">{% trans %}delete{% endtrans %}</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="10">{% trans %}no records found{% endtrans %}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
     {% else %}
-        <p>your rights do not allow you to access this page</p>
+        <p>{% trans %}your rights do not allow you to access this page{% endtrans %}</p>
     {% endif %}
 {% endblock %}

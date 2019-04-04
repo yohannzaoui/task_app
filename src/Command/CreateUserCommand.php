@@ -12,11 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * Class CreateAdminCommand
+ * Class CreateUserCommand
  *
  * @package App\Command
  */
-class CreateAdminCommand extends Command
+class CreateUserCommand extends Command
 {
 
     /**
@@ -86,10 +86,10 @@ class CreateAdminCommand extends Command
         $this
             ->setName('app:create-admin')
             ->setDescription('Create admin account')
-            ->setHelp("Cette commande vous assiste pour la création d'un compte administrateur")
-            ->addArgument('username', InputArgument::REQUIRED, 'Username of the admin')
-            ->addArgument('password', InputArgument::REQUIRED, 'password admin')
-            ->addArgument('email', InputArgument::REQUIRED, 'Email admin');
+            ->setHelp("Cette commande vous assiste pour la création d'un compte utilisateur")
+            ->addArgument('username', InputArgument::REQUIRED, 'Username of the user')
+            ->addArgument('password', InputArgument::REQUIRED, 'password user')
+            ->addArgument('email', InputArgument::REQUIRED, 'Email user');
     }
 
     /**
@@ -104,7 +104,7 @@ class CreateAdminCommand extends Command
         $output->writeln('Username: ' .$input->getArgument('username'));
         $output->writeln('Password: ' .$input->getArgument('password'));
         $output->writeln('Email: ' .$input->getArgument('email'));
-        $output->writeln('Role: ROLE_ADMIN');
+        $output->writeln('Role: ROLE_USER');
 
         $passwordEncode = $this->encoderFactory->getEncoder(User::class)
             ->encodePassword($input->getArgument('password'), null);
@@ -112,13 +112,13 @@ class CreateAdminCommand extends Command
         $this->user->setUsername($input->getArgument('username'));
         $this->user->setPassword($passwordEncode);
         $this->user->setEmail($input->getArgument('email'));
-        $this->user->setRoles(['ROLE_ADMIN']);
+        $this->user->setRoles(['ROLE_USER']);
         $this->user->validate();
 
         $this->manager->persist($this->user);
         $this->manager->flush();
 
-        $output->writeln('Admin successfully created');
+        $output->writeln('User successfully created');
     }
 
 }

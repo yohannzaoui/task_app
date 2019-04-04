@@ -1,29 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans%}Mes tâches terminées{% endtrans %}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
 
-    <h1 class="center">{% trans%}Mes tâches terminées{% endtrans %}</h1>
+    {{ title | h1center }}
 
-    {% if tasks | length > 1 %}<h3 class="center">{% trans %}tâches terminées{% endtrans %} {{ tasks | length }}</h3>{% endif %}
-    {% if tasks | length == 1 %}<h3 class="center">{% trans %}tâche terminée{% endtrans %} {{ tasks | length }}</h3>{% endif %}
-    {% if tasks | length == 0 %}<h3 class="center">{% trans %}Pas de tâches{% endtrans %}</h3>{% endif %}
+    {% if tasks | length > 1 %}<h3 class="center">{% trans %}completed tasks{% endtrans %} {{ tasks | length }}</h3>{% endif %}
+    {% if tasks | length == 1 %}<h3 class="center">{% trans %}completed task{% endtrans %} {{ tasks | length }}</h3>{% endif %}
+    {% if tasks | length == 0 %}<h3 class="center">{% trans %}No tasks{% endtrans %}</h3>{% endif %}
 
-    <a class="btn btn-success" href="{{ path('tasks') }}">{% trans %}Mes tâches{% endtrans %}</a>
+    <a class="btn btn-success" href="{{ path('tasks') }}">{% trans %}My tasks{% endtrans %}</a>
 
     <div class="row justify-content-center">
         {% for task in tasks %}
             <div class="post-it mt-3 col-lg-12 col-md-12 col-sm-12">
                 <h3>{{ task.title }}</h3>
                 {{ task.content | raw }}
-                <p>{% trans %}Ajouter {% endtrans %} : {{ task.createdAt | date('d/m/Y')}}
+                <p>{% trans %}Add {% endtrans %} : {{ task.createdAt | date('d/m/Y')}}
                 {% if task.updatedAt %}
-                    - {% trans %}Mise à jour le{% endtrans %} : {{ task.updatedAt | date('d/m/Y')}}
+                    - {% trans %}Updated{% endtrans %} : {{ task.updatedAt | date('d/m/Y')}}
                 {% endif %}
-                 - {% trans %}Terminer {% endtrans %} : {{ task.doneAt | date('d/m/Y')}}
+                 - {% trans %}Done {% endtrans %} : {{ task.doneAt | date('d/m/Y')}}
                 {% if task.category %}
-                    - {% trans %}Dans la catégorie {% endtrans%} : {{ task.category.name }}
+                    - {% trans %}In category {% endtrans%} : {{ task.category.name }}
                     {% endif %}
                 </p>
                 <p>

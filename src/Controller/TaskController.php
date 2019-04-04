@@ -24,6 +24,7 @@ use App\Event\TaskToMyEmailEvent;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class TaskController
@@ -48,20 +49,28 @@ class TaskController extends AbstractController
     private $pool;
 
     /**
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * TaskController constructor.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \Psr\Cache\CacheItemPoolInterface                           $pool
+     * @param \Symfony\Contracts\Translation\TranslatorInterface          $translator
      */
     public function __construct(
         ObjectManager $manager,
         EventDispatcherInterface $eventDispatcher,
-        CacheItemPoolInterface $pool
+        CacheItemPoolInterface $pool,
+        TranslatorInterface $translator
     ){
         $this->manager = $manager;
         $this->eventDispatcher = $eventDispatcher;
         $this->pool = $pool;
+        $this->translator = $translator;
     }
 
 
@@ -109,9 +118,12 @@ class TaskController extends AbstractController
 
         $tasksPin = $itemTasksPin->get();
 
+        $title = $this->translator->trans('My tasks');
+
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
-            'tasksPin' => $tasksPin
+            'tasksPin' => $tasksPin,
+            'title' => $title
 
         ]);
     }
@@ -165,8 +177,12 @@ class TaskController extends AbstractController
 
             return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
         }
+
+        $title = $this->translator->trans('Add task');
+
         return $this->render('task/create.html.twig', [
-            'form' =>$form->createView()
+            'form' =>$form->createView(),
+            'title' => $title
         ]);
     }
 
@@ -203,8 +219,11 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
         }
 
+        $title = $this->translator->trans('Task edit');
+
         return $this->render('task/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'title' => $title
         ]);
     }
 
@@ -335,8 +354,11 @@ class TaskController extends AbstractController
                 'author' => $this->getUser()
             ]);
 
+        $title = $this->translator->trans('My completed tasks');
+
         return $this->render('task/done.html.twig', [
-            'tasks' => $tasks
+            'tasks' => $tasks,
+            'title' => $title
         ]);
     }
 
