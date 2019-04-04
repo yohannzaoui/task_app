@@ -36,22 +36,22 @@ class TaskType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'required' => true,
-                'label' => 'Titre'
+                'label' => 'Title'
             ])
             ->add('content', TextareaType::class, [
                 'required' => false,
-                'label' => 'Déscription'
+                'label' => 'Description'
             ])
             ->add('file', FileType::class, [
                 'required' => false,
-                'label' => 'Ajouter une image'
+                'label' => 'Add picture'
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'expanded' => false,
                 'required' => false,
-                'label' => 'Catégorie'
+                'label' => 'Category'
             ])
         ;
     }

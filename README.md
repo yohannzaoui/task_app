@@ -9,7 +9,7 @@ Task Manager Application
 
 * Developped with the Symfony 4.2 framework
 * CSS : Bootstrap 4
-* Translate in french and english
+* Translate in french
 * Include TinyMCE
 * Symfony cache PSR-6
 

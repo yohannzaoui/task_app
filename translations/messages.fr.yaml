@@ -1,70 +1,85 @@
-Connexion: Connexion
-Inscription: Inscription
-Editer: Editer
-Terminer: Terminer
-Effacer: Effacer
-Envoyer: Envoyer
-Ajouter: Ajouter
-supprimer: supprimer
-Ajouter une image: Ajouter une image
-Mot de passe oublié: Mot de passe oublié
-Nom d'utilisateur: Nom d'utilisateur
-Mot de passe: Mot de passe
-Se déconnecter: Se déconnecter
-Géstion des membres: Géstion des membres
-Mes tâches: Mes tâches
-Paramètres: Paramètres
-Recherche: Recherche
-Mes catégories: Mes catégories
-Vous êtes déja connecter: Vous êtes déja connecter
-Bonjour: Bonjour
-Nom: Nom
+Sign in: Connexion
+Register: Inscription
+Edit: Editer
+Done: Terminer
+Reset: Effacer
+Send: Envoyer
+Add: Ajouter
+delete: supprimer
+Add picture: Ajouter une image
+Forgot password: Mot de passe oublié
+Username: Nom d'utilisateur
+Password: Mot de passe
+Phone: Téléphone
+Address: Adresse
+Zip code: Code postale
+City: Ville
+Country: Pays
+Roles: Rôles
+Logout: Se déconnecter
+Members management: Géstion des membres
+My tasks: Mes tâches
+Parameters: Paramètres
+Search: Recherche
+Search result: Résultat de recherche
+My categories: Mes catégories
+You are already logged in: Vous êtes déja connecter
+Hello: Bonjour
+Name: Nom
 Email: Email
-Actions: Actions
-Votre email: Votre email
-Déscription: Déscription
-Aucune catégorie: Aucune catégorie
-Modifier la catégorie: Modifier la catégorie
-Ajouter une catégorie: Ajouter une catégorie
-Mon profil: Mon profil
-Résultat: Résultat
-Résultats: Résultats
-Mes contacts: Mes contacts
-Ajouté le: Ajoutée le
-Mise à jour le: Mise à jour le
-Dans la catégorie: Dans la catégorie
-Pas de contact: Pas de contact
-Modifier un contact: Modifier contact
-Adresse email: Adresse email
-Téléphone: Téléphone
-Adresse: Adresse
-Code postale: Code postale
-Ville: Ville
-Pays: Pays
-Ajouter un contact: Ajouter un contact
-Récuperer mon mot de passe: Récuperer mon mot de passe
-Nouveau mot de passe: Nouveau mot de passe
-Tapez le mot de passe à nouveau: Tapez le mot de passe à nouveau
-Langue de l'application: Langue de l'application
-Crée une tâche: Crée une tâche
-Tâches terminées: Tâches terminées
-tâches terminées: tâches terminées
-tâche terminée: tâche terminée
-Pas de tâches: Pas de tâches
-Mes tâches terminées: Mes tâches terminées
-Envoyer sur mon email: Envoyer sur mon email
-Partager par email: Partager par email
-Tâche épinglée à terminer: Tâche épinglée à terminer
-Tâches épinglées à terminer: Tâches épinglées à terminer
-Tâches non épinglées à terminer: Tâches non épinglées à terminer
-Pas de tâches épinglées: Pas de tâches épinglées
-Tâches épinglées: Tâches épinglées
-Modifier la tâche: Modifier la tâche
-Supprimer image: Supprimer image
-Titre: Titre
-Modifier l'image: Modifier l'image
-Liste des membres: Liste des membres
-Catégorie: Catégorie
-par: par
-Français: Français
-Anglais: Anglais
+Email address: Adresse email
+Your email: Votre email
+Your password: Votre mot de passe
+Description: Déscription
+No category: Aucune catégorie
+Edit category: Modifier la catégorie
+Add category: Ajouter une catégorie
+My profile: Mon profil
+My contacts: Mes contacts
+Result: Résultat
+Results: Résultats
+No result: Pas de résultat
+Update: Mise à jour le
+Created: Créer le
+Updated: Mise à jour le
+Valid: Valide
+In category: Dans la catégorie
+No contact: Pas de contact
+Email addresse: Adresse email
+Edit contact: Modifier un contact
+Add contact: Ajouter un contact
+Recover my password: Récuperer mon mot de passe
+New password: Nouveau mot de passe
+Type the password again: Tapez le mot de passe à nouveau
+Language of the application: Langue de l'application
+Add task: Crée une tâche
+Done task: Tâches terminées
+Send to my email: Envoyer sur mon email
+Share by email: Partager par email
+Task pinned to finish: Tâche épinglée à terminer
+Tasks pinned to finish: Tâches épinglées à terminer
+Task not pinned to finish: Tâche non épinglée à terminer
+Tasks not pinned to finish: Tâches non épinglées à terminer
+completed tasks: tâches terminées
+completed task: tâche terminée
+No tasks: Pas de tâches
+No pinned tasks: Pas de tâches épinglées
+Pinned tasks: Tâches épinglées
+Task edit: Modifier la tâche
+My completed tasks: Mes tâches terminées
+Create task: Créer une tâche
+Number of tasks: Nombre de tâches
+Number of categories: Nombre de catégories
+Delete picture: Supprimer image
+Title: Titre
+Edit picture: Modifier l'image
+Edit my profile: Modifier mon profil
+Edit my password: Modifier mon mot de passe
+Avatar: Image de profil
+Category: Catégorie
+List of members: Liste des membres
+your rights do not allow you to access this page: vos droits ne vous permettent pas d'accéder à cette page
+no records found: Aucun enregistrement trouvé
+by: par
+French: Français
+English: Anglais

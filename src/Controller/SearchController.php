@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class SearchController
@@ -17,14 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class SearchController extends AbstractController
 {
     /**
-     * @Route("/search", name="search", methods={"GET", "POST"})
+     * @Route(path="/search", name="search", methods={"GET", "POST"})
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Request          $request
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function search(Request $request): Response
+    public function search(Request $request, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -33,8 +35,11 @@ class SearchController extends AbstractController
                 ->getRepository(Task::class)
                 ->search($request->request->get('search'));
 
+            $title = $translator->trans('Search result');
+
             return $this->render('search/index.html.twig', [
-                'results' => $results
+                'results' => $results,
+                'title' => $title
             ]);
         }
         throw new Exception('Error: invalid CSRF token');

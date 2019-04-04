@@ -2,7 +2,7 @@
     <div class="container">
     <a class="navbar-brand" href="{{ path('tasks') }}">Task App
         {% if app.user %}
-            {% trans %}Bonjour{% endtrans %} {{ app.user.username }}
+            {% trans %}Hello{% endtrans %} {{ app.user.username }}
             {% if app.user.image %}
                 <img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="avatar">
             {% else %}
@@ -18,33 +18,33 @@
         <ul class="navbar-nav mr-auto">
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('tasks') }}">{% trans %}Mes tâches{% endtrans %}</a>
+                    <a class="nav-link" href="{{ path('tasks') }}">{% trans %}My tasks{% endtrans %}</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('config') }}">{% trans %}Paramètres{% endtrans %}</a>
+                    <a class="nav-link" href="{{ path('config') }}">{% trans %}Parameters{% endtrans %}</a>
                 </li>
             {% endif %}
             {% if app.user is null %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('app_login') }}">{% trans %}Connexion{% endtrans %}</a>
+                    <a class="nav-link" href="{{ path('app_login') }}">{% trans %}Sign in{% endtrans %}</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('app_register') }}">{% trans %}Inscription{% endtrans %}</a>
+                    <a class="nav-link" href="{{ path('app_register') }}">{% trans %}Register{% endtrans %}</a>
                 </li>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('user_index') }}">{% trans %}Géstion des membres{% endtrans %}</a>
+                    <a class="nav-link" href="{{ path('user_index') }}">{% trans %}Members management{% endtrans %}</a>
                 </li>
             {% endif %}
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-item active">
-                    <a class="nav-link" id="logout" href="{{ path('logout') }}"><strong>{% trans %}Se déconnecter{% endtrans %}</strong></a>
+                    <a class="nav-link" id="logout" href="{{ path('logout') }}"><strong>{% trans %}Logout{% endtrans %}</strong></a>
                 </li>
 
         </ul>
         <form action="{{ path('search') }}" method="post" class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" name="search" required placeholder={% trans %}Recherche{% endtrans %}>
+            <input class="form-control mr-sm-2" type="text" name="search" required placeholder={% trans %}Search{% endtrans %}>
             <input type="hidden" name="token" value="{{ csrf_token('search') }}" />
             <button class="btn btn-secondary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
         </form>

@@ -24,11 +24,11 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom',
+                'label' => 'Name',
                 'required' => true
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Déscription',
+                'label' => 'Description',
                 'required' => false
             ])
         ;

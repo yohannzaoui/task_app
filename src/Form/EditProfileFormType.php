@@ -25,36 +25,36 @@ class EditProfileFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'required' => false,
-                'label' => 'Nom d\'utilisateur'
+                'required' => true,
+                'label' => 'Username'
             ])
             ->add('email', EmailType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => 'Email'
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
-                'label' => 'Téléphone'
+                'label' => 'Phone'
             ])
             ->add('address', TextType::class, [
                 'required' => false,
-                'label' => 'Adresse'
+                'label' => 'Address'
             ])
             ->add('zipCode', TextType::class, [
                 'required' => false,
-                'label' => 'Code postal'
+                'label' => 'Zip code'
             ])
             ->add('city', TextType::class, [
                 'required' => false,
-                'label' => 'Ville'
+                'label' => 'City'
             ])
             ->add('country', TextType::class, [
                 'required' => false,
-                'label' => 'Pays'
+                'label' => 'Country'
             ])
             ->add('file', FileType::class, [
                 'required' => false,
-                'label' => 'Image de profil'
+                'label' => 'Avatar'
             ])
         ;
     }

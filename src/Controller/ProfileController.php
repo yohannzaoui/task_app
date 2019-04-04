@@ -21,6 +21,7 @@ use App\Form\EditProfileFormType;
 use App\Event\FileRemoverEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ProfileController
@@ -29,6 +30,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ProfileController extends AbstractController
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @Route(path="/profile", name="profile", methods={"GET"})
      *
@@ -38,8 +46,11 @@ class ProfileController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
+        $title = $this->translator->trans('My profile');
+
         return $this->render('profile/index.html.twig', [
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'title' => $title
         ]);
     }
 
@@ -73,8 +84,11 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
+        $title = $this->translator->trans('Edit my profile');
+
         return $this->render('profile/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'title' => $title
         ]);
     }
 
@@ -106,8 +120,12 @@ class ProfileController extends AbstractController
         if ($handler->handle($form, $user)){
             return $this->redirectToRoute('profile');
         }
+
+        $title = $this->translator->trans('Edit my password');
+
         return $this->render('profile/edit_password.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'title' => $title
         ]);
     }
 

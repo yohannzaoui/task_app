@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Modifier la catégorie{% endtrans %}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
     <div class="row justify-content-center">
         <div class="col-lg-6">
-            <h1>{% trans %}Modifier la catégorie{% endtrans %}</h1>
+            {{ title | h1 }}
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <p>

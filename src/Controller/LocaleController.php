@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class LocaleController
@@ -18,13 +19,19 @@ class LocaleController extends AbstractController
     /**
      * @Route(path="/lang", name="lang", methods={"GET"})
      *
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(): Response
+    public function index(TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        return $this->render('lang.html.twig');
+        $title = $translator->trans('Language of the application');
+
+        return $this->render('lang.html.twig', [
+            'title' => $title
+        ]);
     }
 
 

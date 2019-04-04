@@ -1,10 +1,12 @@
 {% extends 'base.html.twig'%}
 
+{% block title %}{{ title }}{% endblock %}
+
 {% block body %}
 
-    <h1>{% trans %}Langue de l'application{% endtrans %}</h1>
+    {{ title | h1 }}
 
-    <p><a href="{{ path('lang_locale', {'locale':'fr'}) }}">{% trans %}Français{% endtrans %}</a></p>
-    <p><a href="{{ path('lang_locale', {'locale':'en'}) }}">{% trans %}Anglais{% endtrans %}</a></p>
+    <p><a href="{{ path('lang_locale', {'locale':'en'}) }}">{% trans %}English{% endtrans %}</a></p>
+    <p><a href="{{ path('lang_locale', {'locale':'fr'}) }}">{% trans %}French{% endtrans %}</a></p>
 
 {% endblock %}

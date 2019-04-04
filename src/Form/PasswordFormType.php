@@ -35,10 +35,10 @@ class PasswordFormType extends AbstractType
                 'type' => PasswordType::class,
                 'required' => true,
                 'first_options' => [
-                    'label' => 'Nouveau mot de passe'
+                    'label' => 'New password'
                 ],
                 'second_options' => [
-                    'label' => 'Tapez le mot de passe à nouveau'
+                    'label' => 'Type the password again'
                 ],
                 'constraints' => [
                     new NotBlank([

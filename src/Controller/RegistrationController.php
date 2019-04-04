@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class RegistrationController
@@ -48,7 +49,7 @@ class RegistrationController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGenerator $tokenGenerator, EventDispatcherInterface $eventDispatcher): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGenerator $tokenGenerator, EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -84,9 +85,11 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
+        $title = $translator->trans('Register');
+
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-            'title' => 'Inscription'
+            'title' => $title
         ]);
     }
 
