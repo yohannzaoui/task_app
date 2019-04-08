@@ -37,6 +37,8 @@
             <a class="link-white ml-2" href="{{ path('edit_task', {'id': task.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
             <a class="link-white ml-2" href="{{ path('done_task', {'id': task.id}) }}"><i class="fas fa-check fa-2x"></i></a>
             <a class="link-white ml-2" onclick="return confirm('Delete task ?');" href="{{ path('delete_task', {'id': task.id}) }}"><i class="fas fa-trash-alt fa-2x"></i></a>
+            <a class="link-white ml-2" href="{{ path('edit_task', {'id': task.id}) }}"><i class="fas fa-pencil-alt fa-2x"></i></a>
+            <a class="link-white ml-2" href="{{ path('tasks_json', {'id': task.id}) }}">JSON format</a>
         </p>
     </div>
     <p><a class="btn btn-primary btn-sm mt-3" href="{{ path('tasks') }}"><i class="fas fa-arrow-left fa-2x"></i></a></p>

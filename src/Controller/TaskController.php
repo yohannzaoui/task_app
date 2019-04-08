@@ -14,6 +14,7 @@ use App\Form\TaskType;
 use App\Form\EditTaskType;
 use App\Form\Handler\EditTaskFormHandler;
 use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\Handler\CreateTaskFormHandler;
@@ -24,6 +25,10 @@ use App\Event\TaskToMyEmailEvent;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -54,23 +59,31 @@ class TaskController extends AbstractController
     private $translator;
 
     /**
+     * @var \Symfony\Component\Serializer\SerializerInterface
+     */
+    private $serializer;
+
+    /**
      * TaskController constructor.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager                  $manager
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \Psr\Cache\CacheItemPoolInterface                           $pool
      * @param \Symfony\Contracts\Translation\TranslatorInterface          $translator
+     * @param \Symfony\Component\Serializer\SerializerInterface           $serializer
      */
     public function __construct(
         ObjectManager $manager,
         EventDispatcherInterface $eventDispatcher,
         CacheItemPoolInterface $pool,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SerializerInterface $serializer
     ){
         $this->manager = $manager;
         $this->eventDispatcher = $eventDispatcher;
         $this->pool = $pool;
         $this->translator = $translator;
+        $this->serializer = $serializer;
     }
 
 
@@ -481,4 +494,43 @@ class TaskController extends AbstractController
 
         return $this->redirectToRoute('tasks');
     }
+
+    /**
+     * @Route(path="/task/json/{id}", name="tasks_json", methods={"GET"})
+     *
+     * @param                                                   $id
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function jsonTask($id): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($id);
+
+        $data = $this->serializer->serialize($task, 'json');
+
+        return $this->json($data);
+    }
+
+    /**
+     * @Route(path="/tasks/json", name="tasks_json", methods={"GET"})
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function jsonTasks(): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $tasks = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->findBy(['author' => $this->getUser()]);
+
+        $data = $this->serializer->serialize($tasks, 'json');
+
+        return $this->json($data);
+    }
+
 }
